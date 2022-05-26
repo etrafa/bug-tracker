@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Sidebar from "./components/Sidebar/SideBar";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import Tickets from "./components/Dashboard/Tickets/Tickets";
+import { Chart as ChartJS } from "chart.js/auto";
 
 function App() {
   return (
