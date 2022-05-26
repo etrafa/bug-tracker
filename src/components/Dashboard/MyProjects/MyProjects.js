@@ -12,7 +12,7 @@ const MyProjects = () => {
   console.log(dbData);
 
   return (
-    <div>
+    <div className="text-center mt-6">
       <h2>Hey</h2>
       <h3>hey</h3>
       <h2>Hey</h2>

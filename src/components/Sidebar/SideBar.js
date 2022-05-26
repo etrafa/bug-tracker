@@ -1,15 +1,15 @@
-import DefaultProfilePicture from "../../assets/default-user-profile-picture.png";
+import { Link } from "react-router-dom";
 
 const SideBar = () => {
   return (
-    <aside className="w-64 min-h-screen bg-gray-50" aria-label="Sidebar">
-      <div className="overflow-y-auto py-4 px-3  rounded dark:bg-gray-800">
-        <div className="flex justify-between">
-          <h1 className="">
-            Welcome, <br /> <span className="font-bold">Etem Senel</span>
-          </h1>
-          <img width={60} src={DefaultProfilePicture} alt="user-profile" />
-        </div>
+    <aside
+      className="w-64 min-h-screen bg-gray-50 absolute top-0 left-0 hidden lg:block"
+      aria-label="Sidebar"
+    >
+      <div className="overflow-y-auto py-4 px-3 rounded ">
+        <h1 className="text-center">
+          Welcome, <br /> <span className="font-bold">Etem Senel</span>
+        </h1>
         <hr className="mt-2" />
         <ul className="space-y-2 mt-10">
           <li>
@@ -78,9 +78,9 @@ const SideBar = () => {
             </a>
           </li>
           <li>
-            <a
-              href="#"
+            <Link
               className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              to="/my-projects"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -95,12 +95,12 @@ const SideBar = () => {
                 />
               </svg>
               <span className="flex-1 ml-3 whitespace-nowrap">My Projects</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="#"
+            <Link
               className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              to="/my-projects"
             >
               <svg
                 className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -118,7 +118,7 @@ const SideBar = () => {
               </svg>
 
               <span className="flex-1 ml-3 whitespace-nowrap">My Tickets</span>
-            </a>
+            </Link>
           </li>
           <li>
             <a
@@ -132,12 +132,35 @@ const SideBar = () => {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 ></path>
               </svg>
               <span className="flex-1 ml-3 whitespace-nowrap">Profile</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              <svg
+                className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                />
+              </svg>
+
+              <span className="flex-1 ml-3 whitespace-nowrap">Log out</span>
             </a>
           </li>
         </ul>
