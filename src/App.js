@@ -7,15 +7,16 @@ import Sidebar from "./components/Sidebar/SideBar";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import Tickets from "./components/Dashboard/Tickets/Tickets";
 import { Chart as ChartJS } from "chart.js/auto";
+import RoleAssingment from "./components/Dashboard/RoleAssingment/RoleAssingment";
 
 function App() {
   return (
     <Router>
       <Sidebar />
       <Navbar />
-      <Tickets />
+      <RoleAssingment />
       <Routes>
-        <Route></Route>
+        <Route>{/* <Tickets /> */}</Route>
       </Routes>
     </Router>
   );
