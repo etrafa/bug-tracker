@@ -1,9 +1,6 @@
-import React from "react";
-
 const RoleAssingment = () => {
   return (
-    <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto">
-      <h1 className="text-center text-4xl font-bold my-4">Manage User Roles</h1>
+    <div className="lg:w-4/12">
       <h4 className="text-2xl mt-16 ml-5">Select User</h4>
       <div className="w-11/12 mt-1 mx-auto">
         <select size={5} className="w-full border-2 border-black">
@@ -43,11 +40,11 @@ const RoleAssingment = () => {
           <option>User</option>
         </select>
       </div>
-      <div className="flex flex-col mt-4 ml-2">
+      <div className="flex flex-col my-8 ml-2">
         <span>Selected User : -</span>
         <span>Selected Role : -</span>
       </div>
-      <button className="mt-8 bg-mainGreen w-44 h-12 mx-auto block text-white text-lg font-bold">
+      <button className=" bg-mainGreen w-44 h-12 mx-auto block text-white text-lg font-bold">
         Submit
       </button>
     </div>

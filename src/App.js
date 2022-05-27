@@ -5,21 +5,19 @@ import MyProjects from "./components/Dashboard/MyProjects/MyProjects";
 import Navbar from "./components/Navbar/Navbar";
 import Sidebar from "./components/Sidebar/SideBar";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
-import Tickets from "./components/Dashboard/Tickets/Tickets";
+import DashboardHome from "./components/Dashboard/Tickets/DashboardHome";
 import { Chart as ChartJS } from "chart.js/auto";
-import RoleAssingment from "./components/Dashboard/RoleAssingment/RoleAssingment";
-import YourPersonel from "./components/Dashboard/RoleAssingment/YourPersonel";
+import ManageRole from "./components/Dashboard/RoleAssingment/ManageRole";
 
 function App() {
   return (
     <Router>
       <Sidebar />
       <Navbar />
-      {/* <Tickets /> */}
-      {/* <RoleAssingment /> */}
-      <YourPersonel />
       <Routes>
-        <Route>{/* <Tickets /> */}</Route>
+        <Route path="/dashboard-home" element={<DashboardHome />} />
+        <Route path="/my-projects" element={<MyProjects />} />
+        <Route path="/role-assignment" element={<ManageRole />} />
       </Routes>
     </Router>
   );

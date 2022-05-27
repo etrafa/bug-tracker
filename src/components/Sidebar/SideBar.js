@@ -13,9 +13,9 @@ const SideBar = () => {
         <hr className="mt-2" />
         <ul className="space-y-2 mt-10">
           <li>
-            <a
-              href="#"
+            <Link
               className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              to="/dashboard-home"
             >
               <svg
                 className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -27,12 +27,12 @@ const SideBar = () => {
                 <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
               </svg>
               <span className="ml-3">Dashboard Home</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="#"
+            <Link
               className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              to="/role-assignment"
             >
               <svg
                 className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -51,7 +51,7 @@ const SideBar = () => {
               <span className="flex-1 ml-3 whitespace-nowrap">
                 Manage Role Assingment
               </span>
-            </a>
+            </Link>
           </li>
           <li>
             <a
