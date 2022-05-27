@@ -5,17 +5,27 @@ import { collection } from "firebase/firestore";
 //useGetDocs Hook
 import { useGetDocs } from "../../../customHooks/useGetDocs";
 
+//components
+import CreateNewProjectModal from "../../Modals/CreateNewProjectModal";
+
+import { useState } from "react";
+
 const MyProjects = () => {
   const projectCollectionRef = collection(db, "projects");
+  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const { dbData } = useGetDocs(projectCollectionRef);
-
-  console.log(dbData);
 
   return (
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto mb-6">
-      <button className="bg-red-300 mx-auto block w-64 h-12 mt-12 rounded-md text-white font-bold">
+      <button
+        onClick={() => setIsProjectModalOpen(true)}
+        className="bg-red-300 mx-auto block w-64 h-12 mt-12 rounded-md text-white font-bold"
+      >
         CREATE NEW PROJECT
       </button>
+      {isProjectModalOpen && (
+        <CreateNewProjectModal setIsProjectModalOpen={setIsProjectModalOpen} />
+      )}
       <div className="w-11/12 mx-auto mt-24 relative border border-black">
         <h4 className="absolute -top-6 left-1/2 transform -translate-x-1/2 w-11/12 h-14 bg-fbFillColor text-center text-white text-lg pt-3">
           All Projects in your database
@@ -62,63 +72,30 @@ const MyProjects = () => {
             </tr>
           </thead>
           <tbody>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-              <th
-                scope="row"
-                class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-              >
-                My Project 1
-              </th>
-              <td class="px-6 py-4">My Project 1 Description</td>
-              <td class="px-6 py-4">
-                <ul className="list-disc">
-                  <li className="text-fbFillColor cursor-pointer underline hover:text-black">
-                    Manage Users
-                  </li>
-                  <li className="text-fbFillColor cursor-pointer underline hover:text-black">
-                    Details
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-              <th
-                scope="row"
-                class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-              >
-                My Project 2
-              </th>
-              <td class="px-6 py-4">My Project 2 Description</td>
-              <td class="px-6 py-4">
-                <ul className="list-disc">
-                  <li className="text-fbFillColor cursor-pointer underline hover:text-black">
-                    Manage Users
-                  </li>
-                  <li className="text-fbFillColor cursor-pointer underline hover:text-black">
-                    Details
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-              <th
-                scope="row"
-                class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-              >
-                My Project 3
-              </th>
-              <td class="px-6 py-4">My Project 3 Description</td>
-              <td class="px-6 py-4">
-                <ul className="list-disc">
-                  <li className="text-fbFillColor cursor-pointer underline hover:text-black">
-                    Manage Users
-                  </li>
-                  <li className="text-fbFillColor cursor-pointer underline hover:text-black">
-                    Details
-                  </li>
-                </ul>
-              </td>
-            </tr>
+            {dbData &&
+              dbData.map((project) => {
+                return (
+                  <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <th
+                      scope="row"
+                      class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                    >
+                      {project.projectName}
+                    </th>
+                    <td class="px-6 py-4">{project.description}</td>
+                    <td class="px-6 py-4">
+                      <ul className="list-disc">
+                        <li className="text-fbFillColor cursor-pointer underline hover:text-black">
+                          Manage Users
+                        </li>
+                        <li className="text-fbFillColor cursor-pointer underline hover:text-black mt-3 ">
+                          Details
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </div>

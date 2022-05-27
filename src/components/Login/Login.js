@@ -41,12 +41,16 @@ const Login = () => {
       <hr className=" w-9/12 mt-4 border-emerald-200 lg:w-4/12" />
       <form className="flex flex-col w-full mx-auto items-center mt-8 md:w-8/12 lg:w-8/12 xl:w-6/12">
         <input
-          className="border-2 w-10/12 h-12 lg:w-6/12"
+          className="border-2 w-10/12 h-12 lg:w-6/12 pl-2 placeholder:text-lg"
           type="email"
           placeholder="Email"
         />
         <input
-          className="border-2 w-10/12 h-12 mt-2 lg:w-6/12"
+          onFocus={() => {
+            console.log("hey");
+          }}
+          onMouseOut={() => console.log("good bye")}
+          className="border-2 w-10/12 h-12 mt-2 lg:w-6/12 pl-2 placeholder:text-lg"
           type="password"
           placeholder="Password"
         />

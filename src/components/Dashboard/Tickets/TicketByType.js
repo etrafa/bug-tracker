@@ -20,7 +20,7 @@ const TicketByType = () => {
             datasets: [
               {
                 data: [3, 4, 5, 2],
-                backgroundColor: ["green", "orange", "red", "blue"],
+                backgroundColor: ["#f37208", "#089df3", "#02ffdd", "#f3084f"],
               },
             ],
           }}
