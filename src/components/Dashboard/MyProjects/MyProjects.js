@@ -5,27 +5,12 @@ import { collection } from "firebase/firestore";
 //useGetDocs Hook
 import { useGetDocs } from "../../../customHooks/useGetDocs";
 
-//components
-import CreateNewProjectModal from "../../Modals/CreateNewProjectModal";
-
-import { useState } from "react";
-
 const MyProjects = () => {
   const projectCollectionRef = collection(db, "projects");
-  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const { dbData } = useGetDocs(projectCollectionRef);
 
   return (
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto mb-6">
-      <button
-        onClick={() => setIsProjectModalOpen(true)}
-        className="bg-red-300 mx-auto block w-64 h-12 mt-12 rounded-md text-white font-bold"
-      >
-        CREATE NEW PROJECT
-      </button>
-      {isProjectModalOpen && (
-        <CreateNewProjectModal setIsProjectModalOpen={setIsProjectModalOpen} />
-      )}
       <div className="w-11/12 mx-auto mt-24 relative border border-black">
         <h4 className="absolute -top-6 left-1/2 transform -translate-x-1/2 w-11/12 h-14 bg-fbFillColor text-center text-white text-lg pt-3">
           All Projects in your database

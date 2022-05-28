@@ -9,13 +9,31 @@ import DashboardHome from "./components/Dashboard/Tickets/DashboardHome";
 import { Chart as ChartJS } from "chart.js/auto";
 import ManageRole from "./components/Dashboard/RoleAssingment/ManageRole";
 import MyTickets from "./components/Dashboard/MyTickets/MyTickets";
+import CreateNewProjectModal from "./components/Modals/CreateNewProjectModal";
+import { useState } from "react";
+import NewProjectModalMessage from "./components/Modals/NewProjectModalMessage";
 
 function App() {
+  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+  const [isProjectMessageModalOpen, setIsProjectMessageModalOpen] =
+    useState(false);
+
   return (
     <Router>
       <Sidebar />
-      <Navbar />
+      <Navbar setIsProjectModalOpen={setIsProjectModalOpen} />
       {/* <Login /> */}
+      {isProjectModalOpen && (
+        <CreateNewProjectModal
+          setIsProjectModalOpen={setIsProjectModalOpen}
+          setIsProjectMessageModalOpen={setIsProjectMessageModalOpen}
+        />
+      )}
+      {isProjectMessageModalOpen && (
+        <NewProjectModalMessage
+          setIsProjectMessageModalOpen={setIsProjectMessageModalOpen}
+        />
+      )}
       <Routes>
         <Route path="/dashboard-home" element={<DashboardHome />} />
         <Route path="/my-projects" element={<MyProjects />} />

@@ -1,6 +1,6 @@
 import DefaultProfilePicture from "../../assets/default-user-profile-picture.png";
 
-const Navbar = () => {
+const Navbar = ({ setIsProjectModalOpen }) => {
   return (
     <nav className="bg-mainGreen w-full lg:w-[calc(100%_-_16rem)] ml-auto">
       <ul className="h-[calc(5rem_-_7px)] flex justify-end items-center ">
@@ -21,6 +21,14 @@ const Navbar = () => {
             </svg>
           </div>
         </li> */}
+        <li>
+          <button
+            onClick={() => setIsProjectModalOpen(true)}
+            className="bg-red-300 mx-auto block w-64 h-12  ounded-md text-white font-bold mr-8"
+          >
+            CREATE NEW PROJECT
+          </button>
+        </li>
         <li className="text-white text-2xl mr-8 cursor-pointer">HOME</li>
         <li>
           <svg
