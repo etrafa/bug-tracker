@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const SideBar = () => {
   return (
@@ -13,8 +14,12 @@ const SideBar = () => {
         <hr className="mt-2" />
         <ul className="space-y-2 mt-10">
           <li>
-            <Link
-              className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+            <NavLink
+              className={({ isActive }) =>
+                isActive
+                  ? "flex items-center p-2 text-base font-bold bg-red-200 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  : "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              }
               to="/dashboard-home"
             >
               <svg
@@ -27,11 +32,15 @@ const SideBar = () => {
                 <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
               </svg>
               <span className="ml-3">Dashboard Home</span>
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link
-              className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+            <NavLink
+              className={({ isActive }) =>
+                isActive
+                  ? "flex items-center p-2 text-base font-bold bg-red-200 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  : "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              }
               to="/role-assignment"
             >
               <svg
@@ -51,7 +60,7 @@ const SideBar = () => {
               <span className="flex-1 ml-3 whitespace-nowrap">
                 Manage Role Assingment
               </span>
-            </Link>
+            </NavLink>
           </li>
           <li>
             <a
@@ -78,8 +87,12 @@ const SideBar = () => {
             </a>
           </li>
           <li>
-            <Link
-              className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+            <NavLink
+              className={({ isActive }) =>
+                isActive
+                  ? "flex items-center p-2 text-base font-bold bg-red-200 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  : "flex items-center p-2 text-base text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              }
               to="/my-projects"
             >
               <svg
@@ -95,11 +108,15 @@ const SideBar = () => {
                 />
               </svg>
               <span className="flex-1 ml-3 whitespace-nowrap">My Projects</span>
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link
-              className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+            <NavLink
+              className={({ isActive }) =>
+                isActive
+                  ? "flex items-center p-2 text-base font-bold bg-red-200 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  : "flex items-center p-2 text-base text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              }
               to="/my-tickets"
             >
               <svg
@@ -118,7 +135,7 @@ const SideBar = () => {
               </svg>
 
               <span className="flex-1 ml-3 whitespace-nowrap">My Tickets</span>
-            </Link>
+            </NavLink>
           </li>
           <li>
             <a

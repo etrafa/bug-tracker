@@ -1,13 +1,3 @@
-// const TicketByPriority = () => {
-//   return (
-//     <div className="w-6/12 h-10">
-//
-//     </div>
-//   );
-// };
-
-// export default TicketByPriority;
-
 import { Bar } from "react-chartjs-2";
 
 const TicketByPriority = () => {

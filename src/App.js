@@ -12,6 +12,7 @@ import MyTickets from "./components/Dashboard/MyTickets/MyTickets";
 import CreateNewProjectModal from "./components/Modals/CreateNewProjectModal";
 import { useState } from "react";
 import NewProjectModalMessage from "./components/Modals/NewProjectModalMessage";
+import SingleProject from "./components/SingleProject/SingleProject";
 
 function App() {
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
@@ -39,6 +40,7 @@ function App() {
         <Route path="/my-projects" element={<MyProjects />} />
         <Route path="/role-assignment" element={<ManageRole />} />
         <Route path="/my-tickets" element={<MyTickets />} />
+        <Route path="/my-projects/:projetId" element={<SingleProject />} />
       </Routes>
     </Router>
   );

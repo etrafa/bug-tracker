@@ -3,13 +3,6 @@ import { db } from "../../firebase/firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
 import { useState } from "react";
 
-//icons
-
-import errorIcon from "../../assets/error-icon.svg";
-
-//components
-import NewProjectModalMessage from "./NewProjectModalMessage";
-
 const CreateNewProjectModal = ({
   setIsProjectModalOpen,
   setIsProjectMessageModalOpen,
@@ -26,6 +19,7 @@ const CreateNewProjectModal = ({
   //ON SUBMIT SAVE SAVE USER'S PROJECT NAME & DESCRIPTION TO DATABASE
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(createProjectInformation);
     addDoc(collectionRef, {
       projectName: createProjectInformation.projectName,
       projectDescription: createProjectInformation.projectDescription,
