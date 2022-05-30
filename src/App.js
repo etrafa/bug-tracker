@@ -40,7 +40,7 @@ function App() {
         <Route path="/my-projects" element={<MyProjects />} />
         <Route path="/role-assignment" element={<ManageRole />} />
         <Route path="/my-tickets" element={<MyTickets />} />
-        <Route path="/my-projects/:projetId" element={<SingleProject />} />
+        <Route path="/my-projects/:projectId" element={<SingleProject />} />
       </Routes>
     </Router>
   );

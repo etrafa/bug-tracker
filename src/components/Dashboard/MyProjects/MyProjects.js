@@ -7,10 +7,11 @@ import { useGetDocs } from "../../../customHooks/useGetDocs";
 
 //React
 import { Link } from "react-router-dom";
+import LoadSpinner from "../../Utilities/LoadSpinner";
 
 const MyProjects = () => {
   const projectCollectionRef = collection(db, "projects");
-  const { dbData } = useGetDocs(projectCollectionRef);
+  const { dbData, loading } = useGetDocs(projectCollectionRef);
 
   return (
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto mb-6">
@@ -42,22 +43,23 @@ const MyProjects = () => {
             />
           </div>
         </div>
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-12">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th className="px-6 py-3">Project Name</th>
-              <th className="px-6 py-3">Project Description</th>
-              <th className="px-6 py-3">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {dbData &&
-              dbData.map((project) => {
+        {loading && <LoadSpinner />}
+        {dbData && (
+          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-12">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th className="px-6 py-3">Project Name</th>
+                <th className="px-6 py-3">Project Description</th>
+                <th className="px-6 py-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dbData.map((project) => {
                 return (
-                  <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th
                       scope="row"
-                      class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                      className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                     >
                       {project.projectName}
                     </th>
@@ -77,8 +79,9 @@ const MyProjects = () => {
                   </tr>
                 );
               })}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

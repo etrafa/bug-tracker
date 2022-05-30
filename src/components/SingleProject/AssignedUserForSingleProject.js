@@ -1,9 +1,11 @@
 const AssignedUserForSingleProject = () => {
   return (
-    <div className="w-full lg:w-4/12 h-96 bg-yellow-200 text-center lg:ml-6">
-      <h1>Assigned User</h1>
-      <span>Current Users on this Project</span>
-      <div className="relative mt-1">
+    <div className="w-full lg:w-4/12 h-96 text-center overflow-auto lg:ml-6">
+      <header className="bg-green-400 lg:mx-auto">
+        <h1 className="text-4xl text-white pt-4">Assigned User</h1>
+        <h4 className="text-white py-4">Current Users on this Project</h4>
+      </header>
+      <div className="relative mt-1 lg:mt-6">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           <svg
             className="w-5 h-5 text-gray-500 dark:text-gray-400"
@@ -33,8 +35,8 @@ const AssignedUserForSingleProject = () => {
           </tr>
         </thead>
         <tbody>
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <th class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <th className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
               Laura
             </th>
             <td className="px-6 py-4">laura@gmail.com</td>

@@ -1,9 +1,11 @@
 const TicketForSingleProject = () => {
   return (
-    <div className="w-full lg:w-7/12 bg-red-300 text-center overflow-auto lg:ml-12">
-      <h1>Tickets for this Project</h1>
-      <span>Condensed Ticket Details</span>
-      <div className="relative mt-1">
+    <div className="w-full lg:w-6/12 text-center overflow-auto mr-16">
+      <header className="bg-green-400 lg:mx-auto">
+        <h1 className="text-4xl text-white pt-4">Tickets for this Project</h1>
+        <h4 className="text-white py-4">Condensed Ticket Details</h4>
+      </header>
+      <div className="relative mt-1 lg:mt-6">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           <svg
             className="w-5 h-5 text-gray-500 dark:text-gray-400"
@@ -24,7 +26,7 @@ const TicketForSingleProject = () => {
           placeholder="Search Ticket"
         />
       </div>
-      <table className="w-full lg:w-11/12 lg:mx-auto text-sm text-left text-gray-500 dark:text-gray-400 mt-12">
+      <table className="w-full  lg:mx-auto text-sm text-left text-gray-500 dark:text-gray-400 mt-12">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th className="px-6 py-3">Title</th>
@@ -35,12 +37,12 @@ const TicketForSingleProject = () => {
           </tr>
         </thead>
         <tbody>
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <th class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <th className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
               Laura
             </th>
             <td className="px-6 py-4">laura@gmail.com</td>
-            <td className="px-6 py-4">Admin</td>
+            <td className="px-6 py-4">Open</td>
             <td className="px-6 py-4">24.02.2021</td>
             <td className="px-6 py-4">More details</td>
           </tr>

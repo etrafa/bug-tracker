@@ -1,3 +1,5 @@
+import SubmitButton from "../../Utilities/SubmitButton";
+
 const RoleAssingment = () => {
   return (
     <div className="lg:w-4/12">
@@ -44,9 +46,7 @@ const RoleAssingment = () => {
         <span>Selected User : -</span>
         <span>Selected Role : -</span>
       </div>
-      <button className=" bg-mainGreen w-44 h-12 mx-auto block text-white text-lg font-bold">
-        Submit
-      </button>
+      <SubmitButton />
     </div>
   );
 };
