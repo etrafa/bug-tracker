@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Login = () => {
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-slate-100 ">
@@ -61,7 +63,9 @@ const Login = () => {
       <div className="mt-12">
         <h4>
           Don't have an account?
-          <span className="underline cursor-pointer pl-1">Sign up here</span>.
+          <Link to="/create-account">
+            <span className="underline cursor-pointer pl-1">Sign up here</span>.
+          </Link>
         </h4>
         <h4 className="mt-2 underline cursor-pointer">
           Sign in as a Demo User

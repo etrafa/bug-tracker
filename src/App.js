@@ -13,6 +13,8 @@ import CreateNewProjectModal from "./components/Modals/CreateNewProjectModal";
 import { useState } from "react";
 import NewProjectModalMessage from "./components/Modals/NewProjectModalMessage";
 import SingleProject from "./components/SingleProject/SingleProject";
+import SignUp from "./components/SignUp/SignUp";
+import PageNotFound from "./components/PageNotFound/PageNotFound";
 
 function App() {
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
@@ -23,7 +25,6 @@ function App() {
     <Router>
       <Sidebar />
       <Navbar setIsProjectModalOpen={setIsProjectModalOpen} />
-      {/* <Login /> */}
       {isProjectModalOpen && (
         <CreateNewProjectModal
           setIsProjectModalOpen={setIsProjectModalOpen}
@@ -36,11 +37,14 @@ function App() {
         />
       )}
       <Routes>
-        <Route path="/dashboard-home" element={<DashboardHome />} />
+        <Route path="/" element={<DashboardHome />} />
+        <Route path="/log-in" element={<Login />} />
         <Route path="/my-projects" element={<MyProjects />} />
         <Route path="/role-assignment" element={<ManageRole />} />
         <Route path="/my-tickets" element={<MyTickets />} />
         <Route path="/my-projects/:projectId" element={<SingleProject />} />
+        <Route path="/create-account" element={<SignUp />} />
+        <Route path="/*" element={<PageNotFound />} />
       </Routes>
     </Router>
   );

@@ -3,7 +3,7 @@ import { Bar } from "react-chartjs-2";
 const TicketByPriority = () => {
   return (
     <div className="w-11/12 bg-gray-50 mx-auto mt-12 lg:w-10/12 ">
-      <h1 className="text-center bg-red-400 text-white font-bold text-2xl">
+      <h1 className="text-center bg-gray-400 text-white font-bold text-2xl">
         TICKET PRIORITY
       </h1>
       <Bar
