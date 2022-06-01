@@ -1,26 +1,11 @@
-import DefaultProfilePicture from "../../assets/default-user-profile-picture.png";
+import { useState } from "react";
 
-const Navbar = ({ setIsProjectModalOpen }) => {
+const Navbar = ({ setIsProjectModalOpen, setIsNewProjectModalOpen }) => {
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+
   return (
-    <nav className="bg-mainGreen w-full lg:w-[calc(100%_-_16rem)] ml-auto">
+    <nav className="bg-mainGreen w-full lg:w-[calc(100%_-_16rem)] ml-auto relative">
       <ul className="h-[calc(5rem_-_7px)] flex justify-end items-center ">
-        {/* <li>
-          <div className="relative mr-8 w-full">
-            <input className="h-8 rounded-md" type="text" />
-            <svg
-              className="w-8 h-8 text-black absolute right-0 top-0 cursor-pointer"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-          </div>
-        </li> */}
         <li>
           <button
             onClick={() => setIsProjectModalOpen(true)}
@@ -29,10 +14,18 @@ const Navbar = ({ setIsProjectModalOpen }) => {
             CREATE NEW PROJECT
           </button>
         </li>
-        <li className="text-white text-2xl mr-8 cursor-pointer">HOME</li>
+        <li>
+          <button
+            onClick={() => setIsNewProjectModalOpen(true)}
+            className="bg-yellow-300 mx-auto block w-64 h-12  ounded-md text-white font-bold mr-8"
+          >
+            CREATE NEW TICKET
+          </button>
+        </li>
         <li>
           <svg
-            className="h-6 w-6 text-gray-500 mr-8 cursor-pointer"
+            onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+            className="h-8 w-8  mr-8 cursor-pointer"
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
             viewBox="0 0 24 24"
@@ -46,15 +39,12 @@ const Navbar = ({ setIsProjectModalOpen }) => {
             />
           </svg>
         </li>
-        <li>
-          <img
-            className="rounded-xl mr-8 cursor-pointer"
-            width={36}
-            src={DefaultProfilePicture}
-            alt="user-profile"
-          />
-        </li>
       </ul>
+      {isNotificationOpen && (
+        <div className=" w-60 h-60 bg-red-400 absolute top-18 right-0 z-50">
+          No Notification
+        </div>
+      )}
     </nav>
   );
 };

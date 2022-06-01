@@ -11,7 +11,7 @@ const MyTickets = () => {
         </div>
         <div className="w-full mt-8 flex flex-col lg:flex-row lg:justify-between">
           <TicketAssignedToUser />
-          <CreateNewTicket />
+          {/* <CreateNewTicket /> */}
         </div>
       </div>
     </div>

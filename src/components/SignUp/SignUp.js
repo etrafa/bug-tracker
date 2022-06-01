@@ -2,20 +2,21 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-//firebase
+//firebase function
+import { signUp } from "../../firebase/firebaseConfig";
 
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  updateProfile,
-} from "firebase/auth";
+//context
+import { TrackerContext } from "../../context/TrackerContext";
+import { useContext } from "react";
 
 const SignUp = () => {
-  let auth = getAuth();
+  const { setRequiredFieldModal, setSignUpErrorMessage } =
+    useContext(TrackerContext);
+
   let navigate = useNavigate();
 
   const [newUserInformation, setNewUserInformation] = useState({
-    fullname: "",
+    fullName: "",
     email: "",
     password: "",
     confirm_password: "",
@@ -28,38 +29,45 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(newUserInformation);
-    createUserWithEmailAndPassword(
-      auth,
-      newUserInformation.email,
-      newUserInformation.password
-    )
-      .then((response) => {
-        console.log("Success");
-        updateProfile(auth.currentUser, {
-          displayName: newUserInformation.fullname,
-        });
-        navigate("/dashboard-home");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    //? SIMPLE FORM VALIDATION
+    if (
+      newUserInformation.fullName === "" ||
+      newUserInformation.email === "" ||
+      newUserInformation.password === "" ||
+      newUserInformation.confirm_password === ""
+    ) {
+      setRequiredFieldModal(true);
+      setSignUpErrorMessage("Please fill all the area!");
+    } else if (
+      newUserInformation.password !== newUserInformation.confirm_password
+    ) {
+      setRequiredFieldModal(true);
+      setSignUpErrorMessage("Password must be same!");
+    } else {
+      signUp(
+        newUserInformation.email,
+        newUserInformation.password,
+        newUserInformation.fullName,
+        navigate("/")
+      );
+    }
   };
-
   return (
     <div className="bg-grey-lighter min-h-screen flex flex-col bg-slate-100">
       <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-        <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
+        <form className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
           <h1 className="mb-8 text-3xl text-center">Sign up</h1>
           <input
+            required
             onChange={(e) => handleChange(e)}
             type="text"
             className="block border border-grey-light w-full p-3 rounded mb-4"
-            name="fullname"
+            name="fullName"
             placeholder="Full Name"
           />
 
           <input
+            required
             onChange={(e) => handleChange(e)}
             type="text"
             className="block border border-grey-light w-full p-3 rounded mb-4"
@@ -68,6 +76,7 @@ const SignUp = () => {
           />
 
           <input
+            required
             onChange={(e) => handleChange(e)}
             type="password"
             className="block border border-grey-light w-full p-3 rounded mb-4"
@@ -75,6 +84,7 @@ const SignUp = () => {
             placeholder="Password"
           />
           <input
+            required
             onChange={(e) => handleChange(e)}
             type="password"
             className="block border border-grey-light w-full p-3 rounded mb-4"
@@ -89,14 +99,13 @@ const SignUp = () => {
           >
             Create Account
           </button>
-        </div>
+        </form>
         <div className="text-grey-dark mt-6">
           Already have an account?
-          <Link
-            to="/log-in"
-            className="border-blue text-blue pl-1 text-blue-500"
-          >
-            Log in
+          <Link to="/log-in">
+            <span className="border-blue text-blue pl-1 text-blue-800 underline hover:text-blue-400">
+              Log in
+            </span>
           </Link>
         </div>
       </div>

@@ -1,6 +1,14 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  onAuthStateChanged,
+  signOut,
+} from "firebase/auth";
+import { useEffect, useState } from "react";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -15,3 +23,30 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+const auth = getAuth();
+
+//signup
+export const signUp = async (email, password, name) => {
+  await createUserWithEmailAndPassword(auth, email, password);
+  await updateProfile(auth.currentUser, { displayName: name });
+};
+
+//signin
+export const signIn = () => {};
+
+//logout
+export const logOut = async (navigate) => {
+  await signOut(auth);
+  await navigate("/log-in");
+};
+
+//onAuthChange
+export const useAuth = () => {
+  const [currentUser, setCurrentUser] = useState();
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => setCurrentUser(user));
+    return unsub;
+  }, []);
+
+  return currentUser;
+};
