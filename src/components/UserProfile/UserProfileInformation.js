@@ -1,59 +1,31 @@
-const UserProfileInformation = () => {
-  return (
-    <div className="w-full lg:w-6/12 text-center overflow-auto lg:ml-6 border-r-2">
-      <h1 className="text-4xl text-center mt-4">User Information</h1>
-      {/* <div className="flex flex-col gap-8 mt-12">
-        <label className="mb-2 text-base font-medium text-gray-900 dark:text-gray-300">
-         
-          <input
-            type="text"
-            name="projectDescription"
-            placeholder="A meaningful message that everyone can understand."
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 w-full lg:w-6/12 p-2.5 lg:ml-4 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-            disabled
-          />
-        </label>
-        <label className="mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-       
-          <input
-            type="text"
-            name="projectDescription"
-            placeholder="A meaningful message that everyone can understand."
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 w-full lg:w-6/12 p-2.5 lg:ml-4 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-            disabled
-          />
-        </label>
+import { useAuth } from "../../firebase/firebaseConfig";
 
-        <label className="mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-       
-          <input
-            type="text"
-            name="projectDescription"
-            placeholder="A meaningful message that everyone can understand."
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 w-full lg:w-6/12 p-2.5 lg:ml-4 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-            
-          />
-        </label>
-      </div> */}
+const UserProfileInformation = () => {
+  const currentUser = useAuth();
+
+  return (
+    <div className="w-full md:w-9/12 mx-auto lg:w-6/12 text-center overflow-auto lg:ml-6 lg:border-r-2">
+      <h1 className="text-4xl text-center mt-4">User Information</h1>
+
       <table className="w-full mt-8">
         <tr>
           <td>Full Name</td>
           <td>
             <input
-              type="password"
-              name="projectDescription"
-              className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 w-full lg:w-6/12 p-2.5 lg:ml-4 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 w-11/12 lg:w-6/12 p-2.5 lg:ml-4 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              value={currentUser?.displayName}
+              type="text"
               disabled
             />
           </td>
         </tr>
         <tr>
-          <td className="mt-20">Email Address</td>
+          <td>Email Address</td>
           <td>
             <input
-              type="password"
-              name="projectDescription"
-              className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 w-full lg:w-6/12 p-2.5 lg:ml-4 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 w-11/12 lg:w-6/12 p-2.5 lg:ml-4 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              value={currentUser?.email}
+              type="text"
               disabled
             />
           </td>
@@ -66,11 +38,65 @@ const UserProfileInformation = () => {
           </td>
           <td>
             <input
-              type="password"
-              name="projectDescription"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 w-full lg:w-6/12 p-2.5 lg:ml-4 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 w-11/12 lg:w-6/12 p-2.5 lg:ml-4 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              value="User"
+              type="text"
               disabled
             />
+          </td>
+        </tr>
+        <tr>
+          <td>Created At</td>
+          <td>
+            <input
+              className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 w-11/12 lg:w-6/12 p-2.5 lg:ml-4 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              value={currentUser?.metadata?.creationTime.slice(5, 16)}
+              type="text"
+              disabled
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Email Verified</td>
+          <td>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-1/2 bottom-5 flex items-center justify-center pl-2">
+                {currentUser?.emailVerified ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-7 w-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="red"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                )}
+              </span>
+              <input
+                className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 w-11/12 lg:w-6/12 p-2.5 lg:ml-4 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                type="text"
+                disabled
+              />
+            </div>
           </td>
         </tr>
       </table>
