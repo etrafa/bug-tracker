@@ -29,7 +29,7 @@ function App() {
     useState(false);
   const [requiredFieldModal, setRequiredFieldModal] = useState(false);
   const [signUpErrorMessage, setSignUpErrorMessage] = useState("");
-  const [isNewProjectModalOpen, setIsNewProjectModalOpen] = useState(false);
+  const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
 
   //* TRACK IF USER LOGGED IN
   const currentUser = useAuth();
@@ -48,7 +48,7 @@ function App() {
         {currentUser && (
           <Navbar
             setIsProjectModalOpen={setIsProjectModalOpen}
-            setIsNewProjectModalOpen={setIsNewProjectModalOpen}
+            setIsTicketModalOpen={setIsTicketModalOpen}
           />
         )}
         {isProjectModalOpen && (
@@ -57,10 +57,8 @@ function App() {
             setIsProjectMessageModalOpen={setIsProjectMessageModalOpen}
           />
         )}
-        {isNewProjectModalOpen && (
-          <CreateNewTicketModal
-            setIsNewProjectModalOpen={setIsNewProjectModalOpen}
-          />
+        {isTicketModalOpen && (
+          <CreateNewTicketModal setIsTicketModalOpen={setIsTicketModalOpen} />
         )}
         {isProjectMessageModalOpen && (
           <NewProjectModalMessage

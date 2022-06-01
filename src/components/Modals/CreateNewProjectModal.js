@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const CreateNewProjectModal = ({
   setIsProjectModalOpen,
-  setIsProjectMessageModalOpen,
+  setIsTicketModalOpen,
 }) => {
   const [createProjectInformation, setCreateProjectInformation] = useState({});
   const collectionRef = collection(db, "projects");
@@ -25,7 +25,7 @@ const CreateNewProjectModal = ({
       projectDescription: createProjectInformation.projectDescription,
     }).then(() => {
       setIsProjectModalOpen(false);
-      setIsProjectMessageModalOpen(true);
+      setIsTicketModalOpen(true);
     });
   };
 

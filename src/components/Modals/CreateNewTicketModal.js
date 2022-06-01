@@ -1,4 +1,4 @@
-const CreateNewTicketModal = ({ setIsNewProjectModalOpen }) => {
+const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
   return (
     <div className="w-full ml-auto fixed min-h-screen top-0 bg-black bg-opacity-75 z-50">
       <div className="absolute bg-white rounded-lg shadow top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 md:w-8/12 lg:w-6/12 xl:w-4/12">
@@ -8,7 +8,7 @@ const CreateNewTicketModal = ({ setIsNewProjectModalOpen }) => {
           data-modal-toggle="authentication-modal"
         >
           <svg
-            onClick={() => console.log(setIsNewProjectModalOpen(false))}
+            onClick={() => console.log(setIsTicketModalOpen(false))}
             className="w-5 h-5"
             fill="currentColor"
             viewBox="0 0 20 20"
