@@ -21,6 +21,7 @@ import SignUpMessageModal from "./components/Modals/SignUpMessageModal";
 import CreateNewTicketModal from "./components/Modals/CreateNewTicketModal";
 import ManageProjectUser from "./components/ProjectUsers/ManageProjectUser";
 import UserProfile from "./components/UserProfile/UserProfile";
+import DeleteProjectModal from "./components/Modals/DeleteProjectModal";
 
 function App() {
   // MODALS
@@ -30,9 +31,13 @@ function App() {
   const [requiredFieldModal, setRequiredFieldModal] = useState(false);
   const [signUpErrorMessage, setSignUpErrorMessage] = useState("");
   const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
+  const [deleteProjectModal, setDeleteProjectModal] = useState(false);
+  const [projectId, setProjectId] = useState("");
 
   //* TRACK IF USER LOGGED IN
   const currentUser = useAuth();
+
+  console.log(projectId);
 
   return (
     <TrackerContext.Provider
@@ -41,6 +46,9 @@ function App() {
         setRequiredFieldModal,
         signUpErrorMessage,
         setSignUpErrorMessage,
+        setDeleteProjectModal,
+        projectId,
+        setProjectId,
       }}
     >
       <Router>
@@ -68,6 +76,11 @@ function App() {
         {requiredFieldModal && (
           <SignUpMessageModal setRequiredFieldModal={setRequiredFieldModal} />
         )}
+
+        {deleteProjectModal && (
+          <DeleteProjectModal setDeleteProjectModal={setDeleteProjectModal} />
+        )}
+
         <Routes>
           <Route path="/" element={<DashboardHome />} />
           <Route path="/log-in" element={<Login />} />

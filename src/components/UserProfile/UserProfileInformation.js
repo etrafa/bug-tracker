@@ -59,16 +59,11 @@ const UserProfileInformation = () => {
         <tr>
           <td>Email Verified</td>
           <td>
-            {/* <input
-              className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 w-11/12 lg:w-6/12 p-2.5 lg:ml-4 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-              type="text"
-              disabled
-            /> */}
             <button
-              className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 w-11/12 lg:w-6/12 h-10 p-2.5 lg:ml-4 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 w-11/12 lg:w-6/12 h-[calc(2.5rem_+_2px)] p-2.5 lg:ml-4 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               disabled
             >
-              {currentUser.emailVerified ? (
+              {currentUser?.emailVerified ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 mx-auto"
@@ -98,16 +93,6 @@ const UserProfileInformation = () => {
                 </svg>
               )}
             </button>
-            {/* <div class="relative">
-              <span class="absolute inset-y-0 left-1/2 bottom-5 flex items-center justify-center pl-2">
-                {currentUser?.emailVerified ? (
-                 
-                ) : (
-                 
-                )}
-              </span>
-              
-            </div> */}
           </td>
         </tr>
       </table>

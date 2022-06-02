@@ -10,10 +10,17 @@ import { Link, useParams } from "react-router-dom";
 import { db } from "../../firebase/firebaseConfig";
 import { doc } from "firebase/firestore";
 
+//context
+import { useContext } from "react";
+import { TrackerContext } from "../../context/TrackerContext";
+import DeleteProjectModal from "../Modals/DeleteProjectModal";
+
 const SingleProject = () => {
   const { projectId } = useParams();
   const singleProjectRef = doc(db, "projects", projectId);
   const { dbData } = useGetSingleDoc(singleProjectRef);
+
+  const { setDeleteProjectModal, setProjectId } = useContext(TrackerContext);
 
   return (
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto mb-6 block">
@@ -51,8 +58,12 @@ const SingleProject = () => {
         </div>
         <div className="text-center mt-12 lg:mr-16">
           <button
+            onClick={() => {
+              setProjectId(projectId);
+              setDeleteProjectModal(true);
+            }}
             type="button"
-            className="text-white bg-blue-600 mx-auto hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 mr-2 mb-2"
+            className="text-white bg-blue-600 mx-auto hover:bg-blue-400  font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

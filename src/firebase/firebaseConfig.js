@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { deleteDoc, doc, getFirestore } from "firebase/firestore";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -10,7 +10,6 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -53,4 +52,10 @@ export const useAuth = () => {
   }, []);
 
   return currentUser;
+};
+
+//delete project
+export const deleteProject = async (docName, id) => {
+  const deleteProject = doc(db, docName, id);
+  await deleteDoc(deleteProject);
 };
