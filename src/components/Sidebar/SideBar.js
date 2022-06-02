@@ -7,8 +7,6 @@ const SideBar = () => {
   const currentUser = useAuth();
   const navigate = useNavigate();
 
-  console.log(currentUser);
-
   return (
     <aside
       className="w-64 min-h-screen bg-gray-50 fixed top-0 left-0 hidden lg:block"

@@ -7,8 +7,10 @@ import {
   updateProfile,
   onAuthStateChanged,
   signOut,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -32,7 +34,9 @@ export const signUp = async (email, password, name) => {
 };
 
 //signin
-export const signIn = () => {};
+export const signIn = async (email, password) => {
+  await signInWithEmailAndPassword(auth, email, password);
+};
 
 //logout
 export const logOut = async (navigate) => {
