@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 //firebase function
-import { signUp } from "../../firebase/firebaseConfig";
+import { signUp, createDoc } from "../../firebase/firebaseConfig";
 
 //context
 import { TrackerContext } from "../../context/TrackerContext";
@@ -20,6 +20,7 @@ const SignUp = () => {
     email: "",
     password: "",
     confirm_password: "",
+    role: "User",
   });
 
   const handleChange = (event) => {
@@ -27,7 +28,7 @@ const SignUp = () => {
     setNewUserInformation({ ...newUserInformation, ...newUser });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     //? SIMPLE FORM VALIDATION
     if (
@@ -44,11 +45,17 @@ const SignUp = () => {
       setRequiredFieldModal(true);
       setSignUpErrorMessage("Password must be same!");
     } else {
-      signUp(
+      await signUp(
         newUserInformation.email,
         newUserInformation.password,
         newUserInformation.fullName,
         navigate("/")
+      );
+      await createDoc(
+        "users",
+        newUserInformation.fullName,
+        newUserInformation.email,
+        newUserInformation.role
       );
     }
   };

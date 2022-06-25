@@ -1,6 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { deleteDoc, doc, getFirestore } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getFirestore,
+} from "firebase/firestore";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -58,4 +64,14 @@ export const useAuth = () => {
 export const deleteProject = async (docName, id) => {
   const deleteProject = doc(db, docName, id);
   await deleteDoc(deleteProject);
+};
+
+//create doc
+export const createDoc = async (docName, fullName, email, role) => {
+  const addDocument = collection(db, docName);
+  await addDoc(addDocument, {
+    fullName,
+    email,
+    role,
+  });
 };

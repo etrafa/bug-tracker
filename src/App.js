@@ -37,8 +37,6 @@ function App() {
   //* TRACK IF USER LOGGED IN
   const currentUser = useAuth();
 
-  console.log(projectId);
-
   return (
     <TrackerContext.Provider
       value={{

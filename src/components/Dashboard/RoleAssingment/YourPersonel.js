@@ -1,6 +1,23 @@
-import React from "react";
+//firebase
+import { db } from "../../../firebase/firebaseConfig";
+import { collection } from "firebase/firestore";
+
+//useGetDocs Hook
+import { useGetDocs } from "../../../customHooks/useGetDocs";
+
+//Loader
+import LoadSpinner from "../../Utilities/LoadSpinner";
+
+//paginate
+import ReactPaginate from "react-paginate";
+
+//react
+import { useState } from "react";
 
 const YourPersonel = () => {
+  const projectCollectionRef = collection(db, "users");
+  const { dbData, loading } = useGetDocs(projectCollectionRef);
+
   return (
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-8 lg:w-8/12">
       <h4 className="text-2xl mt-16 ml-5">Users in your database</h4>
@@ -45,41 +62,29 @@ const YourPersonel = () => {
             </th>
           </tr>
         </thead>
-        <tbody>
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-            >
-              Etem Senel
-            </th>
-            <td class="px-6 py-4">etemsenel@gmail.com</td>
-            <td class="px-6 py-4">Developer</td>
-          </tr>
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-            >
-              Laura Senel
-            </th>
-            <td class="px-6 py-4">laura@gmail.com</td>
-            <td class="px-6 py-4">Admin</td>
-          </tr>
-          <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-            >
-              Julie Inman
-            </th>
-            <td class="px-6 py-4">julieinman@gmail.com</td>
-            <td class="px-6 py-4">User</td>
-          </tr>
-        </tbody>
+
+        {loading && <LoadSpinner />}
+        {dbData &&
+          dbData.map((user) => {
+            return (
+              <tbody>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <th class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                    {user.fullName}
+                  </th>
+                  <td class="px-6 py-4">{user.email}</td>
+                  <td class="px-6 py-4">{user.role}</td>
+                </tr>
+              </tbody>
+            );
+          })}
       </table>
     </div>
   );
 };
 
 export default YourPersonel;
+
+{
+  /*  */
+}
