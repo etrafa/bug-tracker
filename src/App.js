@@ -4,13 +4,13 @@ import Login from "./components/Login/Login";
 import MyProjects from "./components/Dashboard/MyProjects/MyProjects";
 import Navbar from "./components/Navbar/Navbar";
 import Sidebar from "./components/Sidebar/SideBar";
-import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import DashboardHome from "./components/Dashboard/Tickets/DashboardHome";
 import { Chart as ChartJS } from "chart.js/auto";
 import ManageRole from "./components/Dashboard/RoleAssingment/ManageRole";
 import MyTickets from "./components/Dashboard/MyTickets/MyTickets";
 import CreateNewProjectModal from "./components/Modals/CreateNewProjectModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NewProjectModalMessage from "./components/Modals/NewProjectModalMessage";
 import SingleProject from "./components/SingleProject/SingleProject";
 import SignUp from "./components/SignUp/SignUp";
@@ -38,6 +38,18 @@ function App() {
   //* TRACK IF USER LOGGED IN
   const currentUser = useAuth();
 
+  //* NAVIGATE USER TO LOGIN PAGE IF NOT LOGGED IN YET, OTHERWISE SHOW HOME PAGE
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/");
+    } else {
+      navigate("/log-in");
+    }
+  }, [currentUser]);
+
   return (
     <TrackerContext.Provider
       value={{
@@ -50,50 +62,47 @@ function App() {
         setProjectId,
       }}
     >
-      <Router>
-        {/* {currentUser && <Sidebar />} */}
-        {<SideBar />}
-        {currentUser && (
-          <Navbar
-            setIsProjectModalOpen={setIsProjectModalOpen}
-            setIsTicketModalOpen={setIsTicketModalOpen}
-          />
-        )}
-        {isProjectModalOpen && (
-          <CreateNewProjectModal
-            setIsProjectModalOpen={setIsProjectModalOpen}
-            setIsProjectMessageModalOpen={setIsProjectMessageModalOpen}
-          />
-        )}
-        {isTicketModalOpen && (
-          <CreateNewTicketModal setIsTicketModalOpen={setIsTicketModalOpen} />
-        )}
-        {isProjectMessageModalOpen && (
-          <NewProjectModalMessage
-            setIsProjectMessageModalOpen={setIsProjectMessageModalOpen}
-          />
-        )}
-        {requiredFieldModal && (
-          <SignUpMessageModal setRequiredFieldModal={setRequiredFieldModal} />
-        )}
+      {currentUser && <Sidebar />}
+      {currentUser && (
+        <Navbar
+          setIsProjectModalOpen={setIsProjectModalOpen}
+          setIsTicketModalOpen={setIsTicketModalOpen}
+        />
+      )}
+      {isProjectModalOpen && (
+        <CreateNewProjectModal
+          setIsProjectModalOpen={setIsProjectModalOpen}
+          setIsProjectMessageModalOpen={setIsProjectMessageModalOpen}
+        />
+      )}
+      {isTicketModalOpen && (
+        <CreateNewTicketModal setIsTicketModalOpen={setIsTicketModalOpen} />
+      )}
+      {isProjectMessageModalOpen && (
+        <NewProjectModalMessage
+          setIsProjectMessageModalOpen={setIsProjectMessageModalOpen}
+        />
+      )}
+      {requiredFieldModal && (
+        <SignUpMessageModal setRequiredFieldModal={setRequiredFieldModal} />
+      )}
 
-        {deleteProjectModal && (
-          <DeleteProjectModal setDeleteProjectModal={setDeleteProjectModal} />
-        )}
+      {deleteProjectModal && (
+        <DeleteProjectModal setDeleteProjectModal={setDeleteProjectModal} />
+      )}
 
-        <Routes>
-          <Route path="/" element={<DashboardHome />} />
-          <Route path="/log-in" element={<Login />} />
-          <Route path="/my-projects" element={<MyProjects />} />
-          <Route path="/role-assignment" element={<ManageRole />} />
-          <Route path="/my-tickets" element={<MyTickets />} />
-          <Route path="/my-projects/:projectId" element={<SingleProject />} />
-          <Route path="/create-account" element={<SignUp />} />
-          <Route path="/manage-project-user" element={<ManageProjectUser />} />
-          <Route path="/my-profile" element={<UserProfile />} />
-          <Route path="/*" element={<PageNotFound />} />
-        </Routes>
-      </Router>
+      <Routes>
+        <Route path="/" element={<DashboardHome />} />
+        <Route path="/log-in" element={<Login />} />
+        <Route path="/my-projects" element={<MyProjects />} />
+        <Route path="/role-assignment" element={<ManageRole />} />
+        <Route path="/my-tickets" element={<MyTickets />} />
+        <Route path="/my-projects/:projectId" element={<SingleProject />} />
+        <Route path="/create-account" element={<SignUp />} />
+        <Route path="/manage-project-user" element={<ManageProjectUser />} />
+        <Route path="/my-profile" element={<UserProfile />} />
+        <Route path="/*" element={<PageNotFound />} />
+      </Routes>
     </TrackerContext.Provider>
   );
 }

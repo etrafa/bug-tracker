@@ -17,6 +17,7 @@ const RoleAssingment = ({ dbData }) => {
           {dbData &&
             dbData.map((users) => (
               <option
+                key={users?.id}
                 onClick={() => setCurrentUserRole(users?.role)}
                 className="mt-2 pl-4 text-lg"
               >
