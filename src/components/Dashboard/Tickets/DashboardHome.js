@@ -11,7 +11,7 @@ const Tickets = () => {
       <h1 className="text-center text-4xl font-bold my-4 text-red-300">
         Dashboard
       </h1>
-      <div className=" grid grid-cols-1 lg:grid-cols-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2">
         <TicketByPriority />
         <TicketByType />
         <TicketBySituation />

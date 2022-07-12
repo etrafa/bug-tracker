@@ -22,6 +22,7 @@ import CreateNewTicketModal from "./components/Modals/CreateNewTicketModal";
 import ManageProjectUser from "./components/ProjectUsers/ManageProjectUser";
 import UserProfile from "./components/UserProfile/UserProfile";
 import DeleteProjectModal from "./components/Modals/DeleteProjectModal";
+import SideBar from "./components/Sidebar/SideBar";
 
 function App() {
   // MODALS
@@ -50,7 +51,8 @@ function App() {
       }}
     >
       <Router>
-        {currentUser && <Sidebar />}
+        {/* {currentUser && <Sidebar />} */}
+        {<SideBar />}
         {currentUser && (
           <Navbar
             setIsProjectModalOpen={setIsProjectModalOpen}
