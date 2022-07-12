@@ -1,7 +1,34 @@
+import { useState } from "react";
+import ReactPaginate from "react-paginate";
+
 const YourPersonel = ({ dbData }) => {
-  {
-    dbData && console.log(dbData);
-  }
+  //pagination show only 10 user's per page
+  const [pageNumber, setPageNumber] = useState(0);
+  const USERS_PER_PAGE = 5;
+
+  const pagesVisited = pageNumber * USERS_PER_PAGE;
+
+  const pageCount = Math.ceil(dbData?.length / USERS_PER_PAGE);
+
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  };
+
+  const showUsers = dbData
+    ?.slice(pagesVisited, pagesVisited + USERS_PER_PAGE)
+    .map((user) => {
+      return (
+        <tbody>
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <th class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+              {user.fullName}
+            </th>
+            <td class="px-6 py-4">{user.email}</td>
+            <td class="px-6 py-4">{user.role}</td>
+          </tr>
+        </tbody>
+      );
+    });
 
   return (
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-8 lg:w-8/12">
@@ -47,22 +74,19 @@ const YourPersonel = ({ dbData }) => {
             </th>
           </tr>
         </thead>
-
-        {dbData &&
-          dbData.map((user) => {
-            return (
-              <tbody>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                  <th class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                    {user.fullName}
-                  </th>
-                  <td class="px-6 py-4">{user.email}</td>
-                  <td class="px-6 py-4">{user.role}</td>
-                </tr>
-              </tbody>
-            );
-          })}
+        {showUsers}
       </table>
+      <ReactPaginate
+        previousLabel={"<"}
+        nextLabel={">"}
+        pageCount={pageCount}
+        onPageChange={changePage}
+        containerClassName={"paginationBttns"}
+        previousLinkClassName={"previousBttn"}
+        nextLinkClassName={"nextBttn"}
+        disabledClassName={"paginationDisabled"}
+        activeClassName={"paginationActive"}
+      />
     </div>
   );
 };
