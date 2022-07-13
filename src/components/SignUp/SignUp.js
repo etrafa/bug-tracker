@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 //firebase function
-import { signUp, createDoc } from "../../firebase/firebaseConfig";
+import { signUp } from "../../firebase/firebaseConfig";
 
 const SignUp = () => {
   const formik = useFormik({
@@ -27,7 +27,6 @@ const SignUp = () => {
     }),
     onSubmit: async (values) => {
       await signUp(values.email, values.password, values.fullName);
-      await createDoc("users", values.fullName, values.email, values.role);
     },
   });
 

@@ -6,6 +6,7 @@ import {
   deleteDoc,
   doc,
   getFirestore,
+  setDoc,
   updateDoc,
 } from "firebase/firestore";
 import {
@@ -37,6 +38,12 @@ const auth = getAuth();
 export const signUp = async (email, password, name) => {
   await createUserWithEmailAndPassword(auth, email, password);
   await updateProfile(auth.currentUser, { displayName: name });
+  const userID = auth?.currentUser?.uid;
+  await setDoc(doc(db, "users", userID), {
+    email: email,
+    fullName: name,
+    role: "user",
+  });
 };
 
 //signin

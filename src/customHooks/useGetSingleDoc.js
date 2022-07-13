@@ -1,18 +1,23 @@
 //* READ FIRESTORE DATABASE
 
-import { getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { db, useAuth } from "../firebase/firebaseConfig";
 
-export const useGetSingleDoc = (url) => {
+export const useGetSingleDoc = (docName, docURL) => {
   const [dbData, setDbData] = useState(null);
+  const currentUser = useAuth();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await getDoc(url);
-      const data = res.data();
-      setDbData(data);
-    };
-    fetchData();
+    if (currentUser) {
+      const fetchData = async () => {
+        const docRef = doc(db, docName, docURL);
+        const res = await getDoc(docRef);
+        const data = res.data();
+        setDbData(data);
+      };
+      fetchData();
+    }
   }, []);
   return { dbData };
 };
