@@ -6,6 +6,7 @@ import {
   deleteDoc,
   doc,
   getFirestore,
+  updateDoc,
 } from "firebase/firestore";
 import {
   getAuth,
@@ -74,4 +75,23 @@ export const createDoc = async (docName, fullName, email, role) => {
     email,
     role,
   });
+};
+
+//update user's role
+
+export const updateUserRole = async (
+  docID,
+  role,
+  successMessage,
+  errorMessage
+) => {
+  const docRef = doc(db, "users", docID);
+  try {
+    await updateDoc(docRef, {
+      role: role,
+    });
+    successMessage(true);
+  } catch {
+    errorMessage(true);
+  }
 };
