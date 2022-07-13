@@ -1,106 +1,102 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 //firebase function
 import { signUp, createDoc } from "../../firebase/firebaseConfig";
 
-//context
-import { TrackerContext } from "../../context/TrackerContext";
-import { useContext } from "react";
-
 const SignUp = () => {
-  const { setRequiredFieldModal, setSignUpErrorMessage } =
-    useContext(TrackerContext);
-
-  let navigate = useNavigate();
-
-  const [newUserInformation, setNewUserInformation] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    confirm_password: "",
-    role: "User",
+  const formik = useFormik({
+    initialValues: {
+      fullName: "",
+      email: "",
+      password: "",
+      confirm_password: "",
+      role: "user",
+    },
+    validationSchema: yup.object({
+      fullName: yup.string().required("Enter your name"),
+      email: yup.string().email().required("Enter your email address."),
+      password: yup
+        .string()
+        .min(6, "Password must be at least 6 characters.")
+        .required("Enter your password."),
+      confirm_password: yup
+        .string()
+        .oneOf([yup.ref("password"), null], "Password must match"),
+    }),
+    onSubmit: async (values) => {
+      await signUp(values.email, values.password, values.fullName);
+      await createDoc("users", values.fullName, values.email, values.role);
+    },
   });
 
-  const handleChange = (event) => {
-    let newUser = { [event.target.name]: event.target.value };
-    setNewUserInformation({ ...newUserInformation, ...newUser });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    //? SIMPLE FORM VALIDATION
-    if (
-      newUserInformation.fullName === "" ||
-      newUserInformation.email === "" ||
-      newUserInformation.password === "" ||
-      newUserInformation.confirm_password === ""
-    ) {
-      setRequiredFieldModal(true);
-      setSignUpErrorMessage("Please fill all the area!");
-    } else if (
-      newUserInformation.password !== newUserInformation.confirm_password
-    ) {
-      setRequiredFieldModal(true);
-      setSignUpErrorMessage("Password must be same!");
-    } else {
-      await signUp(
-        newUserInformation.email,
-        newUserInformation.password,
-        newUserInformation.fullName,
-        navigate("/")
-      );
-      await createDoc(
-        "users",
-        newUserInformation.fullName,
-        newUserInformation.email,
-        newUserInformation.role
-      );
-    }
-  };
   return (
     <div className="bg-grey-lighter min-h-screen flex flex-col bg-slate-100">
       <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-        <form className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
+        <form
+          onSubmit={formik.handleSubmit}
+          className="bg-white px-6 py-8 rounded shadow-md text-black w-full"
+        >
           <h1 className="mb-8 text-3xl text-center">Sign up</h1>
           <input
-            required
-            onChange={(e) => handleChange(e)}
-            type="text"
-            className="block border border-grey-light w-full p-3 rounded mb-4"
             name="fullName"
-            placeholder="Full Name"
-          />
-
-          <input
-            required
-            onChange={(e) => handleChange(e)}
             type="text"
             className="block border border-grey-light w-full p-3 rounded mb-4"
+            placeholder="Full Name"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.fullName}
+          />
+          {formik.touched.fullName && formik.errors.fullName && (
+            <p className="text-strongRed -mt-2 mb-2 text-sm font-bold">
+              {formik.errors.fullName}
+            </p>
+          )}
+          <input
             name="email"
+            type="email"
+            className="block border border-grey-light w-full p-3 rounded mb-4"
             placeholder="Email"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.email}
           />
-
+          {formik.touched.email && formik.errors.email && (
+            <p className="text-strongRed -mt-2 mb-2 text-sm font-bold">
+              {formik.errors.email}
+            </p>
+          )}
           <input
-            required
-            onChange={(e) => handleChange(e)}
-            type="password"
-            className="block border border-grey-light w-full p-3 rounded mb-4"
             name="password"
-            placeholder="Password"
-          />
-          <input
-            required
-            onChange={(e) => handleChange(e)}
             type="password"
             className="block border border-grey-light w-full p-3 rounded mb-4"
-            name="confirm_password"
-            placeholder="Confirm Password"
+            placeholder="Password"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
           />
-
+          <input
+            name="confirm_password"
+            type="password"
+            className="block border border-grey-light w-full p-3 rounded mb-4"
+            placeholder="Password"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.confirm_password}
+          />
+          {formik.touched.password && formik.errors.password && (
+            <p className="text-strongRed -mt-2 mb-2 text-sm font-bold">
+              {formik.errors.password}
+            </p>
+          )}
+          {formik.touched.confirm_password &&
+            formik.errors.confirm_password && (
+              <p className="text-strongRed -mt-2 mb-2 text-sm font-bold">
+                {formik.errors.confirm_password}
+              </p>
+            )}
           <button
-            onClick={(e) => handleSubmit(e)}
             type="submit"
             className="w-full text-center py-3 rounded bg-green-400 text-white focus:outline-none my-1"
           >

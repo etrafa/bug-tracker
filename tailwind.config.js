@@ -5,6 +5,7 @@ module.exports = {
       colors: {
         mainGreen: "#29B498",
         fbFillColor: "#1778F2",
+        strongRed: "#ff0000",
       },
     },
   },
