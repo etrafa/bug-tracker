@@ -10,18 +10,27 @@ const YourPersonel = ({ dbData }) => {
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };
-
+  const [searchTerm, setSearchTerm] = useState("");
   const showUsers = dbData
-    ?.slice(pagesVisited, pagesVisited + USERS_PER_PAGE)
+    ?.filter((val) => {
+      if (searchTerm === "") {
+        return val;
+      } else if (
+        val.fullName.toLowerCase().includes(searchTerm.toLowerCase())
+      ) {
+        return val;
+      }
+    })
+    .slice(pagesVisited, pagesVisited + USERS_PER_PAGE)
     .map((user) => {
       return (
         <tbody key={user?.id}>
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <th class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <th className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
               {user?.fullName}
             </th>
-            <td class="px-6 py-4">{user?.email}</td>
-            <td class="px-6 py-4">{user?.role}</td>
+            <td className="px-6 py-4">{user?.email}</td>
+            <td className="px-6 py-4">{user?.role}</td>
           </tr>
         </tbody>
       );
@@ -49,7 +58,7 @@ const YourPersonel = ({ dbData }) => {
           </div>
           <input
             type="text"
-            id="table-search"
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Search User"
           />

@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { logOut } from "../../firebase/firebaseConfig";
+import { useGetSingleDoc } from "../../customHooks/useGetSingleDoc";
+import { logOut, useAuth } from "../../firebase/firebaseConfig";
 
 const NavbarSmallScreen = ({
   setIsNavbarOpen,
@@ -7,6 +8,16 @@ const NavbarSmallScreen = ({
   setIsTicketModalOpen,
 }) => {
   const navigate = useNavigate();
+
+  /* track user's role and if user is 
+  ADMIN: SHOW MANAGE ROLE ASSIGNMENT PAGE
+   if user's role is 
+   NOT ADMIN: DO NOT SHOW ROLE ASSIGNMENT PAGE   
+   */
+
+  const currentUser = useAuth();
+  const { dbData } = useGetSingleDoc("users", currentUser?.uid);
+  const userRole = dbData?.role;
 
   return (
     <div className="w-full lg:hidden min-h-screen bg-gray-200 fixed top-0 bottom-0 z-50 overflow-y-auto">
@@ -46,32 +57,35 @@ const NavbarSmallScreen = ({
             <span className="ml-3">Dashboard Home</span>
           </NavLink>
         </li>
-        <li>
-          <NavLink
-            className={({ isActive }) =>
-              isActive
-                ? "flex items-center my-4 p-2 text-base font-bold bg-blue-600 !text-white rounded-lg stroke-white fill-white"
-                : "flex items-center my-4 p-2 text-base text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 stroke-current fill-current"
-            }
-            to="/role-assignment"
-          >
-            <svg
-              className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              strokeWidth="{2}"
+        {userRole === "admin" ? (
+          <li>
+            <NavLink
+              className={({ isActive }) =>
+                isActive
+                  ? "flex items-center p-2 text-base font-bold bg-blue-600 !text-white rounded-lg stroke-white fill-white"
+                  : "flex items-center p-2 text-base text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 stroke-current fill-current"
+              }
+              to="/role-assignment"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
-              />
-            </svg>
-            <span className="flex-1 ml-3 whitespace-nowrap">
-              Manage Role Assingment
-            </span>
-          </NavLink>
-        </li>
+              <svg
+                className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                strokeWidth="{2}"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                />
+              </svg>
+              <span className="flex-1 ml-3 whitespace-nowrap">
+                Manage Role Assingment
+              </span>
+            </NavLink>
+          </li>
+        ) : null}
+
         <li>
           <NavLink
             className={({ isActive }) =>
