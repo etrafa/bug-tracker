@@ -46,7 +46,7 @@ const RoleAssingment = ({ dbData }) => {
           onChange={(e) => setAssignNewRole(e.target.value)}
           className="w-11/12 border border-black mt-2 mx-auto ml-2"
         >
-          <option disabled>Please Select</option>
+          <option selected>Please Select</option>
           <option>Admin</option>
           <option>Developer</option>
           <option>Project Manager</option>

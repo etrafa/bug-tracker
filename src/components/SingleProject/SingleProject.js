@@ -6,10 +6,6 @@ import TicketForSingleProject from "./TicketForSingleProject";
 import { useGetSingleDoc } from "../../customHooks/useGetSingleDoc";
 import { Link, useParams } from "react-router-dom";
 
-//firebase
-import { db } from "../../firebase/firebaseConfig";
-import { doc } from "firebase/firestore";
-
 //context
 import { useContext } from "react";
 import { TrackerContext } from "../../context/TrackerContext";
@@ -17,10 +13,14 @@ import DeleteProjectModal from "../Modals/DeleteProjectModal";
 
 const SingleProject = () => {
   const { projectId } = useParams();
-  const singleProjectRef = doc(db, "projects", projectId);
-  const { dbData } = useGetSingleDoc(singleProjectRef);
+
+  const { dbData } = useGetSingleDoc("projects", projectId);
+
+  console.log(dbData);
 
   const { setDeleteProjectModal, setProjectId } = useContext(TrackerContext);
+
+  console.log(dbData);
 
   return (
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto mb-6 block">
@@ -41,13 +41,15 @@ const SingleProject = () => {
             <span className="text-gray-400 text-xl underline">
               Project Name
             </span>
-            <p className="text-lg lg:text-center mt-2">Hello Hello Hello.</p>
+            <p className="text-lg lg:text-center mt-2">{dbData?.projectName}</p>
           </div>
           <div>
             <span className="text-gray-400 text-xl underline">
               Project Description
             </span>
-            <p className="text-lg lg:text-center mt-2">Hello Hello Hello.</p>
+            <p className="text-lg lg:text-center mt-2">
+              {dbData?.projectDescription}
+            </p>
           </div>
         </div>
         <hr className="mt-10 lg:mt-0" />

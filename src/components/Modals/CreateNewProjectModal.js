@@ -7,26 +7,47 @@ const CreateNewProjectModal = ({
   setIsProjectModalOpen,
   setIsTicketModalOpen,
 }) => {
-  const [createProjectInformation, setCreateProjectInformation] = useState({});
+  const [createProjectInformation, setCreateProjectInformation] = useState({
+    projectName: "",
+    projectDescription: "",
+    assignedUsers: [],
+    tickets: [],
+  });
+
+  //firebase ref
   const collectionRef = collection(db, "projects");
+
+  //SUBMIT FORM VALIDATION
+  const [isFormValidated, setIsFormValidated] = useState(false);
 
   //ON INPUT CHANGE SAVE USER'S PROJECT NAME & DESCRIPTION
   const handleInput = (event) => {
     let newProject = { [event.target.name]: event.target.value };
     setCreateProjectInformation({ ...createProjectInformation, ...newProject });
+
+    //*form validation
+    if (
+      createProjectInformation.projectName.length >= 1 &&
+      createProjectInformation.projectDescription.length >= 1
+    ) {
+      setIsFormValidated(true);
+    }
   };
 
   //ON SUBMIT SAVE SAVE USER'S PROJECT NAME & DESCRIPTION TO DATABASE
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(createProjectInformation);
-    addDoc(collectionRef, {
-      projectName: createProjectInformation.projectName,
-      projectDescription: createProjectInformation.projectDescription,
-    }).then(() => {
-      setIsProjectModalOpen(false);
-      setIsTicketModalOpen(true);
-    });
+    if (isFormValidated) {
+      addDoc(collectionRef, {
+        projectName: createProjectInformation.projectName,
+        projectDescription: createProjectInformation.projectDescription,
+        assignedUsers: createProjectInformation.assignedUsers,
+        tickets: createProjectInformation.tickets,
+      }).then(() => {
+        setIsProjectModalOpen(false);
+        setIsTicketModalOpen(true);
+      });
+    }
   };
 
   return (
@@ -55,7 +76,7 @@ const CreateNewProjectModal = ({
           <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
             Create New Project
           </h3>
-          <form className="space-y-6" action="#">
+          <form className="space-y-6">
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Project Name
@@ -85,7 +106,11 @@ const CreateNewProjectModal = ({
             <button
               onClick={(event) => handleSubmit(event)}
               type="submit"
-              className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className={
+                isFormValidated
+                  ? "w-full  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  : "w-full pointer-events-none text-white bg-gray-700  font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+              }
             >
               Create
             </button>

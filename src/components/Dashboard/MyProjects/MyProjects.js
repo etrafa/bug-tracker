@@ -1,17 +1,19 @@
-//firebase
-import { db } from "../../../firebase/firebaseConfig";
-import { collection } from "firebase/firestore";
-
 //useGetDocs Hook
 import { useGetDocs } from "../../../customHooks/useGetDocs";
 
 //React
 import { Link } from "react-router-dom";
+import { useState } from "react";
+
+//components
 import LoadSpinner from "../../Utilities/LoadSpinner";
 
 const MyProjects = () => {
-  const projectCollectionRef = collection(db, "projects");
-  const { dbData, loading } = useGetDocs(projectCollectionRef);
+  // const projectCollectionRef = collection(db, "projects");
+  const { dbData, loading } = useGetDocs("projects");
+
+  //filter search result
+  const [searchTerm, setSearchTerm] = useState("");
 
   return (
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto mb-6">
@@ -38,6 +40,7 @@ const MyProjects = () => {
             </div>
             <input
               type="text"
+              onChange={(e) => setSearchTerm(e.target.value)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search Project"
             />
@@ -54,31 +57,48 @@ const MyProjects = () => {
               </tr>
             </thead>
             <tbody>
-              {dbData.map((project) => {
-                return (
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+              {dbData
+                .filter((val) => {
+                  if (searchTerm === "") {
+                    return val;
+                  } else if (
+                    val?.projectName
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase())
+                  ) {
+                    return val;
+                  }
+                })
+                .map((project) => {
+                  return (
+                    <tr
+                      key={project?.id}
+                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                     >
-                      {project.projectName}
-                    </th>
-                    <td className="px-6 py-4">{project.projectDescription}</td>
-                    <td className="px-6 py-4">
-                      <ul className="list-disc">
-                        <li className="text-fbFillColor cursor-pointer underline hover:text-black">
-                          Manage Users
-                        </li>
-                        <Link to={`/my-projects/${project.id}`}>
-                          <li className="text-fbFillColor cursor-pointer underline hover:text-black mt-3 ">
-                            Details
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                      >
+                        {project.projectName}
+                      </th>
+                      <td className="px-6 py-4">
+                        {project.projectDescription}
+                      </td>
+                      <td className="px-6 py-4">
+                        <ul className="list-disc">
+                          <li className="text-fbFillColor cursor-pointer underline hover:text-black">
+                            Manage Users
                           </li>
-                        </Link>
-                      </ul>
-                    </td>
-                  </tr>
-                );
-              })}
+                          <Link to={`/my-projects/${project.id}`}>
+                            <li className="text-fbFillColor cursor-pointer underline hover:text-black mt-3 ">
+                              Details
+                            </li>
+                          </Link>
+                        </ul>
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
         )}
