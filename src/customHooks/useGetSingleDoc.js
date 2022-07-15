@@ -18,6 +18,6 @@ export const useGetSingleDoc = (docName, docURL) => {
       };
       fetchData();
     }
-  }, []);
+  }, [currentUser]);
   return { dbData };
 };

@@ -18,9 +18,9 @@ const MyProjects = () => {
   return (
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto mb-6">
       <div className="w-11/12 mx-auto mt-24 relative border border-black">
-        <h4 className="absolute -top-6 left-1/2 transform -translate-x-1/2 w-11/12 h-14 bg-fbFillColor text-center text-white text-lg pt-3">
-          All Projects in your database
-        </h4>
+        <h1 className="absolute -top-6 left-1/2 transform -translate-x-1/2 w-11/12 h-14 bg-fbFillColor text-center text-white text-2xl font-bold pt-3">
+          My Projects
+        </h1>
         <div class="pl-4 pt-12">
           <label className="sr-only">Search</label>
           <div className="relative mt-1">

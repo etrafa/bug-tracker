@@ -1,6 +1,7 @@
 //firebase
 import { db } from "../../firebase/firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
+import { useGetDocs } from "../../customHooks/useGetDocs";
 import { useState } from "react";
 
 const CreateNewProjectModal = ({
@@ -10,12 +11,13 @@ const CreateNewProjectModal = ({
   const [createProjectInformation, setCreateProjectInformation] = useState({
     projectName: "",
     projectDescription: "",
-    assignedUsers: [],
     tickets: [],
   });
 
   //firebase ref
   const collectionRef = collection(db, "projects");
+
+  const { dbData } = useGetDocs("users");
 
   //SUBMIT FORM VALIDATION
   const [isFormValidated, setIsFormValidated] = useState(false);
@@ -23,7 +25,10 @@ const CreateNewProjectModal = ({
   //ON INPUT CHANGE SAVE USER'S PROJECT NAME & DESCRIPTION
   const handleInput = (event) => {
     let newProject = { [event.target.name]: event.target.value };
-    setCreateProjectInformation({ ...createProjectInformation, ...newProject });
+    setCreateProjectInformation({
+      ...createProjectInformation,
+      ...newProject,
+    });
 
     //*form validation
     if (
@@ -34,14 +39,31 @@ const CreateNewProjectModal = ({
     }
   };
 
+  //when creating a new project store user's you want to add to new project
+  const [selectedUsers, setSelectedUsers] = useState([{}]);
+
+  //* add-remove user when initializing new project
+  const handleSelectedUsers = (e, user) => {
+    const { checked } = e.currentTarget;
+    if (checked) {
+      setSelectedUsers((prev) => [...prev, user]);
+    } else {
+      setSelectedUsers(selectedUsers.filter((val) => val !== user));
+    }
+  };
+
   //ON SUBMIT SAVE SAVE USER'S PROJECT NAME & DESCRIPTION TO DATABASE
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    console.log(selectedUsers);
+
     if (isFormValidated) {
+      setSelectedUsers(selectedUsers.shift());
       addDoc(collectionRef, {
         projectName: createProjectInformation.projectName,
         projectDescription: createProjectInformation.projectDescription,
-        assignedUsers: createProjectInformation.assignedUsers,
+        assignedUsers: selectedUsers,
         tickets: createProjectInformation.tickets,
       }).then(() => {
         setIsProjectModalOpen(false);
@@ -103,12 +125,30 @@ const CreateNewProjectModal = ({
                 required
               />
             </div>
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+              Assign team members (optional)
+            </label>
+            <div className="w-full h-44 overflow-auto flex flex-col">
+              {dbData &&
+                dbData.map((user) => (
+                  <label className="text-lg p-1">
+                    <input
+                      onClick={(e) => handleSelectedUsers(e, user)}
+                      className="mr-4"
+                      value={user?.fullName}
+                      name="assignedUsers"
+                      type="checkbox"
+                    />
+                    {user?.fullName}
+                  </label>
+                ))}
+            </div>
             <button
               onClick={(event) => handleSubmit(event)}
               type="submit"
               className={
                 isFormValidated
-                  ? "w-full  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  ? "w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   : "w-full pointer-events-none text-white bg-gray-700  font-medium rounded-lg text-sm px-5 py-2.5 text-center "
               }
             >

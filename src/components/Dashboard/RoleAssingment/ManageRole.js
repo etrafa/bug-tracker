@@ -1,14 +1,13 @@
-import { collection } from "firebase/firestore";
-import { useGetDocs } from "../../../customHooks/useGetDocs";
-import { db } from "../../../firebase/firebaseConfig";
+//components
 import LoadSpinner from "../../Utilities/LoadSpinner";
 import RoleAssingment from "./RoleAssingment";
 import YourPersonel from "./YourPersonel";
 
-const ManageRole = () => {
-  const colRef = collection(db, "users");
+//firebase function
+import { useGetDocs } from "../../../customHooks/useGetDocs";
 
-  const { dbData, loading } = useGetDocs(colRef);
+const ManageRole = () => {
+  const { dbData, loading } = useGetDocs("users");
 
   return (
     <div>

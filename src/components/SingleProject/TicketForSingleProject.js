@@ -1,9 +1,11 @@
 const TicketForSingleProject = () => {
   return (
     <div className="w-full lg:w-6/12 text-center overflow-auto mr-16">
-      <header className="bg-green-400 lg:mx-auto">
-        <h1 className="text-4xl text-white pt-4">Tickets for this Project</h1>
-        <h4 className="text-white py-4">Condensed Ticket Details</h4>
+      <header className="lg:mx-auto">
+        <h1 className="text-4xl text-black pt-4 font-bold">
+          Tickets for this Project
+        </h1>
+        <h4 className="text-black py-4">Condensed Ticket Details</h4>
       </header>
       <div className="relative mt-1 lg:mt-6">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
