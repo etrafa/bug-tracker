@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import {
   addDoc,
+  arrayRemove,
   collection,
   deleteDoc,
   doc,
@@ -101,4 +102,20 @@ export const updateUserRole = async (
   } catch {
     errorMessage(true);
   }
+};
+
+//remove assigned user from the db
+
+export const removeUser = async () => {
+  const washingtonRef = doc(db, "projects", "S8tAOwlht51SQsgrttrW");
+  await updateDoc(washingtonRef, {
+    assignedUsers: arrayRemove({
+      email: "stevenkliebert@hotmail.com",
+      fullName: "Steven Kliebert",
+      id: "iHrrliHtKU6vKWaOrjGY",
+      role: "User",
+    }),
+  })
+    .then((e) => console.log(e))
+    .catch((err) => console.log(err));
 };
