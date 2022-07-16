@@ -106,14 +106,14 @@ export const updateUserRole = async (
 
 //remove assigned user from the db
 
-export const removeUser = async () => {
-  const washingtonRef = doc(db, "projects", "S8tAOwlht51SQsgrttrW");
+export const removeUser = async (colName, docID, user) => {
+  const washingtonRef = doc(db, colName, docID);
   await updateDoc(washingtonRef, {
     assignedUsers: arrayRemove({
-      email: "stevenkliebert@hotmail.com",
-      fullName: "Steven Kliebert",
-      id: "iHrrliHtKU6vKWaOrjGY",
-      role: "User",
+      email: user.email,
+      fullName: user.fullName,
+      id: user.id,
+      role: user.role,
     }),
   })
     .then((e) => console.log(e))

@@ -18,7 +18,6 @@ export const useGetSingleDoc = (docName, docURL) => {
         const res = onSnapshot(docRef, (item) => {
           setDbData(item.data());
         });
-
         setLoading(false);
       };
       fetchData();
