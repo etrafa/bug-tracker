@@ -22,12 +22,12 @@ import { useEffect, useState } from "react";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyB5tHcqHatdCH84ME7ZfXS3whdnWf-gvCw",
-  authDomain: "bug-tracker-f7666.firebaseapp.com",
-  projectId: "bug-tracker-f7666",
-  storageBucket: "bug-tracker-f7666.appspot.com",
-  messagingSenderId: "653372423461",
-  appId: "1:653372423461:web:5dea35a30ed4dc42ea2ecc",
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROEJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
 };
 
 // Initialize Firebase
