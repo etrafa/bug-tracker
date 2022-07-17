@@ -106,12 +106,12 @@ export const updateUserRole = async (
 };
 
 //add assigned user to db
-export const addUser = async (colName, docID, user) => {
+export const addUser = async (colName, docID, user, modal) => {
   const docRef = doc(db, colName, docID);
   await updateDoc(docRef, {
     assignedUsers: arrayUnion(...user),
   })
-    .then((e) => console.log(e))
+    .then(() => modal(false))
     .catch((err) => console.log(err));
 };
 

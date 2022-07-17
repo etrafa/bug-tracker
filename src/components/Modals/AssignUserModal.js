@@ -38,8 +38,12 @@ const AssignUserModal = ({ setIsAssignUserModalOpen }) => {
     if (isFormValidated) {
       //delete empty value from selected user's
       setSelectedUsers(selectedUsers.shift());
-      addUser("projects", selectedProject, selectedUsers);
-      console.log(selectedUsers);
+      addUser(
+        "projects",
+        selectedProject,
+        selectedUsers,
+        setIsAssignUserModalOpen
+      );
     }
   };
 
