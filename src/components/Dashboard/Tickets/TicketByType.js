@@ -2,30 +2,29 @@ import { Doughnut } from "react-chartjs-2";
 
 const TicketByType = () => {
   return (
-    <div className="w-11/12 bg-gray-50 mx-auto mt-12 lg:w-10/12">
-      <h1 className="text-center bg-red-400 text-white font-bold text-2xl">
+    <div className="w-11/12 bg-gray-50 mx-auto mt-12 lg:w-10/12 max-w-screen-md">
+      <h1 className="text-center bg-gray-200 font-black text-xl h-12 pt-3">
         TICKET TYPES
       </h1>
-      <div className="w-6/12 mx-auto">
-        <Doughnut
-          options={{
-            plugins: {
-              legend: {
-                labels: "none",
-              },
+      <Doughnut
+        className="max-h-72"
+        options={{
+          plugins: {
+            legend: {
+              labels: "none",
             },
-          }}
-          data={{
-            labels: ["Bugs/Error", "Design", "Compatibility", "Server Issues"],
-            datasets: [
-              {
-                data: [3, 4, 5, 2],
-                backgroundColor: ["#f37208", "#089df3", "#02ffdd", "#f3084f"],
-              },
-            ],
-          }}
-        />
-      </div>
+          },
+        }}
+        data={{
+          labels: ["Bugs/Error", "Design", "Compatibility", "Server Issues"],
+          datasets: [
+            {
+              data: [3, 4, 5, 2],
+              backgroundColor: ["#f37208", "#089df3", "#02ffdd", "#f3084f"],
+            },
+          ],
+        }}
+      />
     </div>
   );
 };
