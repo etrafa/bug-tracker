@@ -7,6 +7,8 @@ import { useGetSingleDoc } from "../../customHooks/useGetSingleDoc";
 import { useState } from "react";
 import { collection, doc } from "firebase/firestore";
 import { db, removeUser } from "../../firebase/firebaseConfig";
+import { useContext } from "react";
+import { TrackerContext } from "../../context/TrackerContext";
 
 const ManageProjectUser = () => {
   const { dbData } = useGetDocs("projects");
@@ -14,6 +16,8 @@ const ManageProjectUser = () => {
   const [currentProject, setCurrentProject] = useState("");
 
   const { dbData: singleProject } = useGetSingleDoc("projects", currentProject);
+
+  const { setIsAssignUserModalOpen } = useContext(TrackerContext);
 
   //pagination show only 10 user's per page
   const [pageNumber, setPageNumber] = useState(0);
@@ -90,8 +94,29 @@ const ManageProjectUser = () => {
                 </option>
               ))}
           </select>
+          <button
+            onClick={() => setIsAssignUserModalOpen(true)}
+            className="flex mt-6 font-sm text-gray-500 group hover:text-gray-400"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 mr-2 group-hover:stroke-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="gray"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+              />
+            </svg>
+            Add Users
+          </button>
+
           {singleProject && singleProject?.assignedUsers.length === 0 ? (
-            <p className="mt-12 text-center">No user found.</p>
+            <p className="font-bold mt-12 text-center">No user found.</p>
           ) : (
             <table className="w-full lg:mx-auto text-sm text-left text-gray-500 dark:text-gray-400 mt-6">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import {
   addDoc,
   arrayRemove,
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
@@ -104,11 +105,20 @@ export const updateUserRole = async (
   }
 };
 
-//remove assigned user from the db
+//add assigned user to db
+export const addUser = async (colName, docID, user) => {
+  const docRef = doc(db, colName, docID);
+  await updateDoc(docRef, {
+    assignedUsers: arrayUnion(...user),
+  })
+    .then((e) => console.log(e))
+    .catch((err) => console.log(err));
+};
 
+//remove assigned user from the db
 export const removeUser = async (colName, docID, user) => {
-  const washingtonRef = doc(db, colName, docID);
-  await updateDoc(washingtonRef, {
+  const docRef = doc(db, colName, docID);
+  await updateDoc(docRef, {
     assignedUsers: arrayRemove({
       email: user.email,
       fullName: user.fullName,

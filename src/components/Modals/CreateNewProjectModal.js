@@ -59,6 +59,7 @@ const CreateNewProjectModal = ({
     console.log(selectedUsers);
 
     if (isFormValidated) {
+      //delete empty value from selected user's
       setSelectedUsers(selectedUsers.shift());
       addDoc(collectionRef, {
         projectName: createProjectInformation.projectName,

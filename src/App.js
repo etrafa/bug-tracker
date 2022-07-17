@@ -23,6 +23,7 @@ import ManageProjectUser from "./components/ProjectUsers/ManageProjectUser";
 import UserProfile from "./components/UserProfile/UserProfile";
 import DeleteProjectModal from "./components/Modals/DeleteProjectModal";
 import SideBar from "./components/Sidebar/SideBar";
+import AssignUserModal from "./components/Modals/AssignUserModal";
 
 function App() {
   // MODALS
@@ -33,6 +34,7 @@ function App() {
   const [signUpErrorMessage, setSignUpErrorMessage] = useState("");
   const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
   const [deleteProjectModal, setDeleteProjectModal] = useState(false);
+  const [isAssignUserModalOpen, setIsAssignUserModalOpen] = useState(false);
   const [projectId, setProjectId] = useState("");
 
   //* TRACK IF USER LOGGED IN
@@ -58,6 +60,7 @@ function App() {
         signUpErrorMessage,
         setSignUpErrorMessage,
         setDeleteProjectModal,
+        setIsAssignUserModalOpen,
         projectId,
         setProjectId,
       }}
@@ -89,6 +92,10 @@ function App() {
 
       {deleteProjectModal && (
         <DeleteProjectModal setDeleteProjectModal={setDeleteProjectModal} />
+      )}
+
+      {isAssignUserModalOpen && (
+        <AssignUserModal setIsAssignUserModalOpen={setIsAssignUserModalOpen} />
       )}
 
       <Routes>
