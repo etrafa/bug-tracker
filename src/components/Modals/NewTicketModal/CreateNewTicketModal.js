@@ -7,12 +7,14 @@ import ShowAllUsers from "./ShowAllUsers";
 import TicketDescription from "./TicketDescription";
 
 //react
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 //hooks
 import { useGetDocs } from "../../../customHooks/useGetDocs";
+
+//firebase
 import { createTicket, useAuth } from "../../../firebase/firebaseConfig";
-import { useEffect } from "react";
+import { serverTimestamp } from "firebase/firestore";
 
 const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
   //ticket states
@@ -54,6 +56,14 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
   //submit success message
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
 
+  //timestamp for ticket
+  const timeStamp = new Date();
+  const day = String(timeStamp.getDate()).padStart(2, "0");
+  const month = String(timeStamp.getMonth() + 1).padStart(2, "0");
+  const year = timeStamp.getFullYear();
+
+  const joined = [month, day, year].join(".");
+
   let singleTicket = [
     {
       ticketType: selectedTicketType,
@@ -62,6 +72,7 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
       assignedUsers: selectedUsers,
       ticketDescripiton: ticketDescripitonInput,
       ticketOwner: currentUserInformation,
+      submitTime: joined,
     },
   ];
 
