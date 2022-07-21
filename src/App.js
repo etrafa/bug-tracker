@@ -18,7 +18,7 @@ import PageNotFound from "./components/PageNotFound/PageNotFound";
 import { useAuth } from "./firebase/firebaseConfig";
 import { TrackerContext } from "./context/TrackerContext";
 import SignUpMessageModal from "./components/Modals/SignUpMessageModal";
-import CreateNewTicketModal from "./components/Modals/CreateNewTicketModal";
+import CreateNewTicketModal from "./components/Modals/NewTicketModal/CreateNewTicketModal";
 import ManageProjectUser from "./components/ProjectUsers/ManageProjectUser";
 import UserProfile from "./components/UserProfile/UserProfile";
 import DeleteProjectModal from "./components/Modals/DeleteProjectModal";

@@ -129,3 +129,13 @@ export const removeUser = async (colName, docID, user) => {
     .then((e) => console.log(e))
     .catch((err) => console.log(err));
 };
+
+//add ticket to the project
+export const createTicket = async (colName, docID, ticket, modal) => {
+  const docRef = doc(db, colName, docID);
+  await updateDoc(docRef, {
+    tickets: arrayUnion(...ticket),
+  })
+    .then(() => modal(false))
+    .catch((err) => console.log(err));
+};

@@ -129,7 +129,7 @@ const CreateNewProjectModal = ({
             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
               Assign team members (optional)
             </label>
-            <div className="w-full h-44 overflow-auto flex flex-col">
+            <div className="bg-gray-50 flex flex-col h-44 overflow-auto border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
               {dbData &&
                 dbData.map((user) => (
                   <label className="text-lg p-1">
