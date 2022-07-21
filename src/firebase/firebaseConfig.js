@@ -131,11 +131,22 @@ export const removeUser = async (colName, docID, user) => {
 };
 
 //add ticket to the project
-export const createTicket = async (colName, docID, ticket, modal) => {
+export const createTicket = async (
+  colName,
+  docID,
+  ticket,
+  modal,
+  closeModal
+) => {
   const docRef = doc(db, colName, docID);
   await updateDoc(docRef, {
     tickets: arrayUnion(...ticket),
   })
-    .then(() => modal(false))
+    .then(() => {
+      modal(true);
+      setTimeout(() => {
+        closeModal(false);
+      }, 2000);
+    })
     .catch((err) => console.log(err));
 };

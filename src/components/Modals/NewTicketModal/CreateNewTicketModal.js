@@ -11,7 +11,8 @@ import { useState } from "react";
 
 //hooks
 import { useGetDocs } from "../../../customHooks/useGetDocs";
-import { createTicket } from "../../../firebase/firebaseConfig";
+import { createTicket, useAuth } from "../../../firebase/firebaseConfig";
+import { useEffect } from "react";
 
 const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
   //ticket states
@@ -32,11 +33,26 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
   //get users from database
   const { dbData: allUsers } = useGetDocs("users");
 
+  //get current user information
+  const currentUser = useAuth();
+
+  //get current user information
+  const [currentUserInformation, setCurrentUserInformation] = useState();
+
+  useEffect(() => {
+    setCurrentUserInformation(currentUser?.displayName);
+  }, [currentUser, currentUserInformation]);
+
+  console.log(currentUserInformation);
+
   //form validation errors
   const [assignUserError, setAssignUserError] = useState(false);
   const [ticketDescriptionError, setTicketDescriptionError] = useState(false);
   const [selectedProjectNameError, setSelectedProjectNameError] =
     useState(false);
+
+  //submit success message
+  const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
 
   let singleTicket = [
     {
@@ -45,6 +61,7 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
       ticketStatus: selectedTicketStatus,
       assignedUsers: selectedUsers,
       ticketDescripiton: ticketDescripitonInput,
+      ticketOwner: currentUserInformation,
     },
   ];
 
@@ -65,6 +82,7 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
         "projects",
         selectedProjectID,
         singleTicket,
+        setIsSubmitSuccess,
         setIsTicketModalOpen
       );
     }
@@ -134,6 +152,13 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
                 />
               </div>
             </div>
+
+            {/* submit success message here */}
+            {isSubmitSuccess ? (
+              <p className="text-green-500 font-bold">
+                The ticket has been created successfully.
+              </p>
+            ) : null}
 
             <button
               onClick={(e) => handleSubmit(e)}
