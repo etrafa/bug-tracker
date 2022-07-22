@@ -7,7 +7,7 @@ const TicketToPerson = () => {
         TICKET ASSIGNED TO
       </h1>
       <Doughnut
-        className="max-h-72"
+        className="max-h-64 mt-2"
         options={{
           plugins: {
             legend: {

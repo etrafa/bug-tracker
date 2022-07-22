@@ -87,7 +87,6 @@ export const createDoc = async (docName, fullName, email, role) => {
 };
 
 //update user's role
-
 export const updateUserRole = async (
   docID,
   role,
@@ -136,17 +135,19 @@ export const createTicket = async (
   docID,
   ticket,
   modal,
-  closeModal
+  closeModal,
+  userID
 ) => {
   const docRef = doc(db, colName, docID);
   await updateDoc(docRef, {
     tickets: arrayUnion(...ticket),
-  })
-    .then(() => {
-      modal(true);
-      setTimeout(() => {
-        closeModal(false);
-      }, 2000);
-    })
-    .catch((err) => console.log(err));
+  }).then(() => {
+    updateDoc(doc(db, "users", userID), {
+      tickets: arrayUnion(...ticket),
+    });
+    modal(true);
+    setTimeout(() => {
+      closeModal(false);
+    }, 2000);
+  });
 };

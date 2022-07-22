@@ -14,7 +14,6 @@ import { useGetDocs } from "../../../customHooks/useGetDocs";
 
 //firebase
 import { createTicket, useAuth } from "../../../firebase/firebaseConfig";
-import { serverTimestamp } from "firebase/firestore";
 
 const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
   //ticket states
@@ -25,8 +24,12 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
     useState("Please Select");
   const [selectedProjectID, setSelectedProjectID] = useState();
   const [ticketDescripitonInput, setTicketDescriptionInput] = useState("");
-  //store-remove selected user's from the list
+
+  //save-remove selected user's from the list
   const [selectedUsers, setSelectedUsers] = useState([]);
+
+  //it is necessarry to push the ticket to user's database
+  const [selectedUserID, setSelectedUserID] = useState();
 
   //database call's
   //get projects from database
@@ -37,15 +40,11 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
 
   //get current user information
   const currentUser = useAuth();
-
-  //get current user information
   const [currentUserInformation, setCurrentUserInformation] = useState();
 
   useEffect(() => {
     setCurrentUserInformation(currentUser?.displayName);
   }, [currentUser, currentUserInformation]);
-
-  console.log(currentUserInformation);
 
   //form validation errors
   const [assignUserError, setAssignUserError] = useState(false);
@@ -62,8 +61,9 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
   const month = String(timeStamp.getMonth() + 1).padStart(2, "0");
   const year = timeStamp.getFullYear();
 
-  const joined = [month, day, year].join(".");
+  const SERVER_TIME = [month, day, year].join(".");
 
+  //save all collected ticket information to an array object to send database.
   let singleTicket = [
     {
       ticketType: selectedTicketType,
@@ -72,7 +72,7 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
       assignedUsers: selectedUsers,
       ticketDescripiton: ticketDescripitonInput,
       ticketOwner: currentUserInformation,
-      submitTime: joined,
+      submitTime: SERVER_TIME,
     },
   ];
 
@@ -94,12 +94,13 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
         selectedProjectID,
         singleTicket,
         setIsSubmitSuccess,
-        setIsTicketModalOpen
+        setIsTicketModalOpen,
+        selectedUserID
       );
     }
   };
 
-  //collect all the ticket information in array object
+  console.log(selectedUserID);
 
   return (
     <div className="w-full ml-auto fixed min-h-screen top-0 bg-black bg-opacity-75 z-50">
@@ -144,6 +145,7 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
             <ShowAllUsers
               allUsers={allUsers}
               selectedUsers={selectedUsers}
+              setSelectedUserID={setSelectedUserID}
               setSelectedUsers={setSelectedUsers}
               assignUserError={assignUserError}
               setAssignUserError={setAssignUserError}

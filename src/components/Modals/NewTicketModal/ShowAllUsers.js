@@ -4,12 +4,16 @@ const ShowAllUsers = ({
   setSelectedUsers,
   assignUserError,
   setAssignUserError,
+  setSelectedUserID,
 }) => {
   //* add-remove user when initializing new ticket
   const handleSelectedUsers = (e, user) => {
+    console.log(e, user.id);
+
     const { checked } = e.currentTarget;
     if (checked) {
       setSelectedUsers((prev) => [...prev, user]);
+      setSelectedUserID(user.id);
     } else {
       setSelectedUsers(selectedUsers.filter((val) => val !== user));
     }
