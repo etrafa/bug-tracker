@@ -1,15 +1,8 @@
 //chartjs
 import { Bar } from "react-chartjs-2";
 
-//firebase
-import { useGetSingleDoc } from "../../../customHooks/useGetSingleDoc";
-import { useAuth } from "../../../firebase/firebaseConfig";
-
-const TicketByPriority = () => {
-  const currentUser = useAuth();
-  const { dbData } = useGetSingleDoc("users", currentUser?.uid);
-
-  //get tickets from database and assign their priority
+const TicketByPriority = ({ dbData }) => {
+  //get tickets from database and assign to their priority
   let lowPriority = 0,
     mediumPriority = 0,
     highPriority = 0;
@@ -25,8 +18,6 @@ const TicketByPriority = () => {
       }
     });
   }
-
-  console.log(lowPriority, mediumPriority, highPriority);
 
   return (
     <div className="w-11/12 bg-gray-50 mx-auto mt-12 lg:w-10/12 max-w-screen-md">
@@ -61,7 +52,7 @@ const TicketByPriority = () => {
             datasets: [
               {
                 data: [lowPriority, mediumPriority, highPriority],
-                backgroundColor: ["green", "orange", "red"],
+                backgroundColor: ["#3CCF4E", "#2F3A8F", "#CD113B"],
               },
             ],
           }}

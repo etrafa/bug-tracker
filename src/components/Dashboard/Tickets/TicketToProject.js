@@ -1,6 +1,6 @@
 import { Doughnut } from "react-chartjs-2";
 
-const TicketToPerson = () => {
+const TicketToProject = () => {
   return (
     <div className="w-11/12 bg-gray-50 mx-auto mt-12 lg:w-10/12 max-w-screen-md">
       <h1 className="text-center bg-gray-200 font-black text-xl h-12 pt-3">
@@ -29,4 +29,4 @@ const TicketToPerson = () => {
   );
 };
 
-export default TicketToPerson;
+export default TicketToProject;
