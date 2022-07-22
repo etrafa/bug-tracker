@@ -45,6 +45,7 @@ export const signUp = async (email, password, name) => {
     email: email,
     fullName: name,
     role: "user",
+    tickets: [],
   });
 };
 
@@ -142,12 +143,6 @@ export const createTicket = async (
   await updateDoc(docRef, {
     tickets: arrayUnion(...ticket),
   }).then(() => {
-    //if user choose to assign one ticket more than a user, this for loop will run.
-    // for (let i = 0; i <= userIDArray.length; i++) {
-    //   updateDoc(doc(db, "users", userIDArray[i]), {
-    //     tickets: arrayUnion(...ticket),
-    //   });
-    // }
     userIDArray.forEach((user) => {
       updateDoc(doc(db, "users", user), {
         tickets: arrayUnion(...ticket),
@@ -159,3 +154,6 @@ export const createTicket = async (
     }, 2000);
   });
 };
+
+//read data based on USER ID
+export const useGetDataFromDB = (colName, docID) => {};
