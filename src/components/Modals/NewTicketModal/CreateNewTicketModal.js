@@ -29,7 +29,7 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   //it is necessarry to push the ticket to user's database
-  const [selectedUserID, setSelectedUserID] = useState();
+  const [selectedUserID, setSelectedUserID] = useState([]);
 
   //database call's
   //get projects from database
@@ -100,8 +100,6 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
     }
   };
 
-  console.log(selectedUserID);
-
   return (
     <div className="w-full ml-auto fixed min-h-screen top-0 bg-black bg-opacity-75 z-50">
       <div className="absolute bg-white rounded-lg shadow top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 max-w-screen-sm lg:max-h-[90vh] overflow-auto">
@@ -145,8 +143,9 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
             <ShowAllUsers
               allUsers={allUsers}
               selectedUsers={selectedUsers}
-              setSelectedUserID={setSelectedUserID}
               setSelectedUsers={setSelectedUsers}
+              selectedUserID={selectedUserID}
+              setSelectedUserID={setSelectedUserID}
               assignUserError={assignUserError}
               setAssignUserError={setAssignUserError}
             />

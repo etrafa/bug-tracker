@@ -136,14 +136,22 @@ export const createTicket = async (
   ticket,
   modal,
   closeModal,
-  userID
+  userIDArray
 ) => {
   const docRef = doc(db, colName, docID);
   await updateDoc(docRef, {
     tickets: arrayUnion(...ticket),
   }).then(() => {
-    updateDoc(doc(db, "users", userID), {
-      tickets: arrayUnion(...ticket),
+    //if user choose to assign one ticket more than a user, this for loop will run.
+    // for (let i = 0; i <= userIDArray.length; i++) {
+    //   updateDoc(doc(db, "users", userIDArray[i]), {
+    //     tickets: arrayUnion(...ticket),
+    //   });
+    // }
+    userIDArray.forEach((user) => {
+      updateDoc(doc(db, "users", user), {
+        tickets: arrayUnion(...ticket),
+      });
     });
     modal(true);
     setTimeout(() => {
