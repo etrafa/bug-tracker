@@ -24,7 +24,7 @@ const NavbarSmallScreen = ({
       <svg
         onClick={() => setIsNavbarOpen(false)}
         xmlns="http://www.w3.org/2000/svg"
-        className="h-10 w-10 ml-auto mr-4 mt-4"
+        className="h-10 w-10 ml-auto mr-4 mt-4 cursor-pointer"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -208,7 +208,7 @@ const NavbarSmallScreen = ({
         <li className="my-4 mx-auto">
           <button
             onClick={() => setIsProjectModalOpen(true)}
-            className="bg-red-600 w-64 lg:mx-6 h-12 rounded-md text-white font-bold"
+            className="bg-white hover:bg-slate-100 w-64 lg:mx-6 h-12 rounded-md text-black font-bold border"
           >
             CREATE NEW PROJECT
           </button>
@@ -216,7 +216,7 @@ const NavbarSmallScreen = ({
         <li className="my-4 mx-auto">
           <button
             onClick={() => setIsTicketModalOpen(true)}
-            className=" bg-yellow-400 w-64 lg:mx-6 h-12 rounded-md text-white font-bold"
+            className="bg-fbFillColor hover:bg-blue-400 w-64 lg:mx-6 h-12 rounded-md text-white font-bold"
           >
             CREATE NEW TICKET
           </button>
