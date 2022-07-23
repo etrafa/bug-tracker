@@ -1,12 +1,13 @@
 //* READ FIRESTORE DATABASE
 
-import { collection, doc, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { db } from "../firebase/firebaseConfig";
+import { db, useAuth } from "../firebase/firebaseConfig";
 
 export const useGetDocs = (colName) => {
   const [dbData, setDbData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const currentUser = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,6 +20,6 @@ export const useGetDocs = (colName) => {
       setDbData(data);
     };
     fetchData();
-  }, []);
+  }, [currentUser]);
   return { dbData, loading };
 };

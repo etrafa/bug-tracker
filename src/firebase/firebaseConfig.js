@@ -130,7 +130,7 @@ export const removeUser = async (colName, docID, user) => {
     .catch((err) => console.log(err));
 };
 
-//add ticket to the project
+//add ticket to the project and selected user's database
 export const createTicket = async (
   colName,
   docID,
@@ -139,13 +139,24 @@ export const createTicket = async (
   closeModal,
   userIDArray
 ) => {
+  //convert ticket array to objet and save assigned users' database
+  const TICKET_AS_ARRAY = ticket.map((item) => ({
+    submitTime: item.submitTime,
+    ticketDescription: item.ticketDescription,
+    ticketOwner: item.ticketOwner,
+    ticketPriority: item.ticketPriority,
+    ticketStatus: item.ticketStatus,
+    ticketType: item.ticketType,
+  }));
+  const TICKET_AS_OBJECT = Object.assign({}, ...TICKET_AS_ARRAY);
   const docRef = doc(db, colName, docID);
   await updateDoc(docRef, {
     tickets: arrayUnion(...ticket),
   }).then(() => {
     userIDArray.forEach((user) => {
-      updateDoc(doc(db, "users", user), {
-        tickets: arrayUnion(...ticket),
+      const userRef = collection(db, "users", user, "tickets");
+      addDoc(userRef, {
+        tickets: TICKET_AS_OBJECT,
       });
     });
     modal(true);
@@ -154,6 +165,3 @@ export const createTicket = async (
     }, 2000);
   });
 };
-
-//read data based on USER ID
-export const useGetDataFromDB = (colName, docID) => {};

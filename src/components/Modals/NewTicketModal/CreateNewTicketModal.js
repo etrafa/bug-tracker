@@ -23,7 +23,7 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
   const [selectedProjectName, setSelectedProjectName] =
     useState("Please Select");
   const [selectedProjectID, setSelectedProjectID] = useState();
-  const [ticketDescripitonInput, setTicketDescriptionInput] = useState("");
+  const [ticketDescriptionInput, setTicketDescriptionInput] = useState("");
 
   //save-remove selected user's from the list
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -70,7 +70,7 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
       ticketPriority: selectedTicketPriority,
       ticketStatus: selectedTicketStatus,
       assignedUsers: selectedUsers,
-      ticketDescripiton: ticketDescripitonInput,
+      ticketDescription: ticketDescriptionInput,
       ticketOwner: currentUserInformation,
       submitTime: SERVER_TIME,
     },
@@ -80,7 +80,7 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (selectedUsers.length < 1) setAssignUserError(true);
-    if (ticketDescripitonInput === "") setTicketDescriptionError(true);
+    if (ticketDescriptionInput === "") setTicketDescriptionError(true);
     if (selectedProjectName === "Please Select")
       setSelectedProjectNameError(true);
 

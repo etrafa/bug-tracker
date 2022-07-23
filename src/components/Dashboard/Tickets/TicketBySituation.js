@@ -6,7 +6,6 @@ const TicketBySituation = ({ dbData }) => {
   let openStatus = 0,
     inProgressStatus = 0,
     closedStatus = 0;
-  console.log(dbData && dbData.tickets);
 
   if (dbData) {
     dbData.tickets.forEach((ticket) => {
