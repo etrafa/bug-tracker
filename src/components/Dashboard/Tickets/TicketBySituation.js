@@ -25,7 +25,7 @@ const TicketBySituation = ({ dbData }) => {
         TICKET SITUATION
       </h1>
 
-      {!dbData || (dbData === undefined) === 0 ? (
+      {!dbData || dbData === undefined || dbData?.length === 0 ? (
         <p className="text-center py-12 lg:pt-24 font-bold">No ticket found.</p>
       ) : (
         <Bar

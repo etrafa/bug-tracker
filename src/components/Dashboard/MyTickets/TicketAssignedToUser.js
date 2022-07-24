@@ -1,6 +1,4 @@
 const TicketAssignedToUser = ({ dbData }) => {
-  console.log(dbData.map((item) => console.log(item.tickets)));
-
   return (
     <div className="w-full text-center overflow-auto lg:ml-6 border-r-2">
       <table className="w-full lg:w-11/12 lg:mx-auto text-sm text-left text-gray-500 dark:text-gray-400 mt-12">
@@ -15,7 +13,7 @@ const TicketAssignedToUser = ({ dbData }) => {
         </thead>
         <tbody>
           {dbData &&
-            dbData.map((item) => (
+            dbData?.map((item) => (
               <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <td className="px-6 py-4 font-medium">
                   {item.tickets.ticketDescription || "None"}

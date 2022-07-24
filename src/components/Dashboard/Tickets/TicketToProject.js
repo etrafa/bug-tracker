@@ -52,25 +52,29 @@ const TicketToProject = ({ dbData }) => {
       <h1 className="text-center bg-gray-200 font-black text-xl h-12 pt-3">
         TICKET ASSIGNED TO
       </h1>
-      <Doughnut
-        className="max-h-64 mt-2"
-        options={{
-          plugins: {
-            legend: {
-              labels: "none",
+      {!dbData || dbData === undefined || dbData?.length === 0 ? (
+        <p className="text-center py-12 lg:pt-24 font-bold">No ticket found.</p>
+      ) : (
+        <Doughnut
+          className="max-h-64 mt-2"
+          options={{
+            plugins: {
+              legend: {
+                labels: "none",
+              },
             },
-          },
-        }}
-        data={{
-          labels: projectLabels,
-          datasets: [
-            {
-              data: projectLabelsData,
-              backgroundColor: chartColors,
-            },
-          ],
-        }}
-      />
+          }}
+          data={{
+            labels: projectLabels,
+            datasets: [
+              {
+                data: projectLabelsData,
+                backgroundColor: chartColors,
+              },
+            ],
+          }}
+        />
+      )}
     </div>
   );
 };

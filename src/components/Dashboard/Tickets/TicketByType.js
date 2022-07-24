@@ -29,7 +29,7 @@ const TicketByType = ({ dbData }) => {
       <h1 className="text-center bg-gray-200 font-black text-xl h-12 pt-3">
         TICKET TYPES
       </h1>
-      {!dbData || (dbData === undefined) === 0 ? (
+      {!dbData || dbData === undefined || dbData?.length === 0 ? (
         <p className="text-center py-12 lg:pt-24 font-bold">No ticket found.</p>
       ) : (
         <Doughnut
