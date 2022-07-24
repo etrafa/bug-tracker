@@ -7,32 +7,24 @@ const TicketByPriority = ({ dbData }) => {
     mediumPriority = 0,
     highPriority = 0;
 
-  // if (dbData && dbData !== undefined) {
-  //   dbData?.tickets?.forEach((ticket) => {
-  //     console.log(ticket);
-  //     // if (ticket.ticketPriority === "Low") {
-  //     //   lowPriority += 1;
-  //     // } else if (ticket.ticketPriority === "Medium") {
-  //     //   mediumPriority += 1;
-  //     // } else if (ticket.ticketPriority === "High") {
-  //     //   highPriority += 1;
-  //     // }
-  //   });
-  // }
-
-  // if (dbData) {
-  //   dbData.forEach((ticket) => {
-  //     console.log(ticket.tickets);
-  //   });
-  // }
+  if (dbData && dbData !== undefined) {
+    dbData?.forEach((ticket) => {
+      if (ticket.tickets.ticketPriority === "Low") {
+        lowPriority += 1;
+      } else if (ticket.tickets.ticketPriority === "Medium") {
+        mediumPriority += 1;
+      } else if (ticket.tickets.ticketPriority === "High") {
+        highPriority += 1;
+      }
+    });
+  }
 
   return (
     <div className="w-11/12 bg-gray-50 mx-auto mt-12 lg:w-10/12 max-w-screen-md">
       <h1 className="text-center bg-gray-200 font-black text-xl h-12 pt-3">
         TICKET PRIORITY
       </h1>
-      {!dbData || (dbData === undefined && <p>No ticket found</p>)}
-      {/* {dbData && dbData.tickets.length === 0 ? (
+      {!dbData || (dbData === undefined) === 0 ? (
         <p className="text-center py-12 lg:pt-24 font-bold">No ticket found.</p>
       ) : (
         <Bar
@@ -65,7 +57,7 @@ const TicketByPriority = ({ dbData }) => {
             ],
           }}
         />
-      )} */}
+      )}
     </div>
   );
 };

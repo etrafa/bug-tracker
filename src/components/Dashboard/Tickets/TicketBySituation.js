@@ -8,12 +8,12 @@ const TicketBySituation = ({ dbData }) => {
     closedStatus = 0;
 
   if (dbData) {
-    dbData.tickets.forEach((ticket) => {
-      if (ticket.ticketStatus === "Open") {
+    dbData?.forEach((ticket) => {
+      if (ticket.tickets.ticketStatus === "Open") {
         openStatus += 1;
-      } else if (ticket.ticketStatus === "In Progress") {
+      } else if (ticket.tickets.ticketStatus === "In Progress") {
         inProgressStatus += 1;
-      } else if (ticket.ticketStatus === "Closed") {
+      } else if (ticket.tickets.ticketStatus === "Closed") {
         closedStatus += 1;
       }
     });
@@ -25,7 +25,7 @@ const TicketBySituation = ({ dbData }) => {
         TICKET SITUATION
       </h1>
 
-      {dbData && dbData.tickets.length === 0 ? (
+      {!dbData || (dbData === undefined) === 0 ? (
         <p className="text-center py-12 lg:pt-24 font-bold">No ticket found.</p>
       ) : (
         <Bar
@@ -53,7 +53,7 @@ const TicketBySituation = ({ dbData }) => {
             datasets: [
               {
                 data: [openStatus, inProgressStatus, closedStatus],
-                backgroundColor: ["green", "orange", "red"],
+                backgroundColor: ["#3CCF4E", "#2F3A8F", "#CD113B"],
               },
             ],
           }}

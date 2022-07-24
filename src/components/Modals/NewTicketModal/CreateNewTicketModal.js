@@ -66,6 +66,7 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
   //save all collected ticket information to an array object to send database.
   let singleTicket = [
     {
+      projectName: selectedProjectName,
       ticketType: selectedTicketType,
       ticketPriority: selectedTicketPriority,
       ticketStatus: selectedTicketStatus,
