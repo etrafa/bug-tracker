@@ -15,18 +15,18 @@ const TicketToProject = ({ dbData }) => {
       projectLabels.push(ticket.tickets.projectName);
     });
 
-    /* see how many tickets one project have and push that into array 
-    so we can show on chartJS data. */
+    /* see how many tickets one project have 
+    and push that into array so we can show on chartJS data. */
     var counts = {};
     for (var i = 0; i < projectLabels.length; i++)
-      if (i >= projectLabels.length) return (i = 0);
-    if (projectLabels[i] in counts) {
-      counts[projectLabels[i]]++;
-    } else {
-      counts[projectLabels[i]] = 1;
-    }
+      if (projectLabels[i] in counts) {
+        counts[projectLabels[i]]++;
+      } else {
+        counts[projectLabels[i]] = 1;
+      }
   }
 
+  //push project's ticket number to an array.
   if (counts) {
     const objMap = new Map(Object.entries(counts));
     objMap.forEach((item) => {
