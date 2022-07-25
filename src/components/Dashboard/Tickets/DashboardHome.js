@@ -22,10 +22,10 @@ const Tickets = () => {
         Dashboard
       </h1>
       <div className="grid grid-cols-1 lg:grid-cols-2 mb-6">
-        <TicketByPriority dbData={dbData} />
+        {/* <TicketByPriority dbData={dbData} />
         <TicketByType dbData={dbData} />
         <TicketBySituation dbData={dbData} />
-        <TicketToProject dbData={dbData} />
+        <TicketToProject dbData={dbData} /> */}
       </div>
     </div>
   );

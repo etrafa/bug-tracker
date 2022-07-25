@@ -12,7 +12,7 @@ export const useGetNestedDocs = (colName, user, subCol) => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const res = await getDocs(collection(db, colName, user?.uid, subCol));
+      const res = await getDocs(collection(db, colName, user, subCol));
       const data = res.docs.map((items) => {
         return { ...items.data(), id: items.id };
       });

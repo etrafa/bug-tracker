@@ -1,4 +1,15 @@
-const TicketForSingleProject = ({ dbData }) => {
+import { useGetNestedDocs } from "../../customHooks/useGetNestedDocs";
+const TicketForSingleProject = () => {
+  const { dbData } = useGetNestedDocs(
+    "projects",
+    "YPbF32nv8rIoGUUFNmo6",
+    "tickets"
+  );
+
+  if (dbData) {
+    dbData?.map((item) => console.log(item?.tickets[0]));
+  }
+
   return (
     <div className="w-full lg:w-6/12 text-center overflow-auto mr-16">
       <header className="lg:mx-auto">
@@ -11,7 +22,7 @@ const TicketForSingleProject = ({ dbData }) => {
       {/* IF THERE IS NO TICKET DISPLAY NO TICKET 
     OTHERWISE SHOW EXISTING TICKETS ON UI */}
 
-      {dbData && dbData?.tickets?.length === 0 ? (
+      {dbData && dbData?.length === 0 ? (
         <p className="mt-24 font-bold">No ticket found</p>
       ) : (
         <div>
@@ -47,12 +58,14 @@ const TicketForSingleProject = ({ dbData }) => {
               </tr>
             </thead>
             {dbData &&
-              dbData?.tickets.map((ticket) => (
+              dbData?.map((ticket) => (
                 <>
-                  <td className="px-6 py-4">{ticket.ticketDescripiton}</td>
-                  <td className="px-6 py-4">{ticket.ticketOwner}</td>
-                  <td className="px-6 py-4">{ticket.ticketStatus}</td>
-                  <td className="px-6 py-4">{ticket.submitTime}</td>
+                  <td className="px-6 py-4">
+                    {ticket.tickets?.ticketDescripiton}
+                  </td>
+                  <td className="px-6 py-4">{ticket.tickets?.ticketOwner}</td>
+                  <td className="px-6 py-4">{ticket.tickets?.ticketStatus}</td>
+                  <td className="px-6 py-4">{ticket.tickets?.submitTime}</td>
                   <td className="px-6 py-4">More details</td>
                 </>
               ))}

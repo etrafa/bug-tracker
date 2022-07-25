@@ -64,18 +64,16 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
   const SERVER_TIME = [month, day, year].join(".");
 
   //save all collected ticket information to an array object to send database.
-  let singleTicket = [
-    {
-      projectName: selectedProjectName,
-      ticketType: selectedTicketType,
-      ticketPriority: selectedTicketPriority,
-      ticketStatus: selectedTicketStatus,
-      assignedUsers: selectedUsers,
-      ticketDescription: ticketDescriptionInput,
-      ticketOwner: currentUserInformation,
-      submitTime: SERVER_TIME,
-    },
-  ];
+  let singleTicket = {
+    projectName: selectedProjectName,
+    ticketType: selectedTicketType,
+    ticketPriority: selectedTicketPriority,
+    ticketStatus: selectedTicketStatus,
+    assignedUsers: selectedUsers,
+    ticketDescription: ticketDescriptionInput,
+    ticketOwner: currentUserInformation,
+    submitTime: SERVER_TIME,
+  };
 
   //send ticket to database
   const handleSubmit = (e) => {
@@ -91,7 +89,6 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
       !selectedProjectNameError
     ) {
       createTicket(
-        "projects",
         selectedProjectID,
         singleTicket,
         setIsSubmitSuccess,

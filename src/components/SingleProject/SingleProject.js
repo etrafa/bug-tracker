@@ -55,7 +55,7 @@ const SingleProject = () => {
             <div className="w-full mt-8 flex flex-col lg:flex-row lg:justify-between">
               <AssignedUserForSingleProject dbData={dbData} />
               <div className="h-scren border"></div>
-              <TicketForSingleProject dbData={dbData} />
+              <TicketForSingleProject />
             </div>
             <div className="text-center mt-12 lg:mr-16">
               <button
