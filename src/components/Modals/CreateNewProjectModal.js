@@ -1,6 +1,6 @@
 //firebase
 import { db } from "../../firebase/firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, doc, setDoc } from "firebase/firestore";
 import { useGetDocs } from "../../customHooks/useGetDocs";
 import { useState } from "react";
 
@@ -40,7 +40,7 @@ const CreateNewProjectModal = ({
   };
 
   //when creating a new project store user's you want to add to new project
-  const [selectedUsers, setSelectedUsers] = useState([{}]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
 
   //* add-remove user when initializing new project
   const handleSelectedUsers = (e, user) => {
@@ -52,6 +52,8 @@ const CreateNewProjectModal = ({
     }
   };
 
+  console.log(selectedUsers);
+
   //ON SUBMIT SAVE SAVE USER'S PROJECT NAME & DESCRIPTION TO DATABASE
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -59,14 +61,30 @@ const CreateNewProjectModal = ({
     console.log(selectedUsers);
 
     if (isFormValidated) {
-      //delete empty value from selected user's
-      setSelectedUsers(selectedUsers.shift());
+      //this will create firebase collection named "projects" and add projects there.
       addDoc(collectionRef, {
         projectName: createProjectInformation.projectName,
         projectDescription: createProjectInformation.projectDescription,
         assignedUsers: selectedUsers,
         tickets: createProjectInformation.tickets,
       }).then(() => {
+        selectedUsers.forEach((user) => {
+          const userRef = doc(
+            db,
+            "users",
+            user?.id,
+            "my-projects",
+            createProjectInformation.projectName
+          );
+          setDoc(userRef, {
+            projectName: createProjectInformation.projectName,
+            projectDescription: createProjectInformation.projectDescription,
+            assignedUsers: selectedUsers,
+            tickets: createProjectInformation.tickets,
+          });
+        });
+
+        //close the modals after creating a new project.
         setIsProjectModalOpen(false);
         setIsTicketModalOpen(true);
       });
