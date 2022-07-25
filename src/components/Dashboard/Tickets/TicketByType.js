@@ -10,15 +10,15 @@ const TicketByType = ({ dbData }) => {
 
   if (dbData) {
     dbData.forEach((ticket) => {
-      if (ticket.tickets?.ticketType === "Server Issues") {
+      if (ticket.ticketType === "Server Issues") {
         serverIssues += 1;
-      } else if (ticket.tickets?.ticketType === "Bugs/Error") {
+      } else if (ticket.ticketType === "Bugs/Error") {
         bugsOrError += 1;
-      } else if (ticket.tickets?.ticketType === "Design") {
+      } else if (ticket.ticketType === "Design") {
         design += 1;
-      } else if (ticket.tickets?.ticketType === "Compatibility") {
+      } else if (ticket.ticketType === "Compatibility") {
         compability += 1;
-      } else if (ticket.tickets?.ticketType === "Other") {
+      } else if (ticket.ticketType === "Other") {
         other += 1;
       }
     });

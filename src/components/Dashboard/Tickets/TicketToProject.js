@@ -12,7 +12,7 @@ const TicketToProject = ({ dbData }) => {
   if (dbData) {
     dbData?.forEach((ticket) => {
       //take projects assigned to user's and push them into this array
-      projectLabels.push(ticket.tickets.projectName);
+      projectLabels.push(ticket.projectName);
     });
 
     /* see how many tickets one project have 
@@ -50,7 +50,7 @@ const TicketToProject = ({ dbData }) => {
   return (
     <div className="w-11/12 bg-gray-50 mx-auto mt-12 lg:w-10/12 max-w-screen-md">
       <h1 className="text-center bg-gray-200 font-black text-xl h-12 pt-3">
-        TICKET ASSIGNED TO
+        TICKETS BY PROJECTS
       </h1>
       {!dbData || dbData === undefined || dbData?.length === 0 ? (
         <p className="text-center py-12 lg:pt-24 font-bold">No ticket found.</p>

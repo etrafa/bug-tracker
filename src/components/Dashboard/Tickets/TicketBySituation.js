@@ -9,11 +9,11 @@ const TicketBySituation = ({ dbData }) => {
 
   if (dbData) {
     dbData?.forEach((ticket) => {
-      if (ticket.tickets.ticketStatus === "Open") {
+      if (ticket.ticketStatus === "Open") {
         openStatus += 1;
-      } else if (ticket.tickets.ticketStatus === "In Progress") {
+      } else if (ticket.ticketStatus === "In Progress") {
         inProgressStatus += 1;
-      } else if (ticket.tickets.ticketStatus === "Closed") {
+      } else if (ticket.ticketStatus === "Closed") {
         closedStatus += 1;
       }
     });

@@ -9,11 +9,11 @@ const TicketByPriority = ({ dbData }) => {
 
   if (dbData && dbData !== undefined) {
     dbData?.forEach((ticket) => {
-      if (ticket.tickets.ticketPriority === "Low") {
+      if (ticket.ticketPriority === "Low") {
         lowPriority += 1;
-      } else if (ticket.tickets.ticketPriority === "Medium") {
+      } else if (ticket.ticketPriority === "Medium") {
         mediumPriority += 1;
-      } else if (ticket.tickets.ticketPriority === "High") {
+      } else if (ticket.ticketPriority === "High") {
         highPriority += 1;
       }
     });
