@@ -8,6 +8,7 @@ import {
   deleteDoc,
   doc,
   getFirestore,
+  serverTimestamp,
   setDoc,
   updateDoc,
 } from "firebase/firestore";
@@ -149,6 +150,7 @@ export const createTicket = async (
     ticketType: item.ticketType,
     projectName: item.projectName,
     assignedUsers: item.assignedUsers,
+    comments: [],
   }));
   const TICKET_AS_OBJECT = Object.assign({}, ...TICKET_AS_ARRAY);
   const docRef = doc(db, colName, docID);
@@ -165,5 +167,31 @@ export const createTicket = async (
     setTimeout(() => {
       closeModal(false);
     }, 2000);
+  });
+};
+
+//add comment to the specific ticket
+export const addTicket = async (
+  colName,
+  currentUser,
+  subCol,
+  ticketID,
+  comment
+) => {
+  const docRef = doc(db, colName, currentUser?.uid, subCol, ticketID);
+  //timestamp for ticket
+  const timeStamp = new Date();
+  const day = String(timeStamp.getDate()).padStart(2, "0");
+  const month = String(timeStamp.getMonth() + 1).padStart(2, "0");
+  const year = timeStamp.getFullYear();
+
+  const SERVER_TIME = [month, day, year].join(".");
+
+  await updateDoc(docRef, {
+    comments: arrayUnion({
+      comment: comment,
+      commentOwner: currentUser?.displayName,
+      createdAt: SERVER_TIME,
+    }),
   });
 };
