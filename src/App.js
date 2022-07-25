@@ -24,6 +24,7 @@ import UserProfile from "./components/UserProfile/UserProfile";
 import DeleteProjectModal from "./components/Modals/DeleteProjectModal";
 import SideBar from "./components/Sidebar/SideBar";
 import AssignUserModal from "./components/Modals/AssignUserModal";
+import SingleTicket from "./components/SingleTicket/SingleTicket";
 
 function App() {
   // MODALS
@@ -105,6 +106,7 @@ function App() {
         <Route path="/role-assignment" element={<ManageRole />} />
         <Route path="/my-tickets" element={<MyTickets />} />
         <Route path="/my-projects/:projectId" element={<SingleProject />} />
+        <Route path="my-tickets/:ticketId" element={<SingleTicket />} />
         <Route path="/create-account" element={<SignUp />} />
         <Route path="/manage-project-user" element={<ManageProjectUser />} />
         <Route path="/my-profile" element={<UserProfile />} />

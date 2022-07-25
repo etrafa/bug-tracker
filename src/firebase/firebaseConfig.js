@@ -148,6 +148,7 @@ export const createTicket = async (
     ticketStatus: item.ticketStatus,
     ticketType: item.ticketType,
     projectName: item.projectName,
+    assignedUsers: item.assignedUsers,
   }));
   const TICKET_AS_OBJECT = Object.assign({}, ...TICKET_AS_ARRAY);
   const docRef = doc(db, colName, docID);

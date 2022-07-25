@@ -14,7 +14,7 @@ export const useGetNestedDocs = (colName, user, subCol) => {
       setLoading(true);
       const res = await getDocs(collection(db, colName, user?.uid, subCol));
       const data = res.docs.map((items) => {
-        return { ...items.data() };
+        return { ...items.data(), id: items.id };
       });
       setLoading(false);
       setDbData(data);

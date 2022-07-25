@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const TicketAssignedToUser = ({ dbData }) => {
   return (
     <div className="w-full text-center overflow-auto lg:ml-6 border-r-2">
@@ -21,9 +23,11 @@ const TicketAssignedToUser = ({ dbData }) => {
                 <td className="px-6 py-4">{item.tickets.ticketOwner}</td>
                 <td className="px-6 py-4">{item.tickets.ticketStatus}</td>
                 <td className="px-6 py-4">{item.tickets.submitTime}</td>
-                <td className="px-6 py-4 text-fbFillColor cursor-pointer underline hover:text-blue-700">
-                  More details
-                </td>
+                <Link to={`/my-tickets/${item.id}`}>
+                  <td className="px-6 py-4 text-fbFillColor cursor-pointer underline hover:text-blue-700">
+                    More details
+                  </td>
+                </Link>
               </tr>
             ))}
         </tbody>
