@@ -17,9 +17,6 @@ const SingleProject = () => {
 
   const { setDeleteProjectModal, setProjectId } = useContext(TrackerContext);
 
-  console.log(dbData?.projectName);
-  console.log(dbData?.assignedUsers[0]?.id);
-
   return (
     <div>
       {dbData && (

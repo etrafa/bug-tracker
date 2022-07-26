@@ -124,7 +124,8 @@ export const addUser = async (colName, docID, user, modal) => {
 };
 
 //remove assigned user from the db
-export const removeUser = async (colName, docID, user) => {
+export const removeUser = async (colName, docID, user, projectName) => {
+  //this will remove user from "projects" collection
   const docRef = doc(db, colName, docID);
   await updateDoc(docRef, {
     assignedUsers: arrayRemove({
@@ -134,7 +135,11 @@ export const removeUser = async (colName, docID, user) => {
       role: user.role,
     }),
   })
-    .then((e) => console.log(e))
+    .then(() => {
+      //this will remove selected project from user's database.
+      const userDocRef = doc(db, "users", user?.id, "my-projects", projectName);
+      deleteDoc(userDocRef);
+    })
     .catch((err) => console.log(err));
 };
 

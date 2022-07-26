@@ -1,12 +1,11 @@
 //firebase
-
 import { useGetDocs } from "../../customHooks/useGetDocs";
 import { useGetSingleDoc } from "../../customHooks/useGetSingleDoc";
 
 //react
 import { useState } from "react";
-import { collection, doc } from "firebase/firestore";
-import { db, removeUser } from "../../firebase/firebaseConfig";
+
+import { removeUser } from "../../firebase/firebaseConfig";
 import { useContext } from "react";
 import { TrackerContext } from "../../context/TrackerContext";
 
@@ -51,7 +50,12 @@ const ManageProjectUser = () => {
             <td>
               <svg
                 onClick={() => {
-                  removeUser("projects", currentProject, user);
+                  removeUser(
+                    "projects",
+                    currentProject,
+                    user,
+                    singleProject?.projectName
+                  );
                 }}
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6 hover:stroke-gray-400 cursor-pointer"
