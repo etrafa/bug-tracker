@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useState } from "react";
 import { useGetDocs } from "../../customHooks/useGetDocs";
 import { addUser } from "../../firebase/firebaseConfig";
@@ -12,10 +11,12 @@ const AssignUserModal = ({ setIsAssignUserModalOpen }) => {
   const [isFormValidated, setIsFormValidated] = useState(false);
 
   //store selected users
-  const [selectedUsers, setSelectedUsers] = useState([{}]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
 
-  //store selected projecct
+  //store selected project
   const [selectedProject, setSelectedProject] = useState("Please Select");
+
+  console.log(selectedProject);
 
   //* add-remove user when initializing new project
   const handleSelectedUsers = (e, user) => {
@@ -36,13 +37,13 @@ const AssignUserModal = ({ setIsAssignUserModalOpen }) => {
   const sendSelectedUsersToDB = (e) => {
     e.preventDefault();
     if (isFormValidated) {
-      //delete empty value from selected user's
-      setSelectedUsers(selectedUsers.shift());
       addUser(
         "projects",
-        selectedProject,
+        selectedProject?.id,
         selectedUsers,
-        setIsAssignUserModalOpen
+        setIsAssignUserModalOpen,
+        selectedProject?.projectName,
+        selectedProject
       );
     }
   };
@@ -79,7 +80,7 @@ const AssignUserModal = ({ setIsAssignUserModalOpen }) => {
               </label>
               <select
                 onChange={(e) => {
-                  setSelectedProject(e.target.value);
+                  setSelectedProject(JSON.parse(e.target.value));
                   if (
                     selectedUsers.length > 0 &&
                     selectedProject !== "Please Select"
@@ -96,7 +97,7 @@ const AssignUserModal = ({ setIsAssignUserModalOpen }) => {
                   <option
                     className="leading-9"
                     key={project?.id}
-                    value={project?.id}
+                    value={JSON.stringify(project)}
                   >
                     {project?.projectName}
                   </option>

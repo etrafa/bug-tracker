@@ -29,7 +29,7 @@ const ManageProjectUser = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const showUsers = singleProject?.assignedUsers
-    .filter((val) => {
+    ?.filter((val) => {
       if (searchTerm === "") {
         return val;
       } else if (
@@ -119,7 +119,7 @@ const ManageProjectUser = () => {
             Add Users
           </button>
 
-          {singleProject && singleProject?.assignedUsers.length === 0 ? (
+          {singleProject && singleProject?.assignedUsers?.length === 0 ? (
             <p className="font-bold mt-12 text-center">No user found.</p>
           ) : (
             <table className="w-full lg:mx-auto text-sm text-left text-gray-500 dark:text-gray-400 mt-6">

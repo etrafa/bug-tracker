@@ -8,7 +8,6 @@ import {
   deleteDoc,
   doc,
   getFirestore,
-  serverTimestamp,
   setDoc,
   updateDoc,
 } from "firebase/firestore";
@@ -114,13 +113,36 @@ export const updateUserRole = async (
 };
 
 //add assigned user to db
-export const addUser = async (colName, docID, user, modal) => {
+export const addUser = async (
+  colName,
+  docID,
+  user,
+  modal,
+  projectName,
+  projectItem
+) => {
+  //this will add user to current project
   const docRef = doc(db, colName, docID);
   await updateDoc(docRef, {
     assignedUsers: arrayUnion(...user),
   })
-    .then(() => modal(false))
-    .catch((err) => console.log(err));
+    //this will add current project to user's database.
+    .then(() => {
+      user
+        .forEach((item) => {
+          const userDocRef = doc(
+            db,
+            "users",
+            item?.id,
+            "my-projects",
+            projectName
+          );
+          setDoc(userDocRef, { ...projectItem });
+
+          modal(false);
+        })
+        .catch((err) => console.log(err));
+    });
 };
 
 //remove assigned user from the db
