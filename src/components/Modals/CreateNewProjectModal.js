@@ -3,6 +3,7 @@ import { db } from "../../firebase/firebaseConfig";
 import { collection, addDoc, doc, setDoc } from "firebase/firestore";
 import { useGetDocs } from "../../customHooks/useGetDocs";
 import { useState } from "react";
+import { useEffect } from "react";
 
 const CreateNewProjectModal = ({
   setIsProjectModalOpen,
@@ -21,6 +22,15 @@ const CreateNewProjectModal = ({
 
   //SUBMIT FORM VALIDATION
   const [isFormValidated, setIsFormValidated] = useState(false);
+  useEffect(() => {
+    createProjectInformation.projectName.length !== 0 &&
+    createProjectInformation.projectDescription.length !== 0
+      ? setIsFormValidated(true)
+      : setIsFormValidated(false);
+  }, [
+    createProjectInformation.projectName.length,
+    createProjectInformation.projectDescription.length,
+  ]);
 
   //ON INPUT CHANGE SAVE USER'S PROJECT NAME & DESCRIPTION
   const handleInput = (event) => {
@@ -29,14 +39,6 @@ const CreateNewProjectModal = ({
       ...createProjectInformation,
       ...newProject,
     });
-
-    //*form validation
-    if (
-      createProjectInformation.projectName.length >= 1 &&
-      createProjectInformation.projectDescription.length >= 1
-    ) {
-      setIsFormValidated(true);
-    }
   };
 
   //when creating a new project store user's you want to add to new project
@@ -57,8 +59,6 @@ const CreateNewProjectModal = ({
   //ON SUBMIT SAVE SAVE USER'S PROJECT NAME & DESCRIPTION TO DATABASE
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    console.log(selectedUsers);
 
     if (isFormValidated) {
       //this will create firebase collection named "projects" and add projects there.

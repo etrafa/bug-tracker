@@ -42,18 +42,14 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
   const currentUser = useAuth();
   const [currentUserInformation, setCurrentUserInformation] = useState();
 
+  //submit success message
+  const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
+
+  //form validation
+  const [isFormValidated, setIsFormValitated] = useState(false);
   useEffect(() => {
     setCurrentUserInformation(currentUser?.displayName);
   }, [currentUser, currentUserInformation]);
-
-  //form validation errors
-  const [assignUserError, setAssignUserError] = useState(false);
-  const [ticketDescriptionError, setTicketDescriptionError] = useState(false);
-  const [selectedProjectNameError, setSelectedProjectNameError] =
-    useState(false);
-
-  //submit success message
-  const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
 
   //timestamp for ticket
   const timeStamp = new Date();
@@ -78,25 +74,23 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
   //send ticket to database
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (selectedUsers.length < 1) setAssignUserError(true);
-    if (ticketDescriptionInput === "") setTicketDescriptionError(true);
-    if (selectedProjectName === "Please Select")
-      setSelectedProjectNameError(true);
 
-    if (
-      !assignUserError &&
-      !ticketDescriptionError &&
-      !selectedProjectNameError
-    ) {
-      createTicket(
-        selectedProjectID,
-        singleTicket,
-        setIsSubmitSuccess,
-        setIsTicketModalOpen,
-        selectedUserID
-      );
-    }
+    createTicket(
+      selectedProjectID,
+      singleTicket,
+      setIsSubmitSuccess,
+      setIsTicketModalOpen,
+      selectedUserID
+    );
   };
+
+  useEffect(() => {
+    ticketDescriptionInput.length !== 0 &&
+    selectedProjectName !== "Please Select" &&
+    selectedUsers.length !== 0
+      ? setIsFormValitated(true)
+      : setIsFormValitated(false);
+  }, [selectedProjectName, selectedUsers.length, ticketDescriptionInput]);
 
   return (
     <div className="w-full ml-auto fixed min-h-screen top-0 bg-black bg-opacity-75 z-50">
@@ -130,13 +124,9 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
               allProjects={allProjects}
               setSelectedProjectName={setSelectedProjectName}
               setSelectedProjectID={setSelectedProjectID}
-              selectedProjectNameError={selectedProjectNameError}
-              setSelectedProjectNameError={setSelectedProjectNameError}
             />
             <TicketDescription
               setTicketDescriptionInput={setTicketDescriptionInput}
-              ticketDescriptionError={ticketDescriptionError}
-              setTicketDescriptionError={setTicketDescriptionError}
             />
             <ShowAllUsers
               allUsers={allUsers}
@@ -145,8 +135,6 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
               setSelectedUsers={setSelectedUsers}
               selectedUserID={selectedUserID}
               setSelectedUserID={setSelectedUserID}
-              assignUserError={assignUserError}
-              setAssignUserError={setAssignUserError}
             />
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -173,7 +161,11 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
             <button
               onClick={(e) => handleSubmit(e)}
               type="submit"
-              className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className={
+                isFormValidated
+                  ? "w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  : "w-full pointer-events-none text-white bg-gray-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              }
             >
               Create
             </button>
