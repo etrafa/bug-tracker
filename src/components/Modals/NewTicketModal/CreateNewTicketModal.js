@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 
 //hooks
 import { useGetDocs } from "../../../customHooks/useGetDocs";
+import { useGetSingleDoc } from "../../../customHooks/useGetSingleDoc";
 
 //firebase
 import { createTicket, useAuth } from "../../../firebase/firebaseConfig";
@@ -34,9 +35,8 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
   //database call's
   //get projects from database
   const { dbData: allProjects } = useGetDocs("projects");
-
   //get users from database
-  const { dbData: allUsers } = useGetDocs("users");
+  const { dbData: allUsers } = useGetSingleDoc("projects", selectedProjectID);
 
   //get current user information
   const currentUser = useAuth();
@@ -141,13 +141,13 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
             <ShowAllUsers
               allUsers={allUsers}
               selectedUsers={selectedUsers}
+              setIsTicketModalOpen={setIsTicketModalOpen}
               setSelectedUsers={setSelectedUsers}
               selectedUserID={selectedUserID}
               setSelectedUserID={setSelectedUserID}
               assignUserError={assignUserError}
               setAssignUserError={setAssignUserError}
             />
-
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Ticket Details

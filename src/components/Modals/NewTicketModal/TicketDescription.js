@@ -10,6 +10,7 @@ const TicketDescription = ({
       </label>
       <input
         type="text"
+        required
         onChange={(e) => {
           setTicketDescriptionInput(e.target.value);
           setTicketDescriptionError(false);
