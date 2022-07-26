@@ -25,7 +25,6 @@ import DeleteProjectModal from "./components/Modals/DeleteProjectModal";
 import SideBar from "./components/Sidebar/SideBar";
 import AssignUserModal from "./components/Modals/AssignUserModal";
 import SingleTicket from "./components/SingleTicket/SingleTicket";
-import Test from "../src/Test";
 
 function App() {
   // MODALS
@@ -99,7 +98,7 @@ function App() {
       {isAssignUserModalOpen && (
         <AssignUserModal setIsAssignUserModalOpen={setIsAssignUserModalOpen} />
       )}
-      <Test />
+
       <Routes>
         <Route path="/" element={<DashboardHome />} />
         <Route path="/log-in" element={<Login />} />

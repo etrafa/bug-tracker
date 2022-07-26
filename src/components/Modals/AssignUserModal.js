@@ -16,8 +16,6 @@ const AssignUserModal = ({ setIsAssignUserModalOpen }) => {
   //store selected project
   const [selectedProject, setSelectedProject] = useState("Please Select");
 
-  console.log(selectedProject);
-
   //* add-remove user when initializing new project
   const handleSelectedUsers = (e, user) => {
     const { checked } = e.currentTarget;
@@ -26,12 +24,9 @@ const AssignUserModal = ({ setIsAssignUserModalOpen }) => {
     } else {
       setSelectedUsers(selectedUsers.filter((val) => val !== user));
     }
-    if (selectedUsers.length > 0 && selectedProject !== "Please Select") {
-      setIsFormValidated(true);
-    } else {
-      setIsFormValidated(false);
-    }
   };
+
+  console.log(selectedUsers.length);
 
   //save selected user's to firebase database
   const sendSelectedUsersToDB = (e) => {
@@ -73,26 +68,32 @@ const AssignUserModal = ({ setIsAssignUserModalOpen }) => {
           <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
             Assign New User
           </h3>
-          <form className="space-y-6">
+          <form
+            onChange={() => {
+              // if (
+              //   selectedUsers.length !== 0 &&
+              //   selectedProject !== "Please Select"
+              // ) {
+              //   setIsFormValidated(true);
+              // } else {
+              //   setIsFormValidated(false);
+              // }
+
+              selectedUsers.length === 0 && selectedProject === "Please Select"
+                ? setIsFormValidated(false)
+                : setIsFormValidated(true);
+            }}
+            className="space-y-6"
+          >
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Select Project
               </label>
               <select
-                onChange={(e) => {
-                  setSelectedProject(JSON.parse(e.target.value));
-                  if (
-                    selectedUsers.length > 0 &&
-                    selectedProject !== "Please Select"
-                  ) {
-                    setIsFormValidated(true);
-                  } else {
-                    setIsFormValidated(false);
-                  }
-                }}
+                onChange={(e) => setSelectedProject(JSON.parse(e.target.value))}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               >
-                <option defaultChecked>Please Select</option>
+                <option>Please Select</option>
                 {projectList?.map((project) => (
                   <option
                     className="leading-9"
