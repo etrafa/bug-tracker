@@ -7,13 +7,21 @@ import { deleteProject } from "../../firebase/firebaseConfig";
 
 //react
 import { useNavigate } from "react-router-dom";
+import { useGetSingleDoc } from "../../customHooks/useGetSingleDoc";
 
 const DeleteProjectModal = ({ setDeleteProjectModal }) => {
   const { projectId } = useContext(TrackerContext);
   const navigate = useNavigate();
 
+  const { dbData } = useGetSingleDoc("projects", projectId);
+
   const deleteHandler = () => {
-    deleteProject("projects", projectId).then(() => {
+    deleteProject(
+      "projects",
+      projectId,
+      dbData?.assignedUsers,
+      dbData?.projectName
+    ).then(() => {
       setDeleteProjectModal(false);
       navigate("/my-projects");
     });

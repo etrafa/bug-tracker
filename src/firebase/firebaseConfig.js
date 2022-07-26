@@ -73,9 +73,16 @@ export const useAuth = () => {
 };
 
 //delete project
-export const deleteProject = async (docName, id) => {
+export const deleteProject = async (docName, id, userList, projectName) => {
+  //this will delete the selected project from "projects" collection
   const deleteProject = doc(db, docName, id);
-  await deleteDoc(deleteProject);
+  await deleteDoc(deleteProject).then(() => {
+    //this will delete the selected project from selected users collection
+    userList.forEach((user) => {
+      const userDocRef = doc(db, "users", user?.id, "my-projects", projectName);
+      deleteDoc(userDocRef);
+    });
+  });
 };
 
 //create doc
