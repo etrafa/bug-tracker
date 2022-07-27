@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useState } from "react";
 import { useGetDocs } from "../../customHooks/useGetDocs";
 import { addUser } from "../../firebase/firebaseConfig";
@@ -7,14 +8,19 @@ const AssignUserModal = ({ setIsAssignUserModalOpen }) => {
   const { dbData, loading } = useGetDocs("users");
   const { dbData: projectList } = useGetDocs("projects");
 
-  //SUBMIT FORM VALIDATION
-  const [isFormValidated, setIsFormValidated] = useState(false);
-
   //store selected users
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   //store selected project
   const [selectedProject, setSelectedProject] = useState("Please Select");
+
+  //SUBMIT FORM VALIDATION
+  const [isFormValidated, setIsFormValidated] = useState(false);
+  useEffect(() => {
+    selectedUsers.length !== 0 && selectedProject !== "Please Select"
+      ? setIsFormValidated(true)
+      : setIsFormValidated(false);
+  }, [selectedUsers.length, selectedProject]);
 
   //* add-remove user when initializing new project
   const handleSelectedUsers = (e, user) => {
@@ -26,21 +32,17 @@ const AssignUserModal = ({ setIsAssignUserModalOpen }) => {
     }
   };
 
-  console.log(selectedUsers.length);
-
   //save selected user's to firebase database
   const sendSelectedUsersToDB = (e) => {
     e.preventDefault();
-    if (isFormValidated) {
-      addUser(
-        "projects",
-        selectedProject?.id,
-        selectedUsers,
-        setIsAssignUserModalOpen,
-        selectedProject?.projectName,
-        selectedProject
-      );
-    }
+    addUser(
+      "projects",
+      selectedProject?.id,
+      selectedUsers,
+      setIsAssignUserModalOpen,
+      selectedProject?.projectName,
+      selectedProject
+    );
   };
 
   return (
@@ -68,23 +70,7 @@ const AssignUserModal = ({ setIsAssignUserModalOpen }) => {
           <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
             Assign New User
           </h3>
-          <form
-            onChange={() => {
-              // if (
-              //   selectedUsers.length !== 0 &&
-              //   selectedProject !== "Please Select"
-              // ) {
-              //   setIsFormValidated(true);
-              // } else {
-              //   setIsFormValidated(false);
-              // }
-
-              selectedUsers.length === 0 && selectedProject === "Please Select"
-                ? setIsFormValidated(false)
-                : setIsFormValidated(true);
-            }}
-            className="space-y-6"
-          >
+          <form className="space-y-6">
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Select Project

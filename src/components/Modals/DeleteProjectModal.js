@@ -15,16 +15,15 @@ const DeleteProjectModal = ({ setDeleteProjectModal }) => {
 
   const { dbData } = useGetSingleDoc("projects", projectId);
 
+  console.log(dbData?.assignedUsers[0]?.id, dbData?.projectName);
+
   const deleteHandler = () => {
-    deleteProject(
-      "projects",
-      projectId,
-      dbData?.assignedUsers,
-      dbData?.projectName
-    ).then(() => {
-      setDeleteProjectModal(false);
-      navigate("/my-projects");
-    });
+    deleteProject(projectId, dbData?.assignedUsers, dbData?.projectName).then(
+      () => {
+        setDeleteProjectModal(false);
+        navigate("/my-projects");
+      }
+    );
   };
 
   return (

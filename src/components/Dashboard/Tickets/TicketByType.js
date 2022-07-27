@@ -59,6 +59,7 @@ const TicketByType = ({ dbData }) => {
                   "#f3084f",
                   "#2F3A8F",
                 ],
+                borderWidth: 0,
               },
             ],
           }}

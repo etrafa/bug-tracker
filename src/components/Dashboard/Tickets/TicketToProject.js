@@ -56,7 +56,7 @@ const TicketToProject = ({ dbData }) => {
         <p className="text-center py-12 lg:pt-24 font-bold">No ticket found.</p>
       ) : (
         <Doughnut
-          className="max-h-64 mt-2"
+          className="max-h-64"
           options={{
             plugins: {
               legend: {
@@ -70,6 +70,7 @@ const TicketToProject = ({ dbData }) => {
               {
                 data: projectLabelsData,
                 backgroundColor: chartColors,
+                borderWidth: 0,
               },
             ],
           }}

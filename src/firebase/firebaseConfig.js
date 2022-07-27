@@ -7,9 +7,12 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDocs,
   getFirestore,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import {
   getAuth,
@@ -20,6 +23,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { useEffect, useState } from "react";
+import { writeBatch } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -34,6 +38,7 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+const batch = writeBatch(db);
 const auth = getAuth();
 
 //signup
@@ -72,14 +77,30 @@ export const useAuth = () => {
 };
 
 //delete project
-export const deleteProject = async (docName, id, userList, projectName) => {
-  //this will delete the selected project from "projects" collection
-  const deleteProject = doc(db, docName, id);
-  await deleteDoc(deleteProject).then(() => {
-    //this will delete the selected project from selected users collection
-    userList.forEach((user) => {
+export const deleteProject = async (id, userList, projectName) => {
+  // 1.delete ticket belonging to selected project
+  await userList.forEach(async (user) => {
+    const colRef = query(collection(db, "users", user?.id, "tickets"));
+    const q = query(colRef, where("projectName", "==", projectName));
+    const querySnapShot = await getDocs(q);
+    querySnapShot.forEach(async (doc) => {
+      await deleteDoc(doc.ref);
+    });
+
+    //2.delete selected project from assigned users database
+
+    await userList.forEach(async (user) => {
       const userDocRef = doc(db, "users", user?.id, "my-projects", projectName);
-      deleteDoc(userDocRef);
+      try {
+        await deleteDoc(userDocRef);
+      } catch (err) {
+        console.log(err);
+      }
+
+      //3.delete project
+
+      const deleteProject = doc(db, "projects", id);
+      await deleteDoc(deleteProject);
     });
   });
 };
