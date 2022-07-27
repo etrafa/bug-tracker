@@ -183,7 +183,15 @@ export const removeUser = async (colName, docID, user, projectName) => {
       const userDocRef = doc(db, "users", user?.id, "my-projects", projectName);
       deleteDoc(userDocRef);
     })
-    .catch((err) => console.log(err));
+    .then(async () => {
+      //this will remove selected tickets from user's database.
+      const colRef = query(collection(db, "users", user?.id, "tickets"));
+      const q = query(colRef, where("projectName", "==", projectName));
+      const querySnapShot = await getDocs(q);
+      querySnapShot.forEach(async (doc) => {
+        await deleteDoc(doc.ref);
+      });
+    });
 };
 
 //add ticket to the project and selected user's database
