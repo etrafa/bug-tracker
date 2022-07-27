@@ -3,13 +3,13 @@ import TicketAssignedToUser from "./TicketAssignedToUser";
 
 //firebase
 import { useAuth } from "../../../firebase/firebaseConfig";
-import { useGetNestedDocs } from "../../../customHooks/useGetNestedDocs";
+import { useGetDocs } from "../../../customHooks/useGetDocs";
 
 const MyTickets = () => {
   const currentUser = useAuth();
 
   //get all the tickets from user's database
-  const { dbData } = useGetNestedDocs("users", currentUser, "tickets");
+  const { dbData } = useGetDocs(`users/${currentUser?.uid}/tickets`);
 
   return (
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto mb-6 block">

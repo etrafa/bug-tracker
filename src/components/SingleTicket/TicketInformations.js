@@ -3,22 +3,22 @@ const TicketInformations = ({ dbData }) => {
   const ticketElementsForHTML = [
     {
       element: "Ticket Title",
-      value: dbData && dbData?.tickets?.ticketDescription,
+      value: dbData && dbData?.ticketDescription,
     },
-    { element: "Project", value: dbData && dbData?.tickets?.projectName },
+    { element: "Project", value: dbData && dbData?.projectName },
 
-    { element: "Author", value: dbData && dbData?.tickets?.ticketOwner },
+    { element: "Author", value: dbData && dbData?.ticketOwner },
     {
       element: "Ticket Priority",
-      value: dbData && dbData?.tickets?.ticketPriority,
+      value: dbData && dbData?.ticketPriority,
     },
     {
       element: "Ticket Status",
-      value: dbData && dbData?.tickets?.ticketStatus,
+      value: dbData && dbData?.ticketStatus,
     },
-    { element: "Ticket Type", value: dbData && dbData?.tickets?.ticketType },
+    { element: "Ticket Type", value: dbData && dbData?.ticketType },
 
-    { element: "Date", value: dbData && dbData?.tickets?.submitTime },
+    { element: "Date", value: dbData && dbData?.submitTime },
   ];
 
   const ticketClassNames = [
@@ -30,7 +30,8 @@ const TicketInformations = ({ dbData }) => {
 
   return (
     <div className="w-full lg:w-6/12 max-w-2xl overflow-auto mt-12 mx-auto">
-      <div className="grid grid-cols-2 mx-auto justify-center gap-8">
+      <h2 className="text-center font-bold text-lg">Ticket Details</h2>
+      <div className="grid grid-cols-2 mx-auto justify-center gap-8 mt-8">
         {ticketElementsForHTML.map((el) => (
           <div>
             <h2 className="text-sm text-gray-900 font-bold bg-gray-200 rounded-md w-28 h-8 pt-2 my-2 text-center mx-auto">
@@ -56,7 +57,7 @@ const TicketInformations = ({ dbData }) => {
           <h2 className="text-sm text-gray-900 font-bold bg-gray-200 rounded-md w-28 h-8 pt-2 my-2 text-center mx-auto">
             Users
           </h2>
-          {dbData?.tickets?.assignedUsers?.map((item, index) => (
+          {dbData?.assignedUsers?.map((item, index) => (
             <p className="text-center">
               <span>{index + 1}- </span>
               {item?.fullName}

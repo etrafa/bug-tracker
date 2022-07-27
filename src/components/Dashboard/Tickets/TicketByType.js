@@ -43,10 +43,10 @@ const TicketByType = ({ dbData }) => {
           }}
           data={{
             labels: [
+              "Server Issues",
               "Bugs/Error",
               "Design",
               "Compatibility",
-              "Server Issues",
               "Other",
             ],
             datasets: [

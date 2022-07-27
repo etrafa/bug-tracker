@@ -14,8 +14,6 @@ const Tickets = () => {
 
   const { dbData } = useGetDocs(`users/${currentUser?.uid}/tickets`);
 
-  console.log(dbData);
-
   return (
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto">
       <h1 className="text-center text-4xl font-black my-4 text-fbFillColor">

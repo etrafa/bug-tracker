@@ -1,6 +1,6 @@
 //* READ FIRESTORE DATABASE
 
-import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db, useAuth } from "../firebase/firebaseConfig";
 

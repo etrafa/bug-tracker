@@ -1,7 +1,7 @@
-import React from "react";
-import { useState } from "react";
-import { useGetNestedSingleDoc } from "../../customHooks/useGetNestedSingleDoc";
+import { useState, useEffect } from "react";
 import { addTicket, useAuth } from "../../firebase/firebaseConfig";
+import { useGetSingleDoc } from "../../customHooks/useGetSingleDoc";
+import TicketPagination from "./TicketPagination";
 
 const TicketComments = ({ ticketId }) => {
   //save comment input
@@ -15,54 +15,33 @@ const TicketComments = ({ ticketId }) => {
   const submitHandler = (e) => {
     e.preventDefault();
     addTicket("users", currentUser, "tickets", ticketId, commentInput);
+    setCommentInput("");
   };
 
-  console.log(currentUser?.uid);
-
-  console.log(ticketId);
-
-  //save user's comment input to send database
-  const changeHandler = (e) => {
-    setCommentInput(e.target.value);
-    setIsFormValidated(true);
-  };
-
-  //show comments
-  const { dbData } = useGetNestedSingleDoc(
-    "users",
-    currentUser,
-    "tickets",
+  //get comments from db
+  const { dbData } = useGetSingleDoc(
+    `users/${currentUser?.uid}/tickets`,
     ticketId
   );
+
+  //check validation
+  useEffect(() => {
+    commentInput.length === 0
+      ? setIsFormValidated(false)
+      : setIsFormValidated(true);
+  }, [commentInput.length]);
 
   return (
     <div className="w-full lg:w-6/12 max-w-2xl text-center overflow-auto mt-12 mx-auto lg:border-l-2">
       <h2 className="font-bold text-lg">Comments</h2>
-
-      {/* //* SHOW COMMENTS */}
-      {dbData &&
-        dbData?.comments?.map((singleComment) => {
-          const { comment, commentOwner, createdAt } = singleComment;
-
-          return (
-            <section className="w-full lg:w-11/12 min-h-[5rem] bg-gray-50 mx-auto my-4">
-              <header className="flex justify-end">
-                <p className="mx-6 mt-2 text-gray-400 text-sm">
-                  {commentOwner}
-                </p>
-                <p className="mx-6 mt-2 text-gray-400 text-sm">{createdAt}</p>
-              </header>
-              <article className="text-left m-4">{comment}</article>
-            </section>
-          );
-        })}
-
+      <TicketPagination dbData={dbData} />
       {/* //*CREATE A NEW COMMENT */}
       <textarea
         className="border w-11/12 h-12 pl-2 pt-2 text-sm mt-6"
         type="text"
+        value={commentInput}
         placeholder="Write a comment."
-        onChange={(e) => changeHandler(e)} // save user's comment to state to send database
+        onChange={(e) => setCommentInput(e.target.value)} // save user's comment to state to send database
       />
       <button
         onClick={(e) => submitHandler(e)}

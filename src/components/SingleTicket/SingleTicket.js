@@ -1,6 +1,6 @@
 //firebase
 import { useAuth } from "../../firebase/firebaseConfig";
-import { useGetNestedSingleDoc } from "../../customHooks/useGetNestedSingleDoc";
+import { useGetSingleDoc } from "../../customHooks/useGetSingleDoc";
 
 //react
 import { useParams } from "react-router-dom";
@@ -10,15 +10,15 @@ import TicketComments from "./TicketComments";
 import TicketInformations from "./TicketInformations";
 
 const SingleTicket = () => {
-  const { ticketId } = useParams();
-  const currentUser = useAuth();
-
-  const { dbData } = useGetNestedSingleDoc(
-    "users",
-    currentUser,
-    "tickets",
+  const { ticketId } = useParams(); //get the ticket id
+  const currentUser = useAuth(); // get current user
+  //get current ticket info
+  const { dbData } = useGetSingleDoc(
+    `users/${currentUser?.uid}/tickets`,
     ticketId
   );
+
+  console.log(dbData);
 
   return (
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto mb-6">
