@@ -36,6 +36,7 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
   //get projects from database
   const { dbData: allProjects } = useGetDocs("projects");
   //get users from database
+
   const { dbData: allUsers } = useGetSingleDoc("projects", selectedProjectID);
 
   //get current user information

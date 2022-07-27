@@ -1,6 +1,6 @@
 //* READ FIRESTORE DATABASE
 
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db, useAuth } from "../firebase/firebaseConfig";
 
@@ -12,12 +12,15 @@ export const useGetDocs = (colName) => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const res = await getDocs(collection(db, colName));
-      const data = res.docs.map((items) => {
-        return { id: items.id, ...items.data() };
+      const docRef = collection(db, colName);
+      onSnapshot(docRef, (item) => {
+        setDbData(
+          item.docs.map((i) => {
+            return { ...i.data(), id: i.id };
+          })
+        );
       });
       setLoading(false);
-      setDbData(data);
     };
     fetchData();
   }, [currentUser]);
