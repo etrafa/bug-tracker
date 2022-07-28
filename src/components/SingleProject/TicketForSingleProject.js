@@ -1,8 +1,48 @@
 import { useGetDocs } from "../../customHooks/useGetDocs";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import ReactPaginate from "react-paginate";
 
 const TicketForSingleProject = ({ project }) => {
   const { dbData } = useGetDocs(`projects/${project}/tickets`);
+
+  //pagination show only 5 tickets per page
+  const [pageNumber, setPageNumber] = useState(0);
+  const TICKET_PER_PAGE = 5;
+  const pagesVisited = pageNumber * TICKET_PER_PAGE;
+  const pageCount = Math.ceil(dbData?.length / TICKET_PER_PAGE);
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  };
+  const [searchTerm, setSearchTerm] = useState("");
+  const showTickets = dbData
+    ?.filter((val) => {
+      if (searchTerm === "") {
+        return val;
+      } else if (
+        val?.ticketDescription.toLowerCase().includes(searchTerm.toLowerCase())
+      ) {
+        return val;
+      }
+    })
+    .slice(pagesVisited, pagesVisited + TICKET_PER_PAGE)
+    .map((ticket) => {
+      return (
+        <tbody>
+          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <td className="px-6 py-4">{ticket.ticketDescription}</td>
+            <td className="px-6 py-4">{ticket.ticketOwner}</td>
+            <td className="px-6 py-4">{ticket.ticketStatus}</td>
+            <td className="px-6 py-4">{ticket.submitTime}</td>
+            <Link to={`/my-tickets/${ticket?.id}`}>
+              <td className="px-6 py-4 underline hover:text-blue-600">
+                More details
+              </td>
+            </Link>
+          </tr>
+        </tbody>
+      );
+    });
 
   return (
     <div className="w-full lg:w-6/12 text-center overflow-auto mr-16">
@@ -34,6 +74,7 @@ const TicketForSingleProject = ({ project }) => {
               </svg>
             </div>
             <input
+              onChange={(e) => setSearchTerm(e.target.value)}
               type="text"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search Ticket"
@@ -49,24 +90,19 @@ const TicketForSingleProject = ({ project }) => {
                 <th className="px-6 py-3"></th>
               </tr>
             </thead>
-
-            <tbody>
-              {dbData &&
-                dbData?.map((ticket) => (
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td className="px-6 py-4">{ticket.ticketDescription}</td>
-                    <td className="px-6 py-4">{ticket.ticketOwner}</td>
-                    <td className="px-6 py-4">{ticket.ticketStatus}</td>
-                    <td className="px-6 py-4">{ticket.submitTime}</td>
-                    <Link to={`/my-tickets/${ticket?.id}`}>
-                      <td className="px-6 py-4 underline hover:text-blue-600">
-                        More details
-                      </td>
-                    </Link>
-                  </tr>
-                ))}
-            </tbody>
+            {showTickets}
           </table>
+          <ReactPaginate
+            previousLabel={"<"}
+            nextLabel={">"}
+            pageCount={pageCount}
+            onPageChange={changePage}
+            containerClassName={"paginationBttns"}
+            previousLinkClassName={"previousBttn"}
+            nextLinkClassName={"nextBttn"}
+            disabledClassName={"paginationDisabled"}
+            activeClassName={"paginationActive"}
+          />
         </div>
       )}
     </div>
