@@ -1,5 +1,4 @@
 //components
-import UserChangePassword from "./UserChangePassword";
 import UserProfileInformation from "./UserProfileInformation";
 
 const UserProfile = () => {
@@ -11,7 +10,6 @@ const UserProfile = () => {
         </div>
         <div className="w-full mt-8 flex flex-col lg:flex-row lg:justify-between">
           <UserProfileInformation />
-          <UserChangePassword />
         </div>
       </div>
     </div>

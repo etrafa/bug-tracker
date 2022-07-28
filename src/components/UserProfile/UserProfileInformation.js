@@ -4,9 +4,8 @@ const UserProfileInformation = () => {
   const currentUser = useAuth();
 
   return (
-    <div className="w-full md:w-9/12 mx-auto lg:w-6/12 text-center overflow-auto lg:ml-6 lg:border-r-2">
+    <div className="text-center mx-auto w-full max-w-3xl">
       <h1 className="text-4xl text-center mt-4">User Information</h1>
-
       <table className="w-full mt-8">
         <tr>
           <td>Full Name</td>

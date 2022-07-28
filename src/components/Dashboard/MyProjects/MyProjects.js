@@ -7,6 +7,8 @@ import { useState } from "react";
 
 //components
 import LoadSpinner from "../../Utilities/LoadSpinner";
+import { useContext } from "react";
+import { TrackerContext } from "../../../context/TrackerContext";
 
 const MyProjects = () => {
   // const projectCollectionRef = collection(db, "projects");
@@ -14,6 +16,9 @@ const MyProjects = () => {
 
   //filter search result
   const [searchTerm, setSearchTerm] = useState("");
+
+  //set project ID
+  const { setProjectId } = useContext(TrackerContext);
 
   return (
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto mb-6">
@@ -86,11 +91,16 @@ const MyProjects = () => {
                       </td>
                       <td className="px-6 py-4">
                         <ul className="list-disc">
-                          <li className="text-fbFillColor cursor-pointer underline hover:text-black">
-                            Manage Users
-                          </li>
+                          <Link to={`/manage-project-user`}>
+                            <li className="text-fbFillColor cursor-pointer underline hover:text-black">
+                              Manage Users
+                            </li>
+                          </Link>
                           <Link to={`/my-projects/${project.id}`}>
-                            <li className="text-fbFillColor cursor-pointer underline hover:text-black mt-3 ">
+                            <li
+                              onClick={() => setProjectId(project?.id)}
+                              className="text-fbFillColor cursor-pointer underline hover:text-black mt-3"
+                            >
                               Details
                             </li>
                           </Link>

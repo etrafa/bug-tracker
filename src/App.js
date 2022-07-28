@@ -105,7 +105,7 @@ function App() {
         <Route path="/my-projects" element={<MyProjects />} />
         <Route path="/role-assignment" element={<ManageRole />} />
         <Route path="/my-tickets" element={<MyTickets />} />
-        <Route path="/my-projects/:projectId" element={<SingleProject />} />
+        <Route path="/my-projects/:project" element={<SingleProject />} />
         <Route path="my-tickets/:ticketId" element={<SingleTicket />} />
         <Route path="/create-account" element={<SignUp />} />
         <Route path="/manage-project-user" element={<ManageProjectUser />} />

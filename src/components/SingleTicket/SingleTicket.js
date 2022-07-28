@@ -8,15 +8,16 @@ import { useParams } from "react-router-dom";
 //components
 import TicketComments from "./TicketComments";
 import TicketInformations from "./TicketInformations";
+import { useContext } from "react";
+import { TrackerContext } from "../../context/TrackerContext";
 
 const SingleTicket = () => {
+  const { projectId } = useContext(TrackerContext); //get current project id
   const { ticketId } = useParams(); //get the ticket id
-  const currentUser = useAuth(); // get current user
+
+  console.log(projectId);
   //get current ticket info
-  const { dbData } = useGetSingleDoc(
-    `users/${currentUser?.uid}/tickets`,
-    ticketId
-  );
+  const { dbData } = useGetSingleDoc(`projects/${projectId}/tickets`, ticketId);
 
   console.log(dbData);
 
