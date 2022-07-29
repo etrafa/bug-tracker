@@ -9,15 +9,9 @@ const NavbarSmallScreen = ({
 }) => {
   const navigate = useNavigate();
 
-  /* track user's role and if user is 
-  ADMIN: SHOW MANAGE ROLE ASSIGNMENT PAGE
-   if user's role is 
-   NOT ADMIN: DO NOT SHOW ROLE ASSIGNMENT PAGE   
-   */
+  const currentUser = useAuth(); // get current user
 
-  const currentUser = useAuth();
-  const { dbData } = useGetSingleDoc("users", currentUser?.uid);
-  const userRole = dbData?.role;
+  const { dbData: userRole } = useGetSingleDoc("users", currentUser?.uid);
 
   return (
     <div className="w-full lg:hidden min-h-screen bg-gray-200 fixed top-0 bottom-0 z-50 overflow-y-auto">
@@ -57,7 +51,7 @@ const NavbarSmallScreen = ({
             <span className="ml-3">Dashboard Home</span>
           </NavLink>
         </li>
-        {userRole === "admin" ? (
+        {userRole?.role === "admin" ? (
           <li>
             <NavLink
               className={({ isActive }) =>
@@ -206,12 +200,14 @@ const NavbarSmallScreen = ({
           </span>
         </li>
         <li className="my-4 mx-auto">
-          <button
-            onClick={() => setIsProjectModalOpen(true)}
-            className="bg-white hover:bg-slate-100 w-64 lg:mx-6 h-12 rounded-md text-black font-bold border"
-          >
-            CREATE NEW PROJECT
-          </button>
+          {userRole?.role === "admin" ? (
+            <button
+              onClick={() => setIsProjectModalOpen(true)}
+              className="bg-white hover:bg-slate-100 w-64 lg:mx-6 h-12 rounded-md text-black font-bold border"
+            >
+              CREATE NEW PROJECT
+            </button>
+          ) : null}
         </li>
         <li className="my-4 mx-auto">
           <button
