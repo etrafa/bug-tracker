@@ -37,7 +37,9 @@ const SignUp = () => {
           onSubmit={formik.handleSubmit}
           className="bg-white px-6 py-8 rounded shadow-md text-black w-full"
         >
-          <h1 className="mb-8 text-3xl text-center">Sign up</h1>
+          <h1 className="mb-8 text-3xl text-center">
+            Sign up Bug Tracker and join your team!
+          </h1>
           <input
             name="fullName"
             type="text"
@@ -97,7 +99,7 @@ const SignUp = () => {
             )}
           <button
             type="submit"
-            className="w-full text-center py-3 rounded bg-green-400 text-white focus:outline-none my-1"
+            className="w-full text-center py-3 rounded bg-fbFillColor hover:bg-blue-500 text-white focus:outline-none my-1"
           >
             Create Account
           </button>

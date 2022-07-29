@@ -10,18 +10,81 @@ import LoadSpinner from "../../Utilities/LoadSpinner";
 import { useContext } from "react";
 import { TrackerContext } from "../../../context/TrackerContext";
 import { useAuth } from "../../../firebase/firebaseConfig";
+import { useGetSingleDoc } from "../../../customHooks/useGetSingleDoc";
+import ReactPaginate from "react-paginate";
 
 const MyProjects = () => {
+  //get current user and their role
   const currentUser = useAuth();
-  const { dbData, loading } = useGetDocs(
+  const { dbData: userRole } = useGetSingleDoc("users", currentUser?.uid);
+
+  //IF USER ROLE IS ADMIN => THEY CAN SEE ALL PROJECTS IN THE DATABASE
+  //IF USER ROLE IS USER/DEVELOPER => THEY CAN ONLY SEE PROJECTS ASSIGNED TO THEM
+  const { dbData: selectedProjects, loading } = useGetDocs(
     `users/${currentUser?.uid}/my-projects`
   );
+
+  const { dbData: allProjects } = useGetDocs("projects");
 
   //filter search result
   const [searchTerm, setSearchTerm] = useState("");
 
   //set project ID
   const { setProjectId } = useContext(TrackerContext);
+
+  //pagination show only 10 user's per page
+  const [pageNumber, setPageNumber] = useState(0);
+  const PROJECT_PER_PAGE = 5;
+  const pagesVisited = pageNumber * PROJECT_PER_PAGE;
+  const pageCount = Math.ceil(allProjects?.length / PROJECT_PER_PAGE);
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  };
+
+  const showProjects = allProjects
+    ?.filter((val) => {
+      if (searchTerm === "") {
+        return val;
+      } else if (
+        val.projectName.toLowerCase().includes(searchTerm.toLowerCase())
+      ) {
+        return val;
+      }
+    })
+    .slice(pagesVisited, pagesVisited + PROJECT_PER_PAGE)
+    .map((project) => {
+      return (
+        <tr
+          key={project?.id}
+          className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+        >
+          <th
+            scope="row"
+            className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+          >
+            {project.projectName}
+          </th>
+          <td className="px-6 py-4">{project.projectDescription}</td>
+          <td className="px-6 py-4">
+            <ul className="list-disc">
+              <Link to={`/manage-project-user`}>
+                <li className="text-fbFillColor cursor-pointer underline hover:text-black">
+                  Manage Users
+                </li>
+              </Link>
+              <Link to={`/my-projects/${project.id}`}>
+                <li
+                  onClick={() => setProjectId(project?.id)}
+                  className="text-fbFillColor cursor-pointer underline hover:text-black mt-3"
+                >
+                  Details
+                </li>
+              </Link>
+            </ul>
+          </td>
+        </tr>
+      );
+    });
 
   return (
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto mb-6">
@@ -55,65 +118,30 @@ const MyProjects = () => {
           </div>
         </div>
         {loading && <LoadSpinner />}
-        {dbData && (
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-12">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th className="px-6 py-3">Project Name</th>
-                <th className="px-6 py-3">Project Description</th>
-                <th className="px-6 py-3">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {dbData
-                .filter((val) => {
-                  if (searchTerm === "") {
-                    return val;
-                  } else if (
-                    val?.projectName
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase())
-                  ) {
-                    return val;
-                  }
-                })
-                .map((project) => {
-                  return (
-                    <tr
-                      key={project?.id}
-                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                    >
-                      <th
-                        scope="row"
-                        className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-                      >
-                        {project.projectName}
-                      </th>
-                      <td className="px-6 py-4">
-                        {project.projectDescription}
-                      </td>
-                      <td className="px-6 py-4">
-                        <ul className="list-disc">
-                          <Link to={`/manage-project-user`}>
-                            <li className="text-fbFillColor cursor-pointer underline hover:text-black">
-                              Manage Users
-                            </li>
-                          </Link>
-                          <Link to={`/my-projects/${project.id}`}>
-                            <li
-                              onClick={() => setProjectId(project?.id)}
-                              className="text-fbFillColor cursor-pointer underline hover:text-black mt-3"
-                            >
-                              Details
-                            </li>
-                          </Link>
-                        </ul>
-                      </td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </table>
+        {selectedProjects && (
+          <>
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-12">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th className="px-6 py-3">Project Name</th>
+                  <th className="px-6 py-3">Project Description</th>
+                  <th className="px-6 py-3">Actions</th>
+                </tr>
+              </thead>
+              <tbody>{showProjects}</tbody>
+            </table>
+            <ReactPaginate
+              previousLabel={"<"}
+              nextLabel={">"}
+              pageCount={pageCount}
+              onPageChange={changePage}
+              containerClassName={"paginationBttns"}
+              previousLinkClassName={"previousBttn"}
+              nextLinkClassName={"nextBttn"}
+              disabledClassName={"paginationDisabled"}
+              activeClassName={"paginationActive"}
+            />
+          </>
         )}
       </div>
     </div>
