@@ -36,7 +36,6 @@ function App() {
   const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
   const [deleteProjectModal, setDeleteProjectModal] = useState(false);
   const [isAssignUserModalOpen, setIsAssignUserModalOpen] = useState(false);
-  const [projectId, setProjectId] = useState("");
 
   //* TRACK IF USER LOGGED IN
   const currentUser = useAuth();
@@ -62,8 +61,6 @@ function App() {
         setSignUpErrorMessage,
         setDeleteProjectModal,
         setIsAssignUserModalOpen,
-        projectId,
-        setProjectId,
       }}
     >
       {currentUser && <Sidebar />}

@@ -16,8 +16,6 @@ const SideBar = () => {
   const { dbData } = useGetSingleDoc("users", currentUser?.uid);
   const userRole = dbData?.role;
 
-  console.log(userRole);
-
   return (
     <aside
       className="w-64 min-h-screen bg-gray-50 fixed top-0 left-0 hidden lg:block"

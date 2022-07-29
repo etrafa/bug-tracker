@@ -9,10 +9,13 @@ import { useState } from "react";
 import LoadSpinner from "../../Utilities/LoadSpinner";
 import { useContext } from "react";
 import { TrackerContext } from "../../../context/TrackerContext";
+import { useAuth } from "../../../firebase/firebaseConfig";
 
 const MyProjects = () => {
-  // const projectCollectionRef = collection(db, "projects");
-  const { dbData, loading } = useGetDocs("projects");
+  const currentUser = useAuth();
+  const { dbData, loading } = useGetDocs(
+    `users/${currentUser?.uid}/my-projects`
+  );
 
   //filter search result
   const [searchTerm, setSearchTerm] = useState("");

@@ -9,11 +9,19 @@ import { Link, useParams } from "react-router-dom";
 //context
 import { useContext } from "react";
 import { TrackerContext } from "../../context/TrackerContext";
+import { useAuth } from "../../firebase/firebaseConfig";
 
 const SingleProject = () => {
   const { project } = useParams();
 
-  const { dbData } = useGetSingleDoc("projects", project);
+  const currentUser = useAuth();
+
+  console.log(project);
+
+  const { dbData } = useGetSingleDoc(
+    `users/${currentUser?.uid}/my-projects/`,
+    project
+  );
 
   const { setDeleteProjectModal } = useContext(TrackerContext);
 
