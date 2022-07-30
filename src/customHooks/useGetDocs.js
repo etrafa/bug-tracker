@@ -23,6 +23,6 @@ export const useGetDocs = (colName) => {
       setLoading(false);
     };
     fetchData();
-  }, [currentUser]);
+  }, [currentUser, colName]);
   return { dbData, loading };
 };

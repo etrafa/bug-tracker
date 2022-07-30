@@ -12,6 +12,7 @@ import { TrackerContext } from "../../../context/TrackerContext";
 import { useAuth } from "../../../firebase/firebaseConfig";
 import { useGetSingleDoc } from "../../../customHooks/useGetSingleDoc";
 import ReactPaginate from "react-paginate";
+import { useEffect } from "react";
 
 const MyProjects = () => {
   //get current user and their role
@@ -20,11 +21,19 @@ const MyProjects = () => {
 
   //IF USER ROLE IS ADMIN => THEY CAN SEE ALL PROJECTS IN THE DATABASE
   //IF USER ROLE IS USER/DEVELOPER => THEY CAN ONLY SEE PROJECTS ASSIGNED TO THEM
-  const { dbData: selectedProjects, loading } = useGetDocs(
-    `users/${currentUser?.uid}/my-projects`
-  );
 
-  const { dbData: allProjects } = useGetDocs("projects");
+  const [query, setQuery] = useState("");
+  const { dbData: allProjects, loading } = useGetDocs(query);
+
+  useEffect(() => {
+    if (userRole) {
+      userRole?.role === "admin"
+        ? setQuery("projects")
+        : setQuery(`users/${currentUser?.uid}/my-projects`);
+    }
+  }, [query, userRole?.role]);
+
+  console.log(query);
 
   //filter search result
   const [searchTerm, setSearchTerm] = useState("");
@@ -93,56 +102,58 @@ const MyProjects = () => {
           My Projects
         </h1>
         <div class="pl-4 pt-12">
-          <label className="sr-only">Search</label>
-          <div className="relative mt-1">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <svg
-                className="w-5 h-5 text-gray-500 dark:text-gray-400"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-            </div>
-            <input
-              type="text"
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Search Project"
-            />
-          </div>
+          {loading && <LoadSpinner />}
+          {allProjects?.length >= 1 ? (
+            <>
+              <label className="sr-only">Search</label>
+              <div className="relative mt-1">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <svg
+                    className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Search Project"
+                />
+              </div>
+              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-12">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  <tr>
+                    <th className="px-6 py-3">Project Name</th>
+                    <th className="px-6 py-3">Project Description</th>
+                    <th className="px-6 py-3">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>{showProjects}</tbody>
+              </table>
+              <ReactPaginate
+                previousLabel={"<"}
+                nextLabel={">"}
+                pageCount={pageCount}
+                onPageChange={changePage}
+                containerClassName={"paginationBttns"}
+                previousLinkClassName={"previousBttn"}
+                nextLinkClassName={"nextBttn"}
+                disabledClassName={"paginationDisabled"}
+                activeClassName={"paginationActive"}
+              />
+            </>
+          ) : (
+            <p className="my-12 text-center font-bold">No ticket found.</p>
+          )}
         </div>
-        {loading && <LoadSpinner />}
-        {selectedProjects && (
-          <>
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-12">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <th className="px-6 py-3">Project Name</th>
-                  <th className="px-6 py-3">Project Description</th>
-                  <th className="px-6 py-3">Actions</th>
-                </tr>
-              </thead>
-              <tbody>{showProjects}</tbody>
-            </table>
-            <ReactPaginate
-              previousLabel={"<"}
-              nextLabel={">"}
-              pageCount={pageCount}
-              onPageChange={changePage}
-              containerClassName={"paginationBttns"}
-              previousLinkClassName={"previousBttn"}
-              nextLinkClassName={"nextBttn"}
-              disabledClassName={"paginationDisabled"}
-              activeClassName={"paginationActive"}
-            />
-          </>
-        )}
       </div>
     </div>
   );

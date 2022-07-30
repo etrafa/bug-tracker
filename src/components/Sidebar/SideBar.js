@@ -9,9 +9,9 @@ const SideBar = () => {
   const navigate = useNavigate();
 
   /* track user's role and if user is 
-  ADMIN: SHOW MANAGE ROLE ASSIGNMENT PAGE
+  ADMIN: SHOW MANAGE ROLE ASSIGNMENT PAGE AND MANAGE PROJECT USERS
    if user's role is 
-   NOT ADMIN: DO NOT SHOW ROLE ASSIGNMENT PAGE   
+   NOT ADMIN: DO NOT SHOW ROLE ASSIGNMENT PAGE AND MANAGE PROJECT USERS 
    */
   const { dbData } = useGetSingleDoc("users", currentUser?.uid);
   const userRole = dbData?.role;
@@ -78,7 +78,7 @@ const SideBar = () => {
               </NavLink>
             </li>
           ) : null}
-          {userRole?.role === "admin" ? (
+          {userRole === "admin" ? (
             <li>
               <NavLink
                 className={({ isActive }) =>
