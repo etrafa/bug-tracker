@@ -8,7 +8,6 @@ const ShowAllProjects = ({
     //for creating a new ticket get the selected project name and id to send back to database
     setSelectedProjectName(obj.projectName);
     setSelectedProjectID(obj.id);
-    console.log(obj);
   };
 
   return (

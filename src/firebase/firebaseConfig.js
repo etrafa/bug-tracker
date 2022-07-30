@@ -23,7 +23,6 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { writeBatch } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -38,7 +37,6 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
-const batch = writeBatch(db);
 const auth = getAuth();
 
 //signup
@@ -200,27 +198,40 @@ export const createTicket = async (
   ticket,
   modal,
   closeModal,
-  userIDArray
+  userIDArray,
+  currentUser
 ) => {
   const docRef = collection(db, "projects", docID, "tickets");
   await addDoc(docRef, {
     ...ticket,
-  }).then(() => {
-    userIDArray.forEach((user) => {
-      const userRef = collection(db, "users", user, "tickets");
-      addDoc(userRef, {
+  })
+    .then(() => {
+      const ticketOwnerRef = collection(
+        db,
+        "users",
+        currentUser?.uid,
+        "tickets"
+      );
+      addDoc(ticketOwnerRef, {
         ...ticket,
       });
+    })
+    .then(() => {
+      userIDArray.forEach((user) => {
+        const userRef = collection(db, "users", user, "tickets");
+        addDoc(userRef, {
+          ...ticket,
+        });
+      });
+      modal(true);
+      setTimeout(() => {
+        closeModal(false);
+      }, 2000);
     });
-    modal(true);
-    setTimeout(() => {
-      closeModal(false);
-    }, 2000);
-  });
 };
 
 //add comment to the specific ticket
-export const addTicket = async (
+export const addTicketComment = async (
   colName,
   currentUser,
   subCol,

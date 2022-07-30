@@ -81,7 +81,8 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
       singleTicket,
       setIsSubmitSuccess,
       setIsTicketModalOpen,
-      selectedUserID
+      selectedUserID,
+      currentUser
     );
   };
 

@@ -33,7 +33,7 @@ const MyProjects = () => {
     }
   }, [query, userRole?.role]);
 
-  console.log(query);
+  console.log(userRole?.role);
 
   //filter search result
   const [searchTerm, setSearchTerm] = useState("");
@@ -77,9 +77,11 @@ const MyProjects = () => {
           <td className="px-6 py-4">
             <ul className="list-disc">
               <Link to={`/manage-project-user`}>
-                <li className="text-fbFillColor cursor-pointer underline hover:text-black">
-                  Manage Users
-                </li>
+                {userRole?.role === "admin" ? (
+                  <li className="text-fbFillColor cursor-pointer underline hover:text-black">
+                    Manage Users
+                  </li>
+                ) : null}
               </Link>
               <Link to={`/my-projects/${project.id}`}>
                 <li

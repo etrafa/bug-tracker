@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { addTicket, useAuth } from "../../firebase/firebaseConfig";
+import { addTicketComment, useAuth } from "../../firebase/firebaseConfig";
 import { useGetSingleDoc } from "../../customHooks/useGetSingleDoc";
 import TicketPagination from "./TicketPagination";
 
@@ -14,7 +14,7 @@ const TicketComments = ({ ticketId }) => {
   //add ticket to database on submit
   const submitHandler = (e) => {
     e.preventDefault();
-    addTicket("users", currentUser, "tickets", ticketId, commentInput);
+    addTicketComment("users", currentUser, "tickets", ticketId, commentInput);
     setCommentInput("");
   };
 
