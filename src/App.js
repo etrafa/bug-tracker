@@ -25,6 +25,7 @@ import DeleteProjectModal from "./components/Modals/DeleteProjectModal";
 import SideBar from "./components/Sidebar/SideBar";
 import AssignUserModal from "./components/Modals/AssignUserModal";
 import SingleTicket from "./components/SingleTicket/SingleTicket";
+import EditTicketModal from "./components/Modals/EditTicket/EditTicketModal";
 
 function App() {
   // MODALS
@@ -36,6 +37,8 @@ function App() {
   const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
   const [deleteProjectModal, setDeleteProjectModal] = useState(false);
   const [isAssignUserModalOpen, setIsAssignUserModalOpen] = useState(false);
+  const [editTicketOpen, setEditTicketOpen] = useState(false);
+  const [currentTicketID, setCurrentTicketID] = useState();
 
   //* TRACK IF USER LOGGED IN
   const currentUser = useAuth();
@@ -61,6 +64,9 @@ function App() {
         setSignUpErrorMessage,
         setDeleteProjectModal,
         setIsAssignUserModalOpen,
+        setEditTicketOpen,
+        currentTicketID,
+        setCurrentTicketID,
       }}
     >
       {currentUser && <Sidebar />}
@@ -94,6 +100,9 @@ function App() {
 
       {isAssignUserModalOpen && (
         <AssignUserModal setIsAssignUserModalOpen={setIsAssignUserModalOpen} />
+      )}
+      {editTicketOpen && (
+        <EditTicketModal setEditTicketOpen={setEditTicketOpen} />
       )}
 
       <Routes>

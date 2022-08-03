@@ -7,6 +7,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -228,6 +229,45 @@ export const createTicket = async (
         closeModal(false);
       }, 2000);
     });
+};
+
+//update ticket
+/*
+
+
+*/
+export const updateTicket = async (
+  ticketDescription,
+  updatedTicket,
+  userID
+) => {
+  //find current ticket in the project database
+  const colRef = collection(db, "projects");
+  const res = await getDocs(colRef);
+  res.forEach(async (item) => {
+    const colRef = collection(db, "projects", item.ref.id, "tickets");
+    const q = query(
+      colRef,
+      where("ticketDescription", "==", ticketDescription)
+    );
+    //1.update ticket in the project section in the firebase firestore
+
+    const res = await getDocs(q);
+    res.docs.forEach(async (data) => {
+      await updateDoc(data.ref, updatedTicket);
+    });
+    // // 2.update ticket in the userID + ticket section for each user in the firestore
+    // const userRef = collection(db, "users");
+    // const userQuery = query(
+    //   userRef,
+    //   where("ticketDescription", "==", ticketDescription)
+    // );
+    // const result = await getDocs(userQuery);
+    // result.docs.forEach(async (data) => {
+    //   console.log(ticketDescription);
+    //   // await updateDoc(data.ref, updatedTicket);
+    // });
+  });
 };
 
 //add comment to the specific ticket
