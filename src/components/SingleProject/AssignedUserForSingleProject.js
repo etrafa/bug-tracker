@@ -1,18 +1,20 @@
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
+import { useGetDocs } from "../../customHooks/useGetDocs";
+const AssignedUserForSingleProject = ({ project }) => {
+  const { dbData } = useGetDocs(`projects/${project}/users`);
 
-const AssignedUserForSingleProject = ({ dbData }) => {
   //pagination show only 10 user's per page
   const [pageNumber, setPageNumber] = useState(0);
   const USERS_PER_PAGE = 5;
   const pagesVisited = pageNumber * USERS_PER_PAGE;
-  const pageCount = Math.ceil(dbData?.assignedUsers.length / USERS_PER_PAGE);
+  const pageCount = Math.ceil(dbData?.assignedUsers?.length / USERS_PER_PAGE);
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };
   const [searchTerm, setSearchTerm] = useState("");
-  const showUsers = dbData?.assignedUsers
-    .filter((val) => {
+  const showUsers = dbData
+    ?.filter((val) => {
       if (searchTerm === "") {
         return val;
       } else if (
@@ -58,7 +60,7 @@ const AssignedUserForSingleProject = ({ dbData }) => {
         </div>
         <input
           type="text"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-11/12 max-w-xs pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search User"
         />

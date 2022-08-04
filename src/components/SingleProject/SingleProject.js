@@ -9,19 +9,11 @@ import { Link, useParams } from "react-router-dom";
 //context
 import { useContext } from "react";
 import { TrackerContext } from "../../context/TrackerContext";
-import { useAuth } from "../../firebase/firebaseConfig";
 
 const SingleProject = () => {
   const { project } = useParams();
 
-  const currentUser = useAuth();
-
-  console.log(project);
-
-  const { dbData } = useGetSingleDoc(
-    `users/${currentUser?.uid}/my-projects/`,
-    project
-  );
+  const { dbData } = useGetSingleDoc("projects", project);
 
   const { setDeleteProjectModal } = useContext(TrackerContext);
 
@@ -61,9 +53,9 @@ const SingleProject = () => {
             </div>
             <hr className="mt-10 lg:mt-0" />
             <div className="w-full mt-8 flex flex-col lg:flex-row lg:justify-between">
-              <AssignedUserForSingleProject dbData={dbData} />
+              <AssignedUserForSingleProject project={project} />
               <div className="h-scren border"></div>
-              <TicketForSingleProject project={project} />
+              {/* <TicketForSingleProject project={project} /> */}
             </div>
             <div className="text-center mt-12 lg:mr-16">
               <button

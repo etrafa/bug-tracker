@@ -1,22 +1,16 @@
 //firebase
 import { db } from "../../firebase/firebaseConfig";
-import { collection, addDoc, doc, setDoc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { useGetDocs } from "../../customHooks/useGetDocs";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
-const CreateNewProjectModal = ({
-  setIsProjectModalOpen,
-  setIsTicketModalOpen,
-}) => {
+const CreateNewProjectModal = ({ setIsProjectModalOpen }) => {
   const [createProjectInformation, setCreateProjectInformation] = useState({
     projectName: "",
     projectDescription: "",
-    tickets: [],
   });
 
-  //firebase ref
-  const collectionRef = collection(db, "projects");
+  console.log(createProjectInformation);
 
   const { dbData } = useGetDocs("users");
 
@@ -54,46 +48,52 @@ const CreateNewProjectModal = ({
     }
   };
 
-  console.log(selectedUsers);
-
   //ON SUBMIT SAVE SAVE USER'S PROJECT NAME & DESCRIPTION TO DATABASE
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (isFormValidated) {
       //this will create firebase collection named "projects" and add projects there.
+      //firebase ref
+      const collectionRef = collection(db, "projects");
       addDoc(collectionRef, {
         projectName: createProjectInformation.projectName,
         projectDescription: createProjectInformation.projectDescription,
-        assignedUsers: selectedUsers,
-        tickets: createProjectInformation.tickets,
-      }).then(() => {
-        selectedUsers.forEach((user) => {
-          const userRef = doc(
-            db,
-            "users",
-            user?.id,
-            "my-projects",
-            createProjectInformation.projectName
-          );
-          setDoc(userRef, {
-            projectName: createProjectInformation.projectName,
-            projectDescription: createProjectInformation.projectDescription,
-            assignedUsers: selectedUsers,
-            tickets: createProjectInformation.tickets,
-          });
-        });
+        // }).then(() => {
+        //   selectedUsers.forEach((user) => {
+        //     const userRef = doc(
+        //       db,
+        //       "users",
+        //       user?.id,
+        //       "my-projects",
+        //       createProjectInformation.projectName
+        //     );
+        //     setDoc(userRef, {
+        //       projectName: createProjectInformation.projectName,
+        //       projectDescription: createProjectInformation.projectDescription,
+        //       assignedUsers: selectedUsers,
+        //       tickets: createProjectInformation.tickets,
+        //     });
+        //   });
 
-        //close the modals after creating a new project.
-        setIsProjectModalOpen(false);
-        setIsTicketModalOpen(true);
+        //   //close the modals after creating a new project.
+
+        // });
+      }).then((docRef) => {
+        const docRefs = collection(db, "projects", docRef.id, "users");
+        selectedUsers.forEach(async (user) => {
+          await addDoc(docRefs, {
+            ...user,
+          });
+          setIsProjectModalOpen(false);
+        });
       });
     }
   };
 
   return (
     <div className="w-full ml-auto fixed min-h-screen top-0 bg-black bg-opacity-75 z-50">
-      <div className="absolute bg-white rounded-lg shadow top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 md:w-8/12 lg:w-6/12 xl:w-4/12">
+      <div className="absolute bg-white rounded-lg shadow top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 max-w-xl">
         <button
           onClick={() => setIsProjectModalOpen(false)}
           type="button"
