@@ -22,19 +22,6 @@ const SingleTicket = () => {
   const currentUser = useAuth();
 
   const [singleTicket, setSingleTicket] = useState();
-  //get current ticket info
-  // const { dbData } = useGetSingleDoc(
-  //   `users/${currentUser?.uid}/tickets`,
-  //   ticketId
-  // );
-
-  // console.log(dbData);
-
-  console.log(ticketId);
-
-  // const { dbData } = useGetDocsWithQuery("tickets", ticketId, ticketId);
-
-  // console.log(dbData);
 
   const { dbData: allTickets } = useGetDocsArrayQuery(
     "tickets",
@@ -42,6 +29,7 @@ const SingleTicket = () => {
     currentUser?.email
   );
 
+  //filter the ticket
   useEffect(() => {
     setCurrentTicketID(ticketId); // get current ticket id
     allTickets?.map((item) => {

@@ -8,11 +8,17 @@ import TicketToProject from "./TicketToProject";
 
 import { useGetDocs } from "../../../customHooks/useGetDocs";
 import { useAuth } from "../../../firebase/firebaseConfig";
+import { useGetDocsArrayQuery } from "../../../customHooks/useGetDocsArrayQuery";
 
 const Tickets = () => {
   const currentUser = useAuth();
 
-  const { dbData } = useGetDocs(`users/${currentUser?.uid}/tickets`);
+  //get user's ticket
+  const { dbData } = useGetDocsArrayQuery(
+    "tickets",
+    "userEmails",
+    currentUser?.email
+  );
 
   return (
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto">
