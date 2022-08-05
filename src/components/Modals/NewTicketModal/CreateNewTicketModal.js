@@ -37,7 +37,11 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
   const { dbData: allProjects } = useGetDocs("projects");
   //get users from database
 
-  const { dbData: allUsers } = useGetSingleDoc("projects", selectedProjectID);
+  const { dbData: allUsers } = useGetDocs(
+    `projects/${selectedProjectID}/users`
+  );
+
+  console.log(allUsers);
 
   //get current user information
   const currentUser = useAuth();
@@ -70,6 +74,7 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
     ticketDescription: ticketDescriptionInput,
     ticketOwner: currentUserInformation,
     submitTime: SERVER_TIME,
+    userEmails: selectedUsers.map((user) => user.email),
   };
 
   //send ticket to database

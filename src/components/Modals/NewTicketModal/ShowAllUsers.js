@@ -26,7 +26,7 @@ const ShowAllUsers = ({
         Assign User
       </label>
       <div className="bg-gray-50 flex flex-col h-44 overflow-auto border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
-        {allUsers && allUsers?.assignedUsers.length === 0 ? (
+        {allUsers && allUsers?.length === 0 ? (
           <Link to="/manage-project-user">
             <p className="font-bold">
               No user found.
@@ -39,7 +39,7 @@ const ShowAllUsers = ({
             </p>
           </Link>
         ) : (
-          allUsers?.assignedUsers?.map((user) => (
+          allUsers?.map((user) => (
             <label key={user?.id} className="text-lg p-1">
               <input
                 onChange={(e) => handleSelectedUsers(e, user)}

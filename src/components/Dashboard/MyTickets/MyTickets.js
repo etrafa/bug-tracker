@@ -4,12 +4,19 @@ import TicketAssignedToUser from "./TicketAssignedToUser";
 //firebase
 import { useAuth } from "../../../firebase/firebaseConfig";
 import { useGetDocs } from "../../../customHooks/useGetDocs";
+import { useGetDocsArrayQuery } from "../../../customHooks/useGetDocsArrayQuery";
+import { useGetDocsWithQuery } from "../../../customHooks/useGetDocsWithQuery";
 
 const MyTickets = () => {
   const currentUser = useAuth();
 
-  //get all the tickets from user's database
-  const { dbData } = useGetDocs(`users/${currentUser?.uid}/tickets`);
+  const { dbData } = useGetDocsArrayQuery(
+    "tickets",
+    "userEmails",
+    currentUser?.email
+  );
+
+  console.log(dbData);
 
   return (
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto mb-6 block">

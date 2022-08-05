@@ -205,30 +205,30 @@ export const createTicket = async (
   const docRef = collection(db, "projects", docID, "tickets");
   await addDoc(docRef, {
     ...ticket,
-  })
-    .then(() => {
-      const ticketOwnerRef = collection(
-        db,
-        "users",
-        currentUser?.uid,
-        "tickets"
-      );
-      addDoc(ticketOwnerRef, {
-        ...ticket,
-      });
-    })
-    .then(() => {
-      userIDArray.forEach((user) => {
-        const userRef = collection(db, "users", user, "tickets");
-        addDoc(userRef, {
-          ...ticket,
-        });
-      });
-      modal(true);
-      setTimeout(() => {
-        closeModal(false);
-      }, 2000);
-    });
+  });
+  // .then(() => {
+  //   const ticketOwnerRef = collection(
+  //     db,
+  //     "users",
+  //     currentUser?.uid,
+  //     "tickets"
+  //   );
+  //   addDoc(ticketOwnerRef, {
+  //     ...ticket,
+  //   });
+  // })
+  // .then(() => {
+  //   userIDArray.forEach((user) => {
+  //     const userRef = collection(db, "users", user, "tickets");
+  //     addDoc(userRef, {
+  //       ...ticket,
+  //     });
+  //   });
+  //   modal(true);
+  //   setTimeout(() => {
+  //     closeModal(false);
+  //   }, 2000);
+  // });
 };
 
 //update ticket

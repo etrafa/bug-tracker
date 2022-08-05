@@ -4,44 +4,39 @@ import {
   collection,
   collectionGroup,
   doc,
-  getDoc,
   getDocs,
   onSnapshot,
   query,
-  QuerySnapshot,
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db, useAuth } from "../firebase/firebaseConfig";
 
-export const useGetDocsWithQuery = (colName, qu, endPoint) => {
+export const useGetDocsArrayQuery = (colName, qu, endPoint) => {
   const [dbData, setDbData] = useState(null);
   const [loading, setLoading] = useState(false);
-  let GRAND_PARENT_PATH = [];
   let ALL_DATA_FIRESTORE = [];
+  let PARENT_PATH = [];
   const currentUser = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       const docRef = collectionGroup(db, colName);
-      const q = query(docRef, where(qu, "==", endPoint));
+      const q = query(docRef, where(qu, "array-contains", endPoint));
       const querySnapShot = await getDocs(q);
       //GET THE ID OF PARENT ELEMENTS
       querySnapShot.forEach((doc) => {
         const documentRef = doc.ref;
-        const parentCollectionRef = documentRef.parent;
-        const grandParentDocumentRef = parentCollectionRef.parent;
-        if (grandParentDocumentRef) {
-          GRAND_PARENT_PATH.push(grandParentDocumentRef.id);
-        }
+        const parentCollectionRef = documentRef;
+        PARENT_PATH.push(parentCollectionRef.path);
       });
 
-      GRAND_PARENT_PATH.forEach(async (id) => {
-        const documentRef = doc(db, "projects", id);
-        onSnapshot(documentRef, (item) =>
-          setDbData((prev) => [...prev, { ...item.data(), id: item.id }])
-        );
+      PARENT_PATH.forEach((path) => {
+        const docRef = doc(db, path);
+        onSnapshot(docRef, (item) => {
+          setDbData((prev) => [...prev, { ...item.data(), id: item.id }]);
+        });
       });
 
       setDbData(ALL_DATA_FIRESTORE);
