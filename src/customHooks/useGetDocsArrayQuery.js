@@ -1,7 +1,6 @@
 //* READ FIRESTORE DATABASE WITH QUERY
 
 import {
-  collection,
   collectionGroup,
   doc,
   getDocs,

@@ -1,24 +1,24 @@
-const TicketInformations = ({ dbData }) => {
+const TicketInformations = ({ singleTicket }) => {
   //create h2 tag for ticket informations
   const ticketElementsForHTML = [
     {
       element: "Ticket Title",
-      value: dbData && dbData?.ticketDescription,
+      value: singleTicket && singleTicket?.ticketDescription,
     },
-    { element: "Project", value: dbData && dbData?.projectName },
+    { element: "Project", value: singleTicket && singleTicket?.projectName },
 
-    { element: "Author", value: dbData && dbData?.ticketOwner },
+    { element: "Author", value: singleTicket && singleTicket?.ticketOwner },
     {
       element: "Ticket Priority",
-      value: dbData && dbData?.ticketPriority,
+      value: singleTicket && singleTicket?.ticketPriority,
     },
     {
       element: "Ticket Status",
-      value: dbData && dbData?.ticketStatus,
+      value: singleTicket && singleTicket?.ticketStatus,
     },
-    { element: "Ticket Type", value: dbData && dbData?.ticketType },
+    { element: "Ticket Type", value: singleTicket && singleTicket?.ticketType },
 
-    { element: "Date", value: dbData && dbData?.submitTime },
+    { element: "Date", value: singleTicket && singleTicket?.submitTime },
   ];
 
   const ticketClassNames = [
@@ -57,7 +57,7 @@ const TicketInformations = ({ dbData }) => {
           <h2 className="text-sm text-gray-900 font-bold bg-gray-200 rounded-md w-28 h-8 pt-2 my-2 text-center mx-auto">
             Users
           </h2>
-          {dbData?.assignedUsers?.map((item, index) => (
+          {singleTicket?.assignedUsers?.map((item, index) => (
             <p className="text-center">
               <span>{index + 1}- </span>
               {item?.fullName}

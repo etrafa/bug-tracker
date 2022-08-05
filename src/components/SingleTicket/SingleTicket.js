@@ -12,21 +12,44 @@ import TicketInformations from "./TicketInformations";
 import { useContext } from "react";
 import { TrackerContext } from "../../context/TrackerContext";
 import { useEffect } from "react";
+import { useGetDocsWithQuery } from "../../customHooks/useGetDocsWithQuery";
+import { useGetDocsArrayQuery } from "../../customHooks/useGetDocsArrayQuery";
+import { useState } from "react";
 
 const SingleTicket = () => {
   const { setEditTicketOpen, setCurrentTicketID } = useContext(TrackerContext); //get current project id
   const { ticketId } = useParams(); //get the ticket id
   const currentUser = useAuth();
 
+  const [singleTicket, setSingleTicket] = useState();
   //get current ticket info
-  const { dbData } = useGetSingleDoc(
-    `users/${currentUser?.uid}/tickets`,
-    ticketId
+  // const { dbData } = useGetSingleDoc(
+  //   `users/${currentUser?.uid}/tickets`,
+  //   ticketId
+  // );
+
+  // console.log(dbData);
+
+  console.log(ticketId);
+
+  // const { dbData } = useGetDocsWithQuery("tickets", ticketId, ticketId);
+
+  // console.log(dbData);
+
+  const { dbData: allTickets } = useGetDocsArrayQuery(
+    "tickets",
+    "userEmails",
+    currentUser?.email
   );
 
   useEffect(() => {
     setCurrentTicketID(ticketId); // get current ticket id
-  }, []);
+    allTickets?.map((item) => {
+      if (item.id === ticketId) {
+        setSingleTicket(item);
+      }
+    });
+  }, [ticketId, allTickets, setCurrentTicketID]);
 
   return (
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto mb-6">
@@ -48,8 +71,8 @@ const SingleTicket = () => {
           </div>
         </div>
         <div className="flex mx-auto gap-4 flex-col lg:flex-row my-12">
-          <TicketInformations dbData={dbData} />
-          <TicketComments dbData={dbData} ticketId={ticketId} />
+          <TicketInformations singleTicket={singleTicket} />
+          <TicketComments singleTicket={singleTicket} ticketId={ticketId} />
         </div>
       </div>
     </div>
