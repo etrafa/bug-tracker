@@ -1,5 +1,7 @@
+import MyProjectsAsAdmin from "../MyProjects/MyProjectAsAdmin";
+
 const AllProjects = () => {
-  return <div>AllProjects</div>;
+  return <MyProjectsAsAdmin />;
 };
 
 export default AllProjects;

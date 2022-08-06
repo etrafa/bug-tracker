@@ -6,7 +6,6 @@ import TicketToProject from "./TicketToProject";
 
 //firebase
 
-import { useGetDocs } from "../../../customHooks/useGetDocs";
 import { useAuth } from "../../../firebase/firebaseConfig";
 import { useGetDocsArrayQuery } from "../../../customHooks/useGetDocsArrayQuery";
 

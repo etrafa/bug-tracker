@@ -1,18 +1,18 @@
+//react
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
+//firebase
 import { useGetDocs } from "../../../customHooks/useGetDocs";
 
-import { Link } from "react-router-dom";
+//paginate
 import ReactPaginate from "react-paginate";
+
+//components
 import LoadSpinner from "../../Utilities/LoadSpinner";
-import { useGetSingleDoc } from "../../../customHooks/useGetSingleDoc";
-import { useAuth } from "../../../firebase/firebaseConfig";
 
 const MyProjectAsAdmin = () => {
-  //get current user and their role
-  const currentUser = useAuth();
-  const { dbData: userRole } = useGetSingleDoc("users", currentUser?.uid);
-
-  //get user's projects
+  //get all projects
   const { dbData, loading } = useGetDocs("projects");
 
   //filter search result
@@ -54,11 +54,9 @@ const MyProjectAsAdmin = () => {
           <td className="px-6 py-4">
             <ul className="list-disc">
               <Link to={`/manage-project-user`}>
-                {userRole?.role === "admin" ? (
-                  <li className="text-fbFillColor cursor-pointer underline hover:text-black">
-                    Manage Users
-                  </li>
-                ) : null}
+                <li className="text-fbFillColor cursor-pointer underline hover:text-black">
+                  Manage Users
+                </li>
               </Link>
               <Link to={`/my-projects/${project.id}`}>
                 <li className="text-fbFillColor cursor-pointer underline hover:text-black mt-3">
@@ -75,7 +73,7 @@ const MyProjectAsAdmin = () => {
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto mb-6">
       <div className="w-11/12 mx-auto mt-24 relative border border-black">
         <h1 className="absolute -top-6 left-1/2 transform -translate-x-1/2 w-11/12 h-14 bg-fbFillColor text-center text-white text-2xl font-bold pt-3">
-          My Projects
+          All Projects in the database
         </h1>
         <div class="pl-4 pt-12">
           {loading && <LoadSpinner />}
@@ -114,17 +112,19 @@ const MyProjectAsAdmin = () => {
                 </thead>
                 <tbody>{showProjects}</tbody>
               </table>
-              <ReactPaginate
-                previousLabel={"<"}
-                nextLabel={">"}
-                pageCount={pageCount}
-                onPageChange={changePage}
-                containerClassName={"paginationBttns"}
-                previousLinkClassName={"previousBttn"}
-                nextLinkClassName={"nextBttn"}
-                disabledClassName={"paginationDisabled"}
-                activeClassName={"paginationActive"}
-              />
+              {PROJECT_PER_PAGE?.length >= 5 && (
+                <ReactPaginate
+                  previousLabel={"<"}
+                  nextLabel={">"}
+                  pageCount={pageCount}
+                  onPageChange={changePage}
+                  containerClassName={"paginationBttns"}
+                  previousLinkClassName={"previousBttn"}
+                  nextLinkClassName={"nextBttn"}
+                  disabledClassName={"paginationDisabled"}
+                  activeClassName={"paginationActive"}
+                />
+              )}
             </>
           ) : (
             <p className="my-12 text-center font-bold">No project found.</p>
