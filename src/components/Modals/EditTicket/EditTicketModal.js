@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useContext } from "react";
 import { TrackerContext } from "../../../context/TrackerContext";
+import { useGetDocsArrayQuery } from "../../../customHooks/useGetDocsArrayQuery";
 import { useGetSingleDoc } from "../../../customHooks/useGetSingleDoc";
 import { db, updateTicket, useAuth } from "../../../firebase/firebaseConfig";
 
@@ -11,11 +12,28 @@ const EditTicketModal = ({ setEditTicketOpen }) => {
 
   const { currentTicketID } = useContext(TrackerContext); // get current ticket id
 
+  const [singleTicket, setSingleTicket] = useState();
+
   //get current ticket info
-  const { dbData } = useGetSingleDoc(
-    `users/${currentUser?.uid}/tickets`,
-    currentTicketID
+  // const { dbData } = useGetSingleDoc(
+  //   `users/${currentUser?.uid}/tickets`,
+  //   currentTicketID
+  // );
+
+  console.log(currentTicketID);
+  const { dbData } = useGetDocsArrayQuery(
+    "tickets",
+    "userEmails",
+    currentUser?.email
   );
+  //filter the ticket
+  useEffect(() => {
+    dbData?.map((item) => {
+      if (item.id === currentTicketID) {
+        setSingleTicket(item);
+      }
+    });
+  }, [currentTicketID, dbData]);
 
   const ticketPriority = ["Low", "Medium", "High"];
   const ticketStatus = ["Open", "In Progress", "Closed"];
@@ -39,29 +57,29 @@ const EditTicketModal = ({ setEditTicketOpen }) => {
 
     if (dbData) {
       setUpdatedTicket({
-        assignedUsers: dbData?.assignedUsers,
-        projectName: dbData?.projectName,
+        assignedUsers: singleTicket?.assignedUsers,
+        projectName: singleTicket?.projectName,
         submitTime: SERVER_TIME,
-        ticketDescription: dbData?.ticketDescription,
-        ticketOwner: dbData?.ticketOwner,
-        ticketPriority: dbData?.ticketPriority,
-        ticketStatus: dbData?.ticketStatus,
-        ticketType: dbData?.ticketType,
+        ticketDescription: singleTicket?.ticketDescription,
+        ticketOwner: singleTicket?.ticketOwner,
+        ticketPriority: singleTicket?.ticketPriority,
+        ticketStatus: singleTicket?.ticketStatus,
+        ticketType: singleTicket?.ticketType,
       });
     }
-  }, [dbData]);
+  }, [singleTicket]);
 
   const updateTicketHandler = async (e) => {
     e.preventDefault();
     //1.update ticket in the project section in the firebase firestore
-    updateTicket(dbData?.ticketDescription, updatedTicket);
+    updateTicket(singleTicket?.ticketDescription, updatedTicket);
     // 2.update ticket in the userID + ticket section for each user in the firestore
     // const userRef = `users/${currentUser?.uid}/tickets/${currentTicketID}`;
     // await updateDoc(userRef, updateTicket);
-    dbData?.assignedUsers?.forEach(async (item) => {
-      const userRef = doc(db, `users/${item?.id}/tickets`, currentTicketID);
-      await updateDoc(userRef, updatedTicket);
-    });
+    // dbData?.assignedUsers?.forEach(async (item) => {
+    //   const userRef = doc(db, `users/${item?.id}/tickets`, currentTicketID);
+    //   await updateDoc(userRef, updatedTicket);
+    // });
   };
 
   return (
@@ -105,7 +123,7 @@ const EditTicketModal = ({ setEditTicketOpen }) => {
                 type="text"
                 name="ticketTitle"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                placeholder={dbData?.ticketDescription}
+                placeholder={singleTicket?.ticketDescription}
               />
             </div>
             <div className="bg-gray-50 flex flex-wrap gap-x-1 gap-y-8 justify-between border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">

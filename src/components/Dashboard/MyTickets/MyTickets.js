@@ -1,11 +1,14 @@
 //components
-import TicketAssignedToUser from "./TicketAssignedToUser";
+import MyTicketsAsUser from "./MyTicketsAsUser";
 
 //firebase
 import { useAuth } from "../../../firebase/firebaseConfig";
 import { useGetDocs } from "../../../customHooks/useGetDocs";
+import { useGetSingleDoc } from "../../../customHooks/useGetSingleDoc";
+
 import { useGetDocsArrayQuery } from "../../../customHooks/useGetDocsArrayQuery";
 import { useGetDocsWithQuery } from "../../../customHooks/useGetDocsWithQuery";
+import MyTicketsAsAdmin from "./MyTicketsAsAdmin";
 
 const MyTickets = () => {
   const currentUser = useAuth();
@@ -16,7 +19,8 @@ const MyTickets = () => {
     currentUser?.email
   );
 
-  console.log(dbData);
+  //get current user's role
+  const { dbData: userRole } = useGetSingleDoc("users", currentUser?.uid);
 
   return (
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto mb-6 block">
@@ -27,13 +31,26 @@ const MyTickets = () => {
           </h1>
         </div>
         <div className="w-full mt-8 flex flex-col lg:flex-row lg:justify-between">
+          {/* {userRole?.role === "user" && <MyTicketsAsUser dbData={dbData} />}
+          {userRole?.role === "admin" && <MyTicketsAsAdmin />}
+          {dbData === undefined && dbData?.length === 0 && (
+            <p className="text-center mt-12 font-bold w-full">
+              No ticket found
+            </p>
+          )} */}
+
           {(dbData && dbData === undefined) ||
             (dbData?.length === 0 ? (
               <p className="text-center mt-12 font-bold w-full">
                 No ticket found.
               </p>
             ) : (
-              <TicketAssignedToUser dbData={dbData} />
+              <>
+                {userRole?.role === "user" && (
+                  <MyTicketsAsUser dbData={dbData} />
+                )}
+                {userRole?.role === "admin" && <MyTicketsAsAdmin />}
+              </>
             ))}
         </div>
       </div>

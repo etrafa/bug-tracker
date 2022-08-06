@@ -26,6 +26,8 @@ import SideBar from "./components/Sidebar/SideBar";
 import AssignUserModal from "./components/Modals/AssignUserModal";
 import SingleTicket from "./components/SingleTicket/SingleTicket";
 import EditTicketModal from "./components/Modals/EditTicket/EditTicketModal";
+import AllProjects from "./components/Dashboard/MyProjects/AllProjects";
+import AllTickets from "./components/Dashboard/MyTickets/AllTickets";
 
 function App() {
   // MODALS
@@ -109,8 +111,10 @@ function App() {
         <Route path="/" element={<DashboardHome />} />
         <Route path="/log-in" element={<Login />} />
         <Route path="/my-projects" element={<MyProjects />} />
+        <Route path="/all-projects" element={<AllProjects />} />
         <Route path="/role-assignment" element={<ManageRole />} />
         <Route path="/my-tickets" element={<MyTickets />} />
+        <Route path="/all-tickets" element={<AllTickets />} />
         <Route path="/my-projects/:project" element={<SingleProject />} />
         <Route path="my-tickets/:ticketId" element={<SingleTicket />} />
         <Route path="/create-account" element={<SignUp />} />
