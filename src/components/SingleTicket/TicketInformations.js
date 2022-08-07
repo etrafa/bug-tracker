@@ -1,24 +1,24 @@
-const TicketInformations = ({ singleTicket }) => {
+const TicketInformations = ({ allTickets }) => {
   //create h2 tag for ticket informations
   const ticketElementsForHTML = [
     {
       element: "Ticket Title",
-      value: singleTicket && singleTicket?.ticketDescription,
+      value: allTickets && allTickets?.ticketDescription,
     },
-    { element: "Project", value: singleTicket && singleTicket?.projectName },
+    { element: "Project", value: allTickets && allTickets?.projectName },
 
-    { element: "Author", value: singleTicket && singleTicket?.ticketOwner },
+    { element: "Author", value: allTickets && allTickets?.ticketOwner },
     {
       element: "Ticket Priority",
-      value: singleTicket && singleTicket?.ticketPriority,
+      value: allTickets && allTickets?.ticketPriority,
     },
     {
       element: "Ticket Status",
-      value: singleTicket && singleTicket?.ticketStatus,
+      value: allTickets && allTickets?.ticketStatus,
     },
-    { element: "Ticket Type", value: singleTicket && singleTicket?.ticketType },
+    { element: "Ticket Type", value: allTickets && allTickets?.ticketType },
 
-    { element: "Date", value: singleTicket && singleTicket?.submitTime },
+    { element: "Date", value: allTickets && allTickets?.submitTime },
   ];
 
   const ticketClassNames = [
@@ -57,7 +57,7 @@ const TicketInformations = ({ singleTicket }) => {
           <h2 className="text-sm text-gray-900 font-bold bg-gray-200 rounded-md w-28 h-8 pt-2 my-2 text-center mx-auto">
             Users
           </h2>
-          {singleTicket?.assignedUsers?.map((item, index) => (
+          {allTickets?.assignedUsers?.map((item, index) => (
             <p className="text-center">
               <span>{index + 1}- </span>
               {item?.fullName}

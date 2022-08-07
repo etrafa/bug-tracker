@@ -41,8 +41,6 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
     `projects/${selectedProjectID}/users`
   );
 
-  console.log(allUsers);
-
   //get current user information
   const currentUser = useAuth();
   const [currentUserInformation, setCurrentUserInformation] = useState();
@@ -80,7 +78,6 @@ const CreateNewTicketModal = ({ setIsTicketModalOpen }) => {
   //send ticket to database
   const handleSubmit = (e) => {
     e.preventDefault();
-
     createTicket(
       selectedProjectID,
       singleTicket,

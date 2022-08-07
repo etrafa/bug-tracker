@@ -16,6 +16,7 @@ import { db, useAuth } from "../firebase/firebaseConfig";
 
 export const useGetDocsWithQuery = (colName, qu, endPoint) => {
   const [dbData, setDbData] = useState(null);
+  const [singleData, setSingleData] = useState(null);
   const [loading, setLoading] = useState(false);
   let GRAND_PARENT_PATH = [];
   let ALL_DATA_FIRESTORE = [];
@@ -29,6 +30,8 @@ export const useGetDocsWithQuery = (colName, qu, endPoint) => {
       const querySnapShot = await getDocs(q);
       //GET THE ID OF PARENT ELEMENTS
       querySnapShot.forEach((doc) => {
+        console.log(doc.data());
+        setSingleData(doc.data());
         const documentRef = doc.ref;
         const parentCollectionRef = documentRef.parent;
         const grandParentDocumentRef = parentCollectionRef.parent;
@@ -49,5 +52,5 @@ export const useGetDocsWithQuery = (colName, qu, endPoint) => {
     };
     fetchData();
   }, [currentUser, colName, qu, endPoint]);
-  return { dbData, loading };
+  return { dbData, loading, singleData };
 };

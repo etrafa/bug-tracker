@@ -14,6 +14,7 @@ import { db, useAuth } from "../firebase/firebaseConfig";
 export const useGetDocsArrayQuery = (colName, qu, endPoint) => {
   const [dbData, setDbData] = useState(null);
   const [loading, setLoading] = useState(false);
+
   let ALL_DATA_FIRESTORE = [];
   let PARENT_PATH = [];
   const currentUser = useAuth();

@@ -202,9 +202,12 @@ export const createTicket = async (
   userIDArray,
   currentUser
 ) => {
-  const docRef = collection(db, "projects", docID, "tickets");
-  await addDoc(docRef, {
+  const colRef = collection(db, "projects", docID, "tickets");
+  await addDoc(colRef, {
     ...ticket,
+  }).then(async (refID) => {
+    const docRef = doc(db, "projects", docID, "tickets", refID.id);
+    await updateDoc(docRef, { id: refID.id });
   });
   // .then(() => {
   //   const ticketOwnerRef = collection(

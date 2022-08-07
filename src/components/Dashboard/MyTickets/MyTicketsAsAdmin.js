@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 
 const MyTicketsAsAdmin = ({ dbData }) => {
+  console.log(dbData);
+
   return (
     <div className="w-full text-center overflow-auto lg:ml-6 border-r-2">
       <table className="w-full lg:mx-auto text-sm text-left text-gray-500 dark:text-gray-400 mt-12">

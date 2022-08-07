@@ -1,43 +1,27 @@
 //firebase
-import { useAuth } from "../../firebase/firebaseConfig";
-import { useGetSingleDoc } from "../../customHooks/useGetSingleDoc";
+
+import { useGetDocsWithQuery } from "../../customHooks/useGetDocsWithQuery";
 
 //react
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { useContext } from "react";
 
 //components
 import TicketComments from "./TicketComments";
 import TicketInformations from "./TicketInformations";
-import { useContext } from "react";
+
+//context
 import { TrackerContext } from "../../context/TrackerContext";
-import { useEffect } from "react";
-import { useGetDocsWithQuery } from "../../customHooks/useGetDocsWithQuery";
-import { useGetDocsArrayQuery } from "../../customHooks/useGetDocsArrayQuery";
-import { useState } from "react";
 
 const SingleTicket = () => {
   const { setEditTicketOpen, setCurrentTicketID } = useContext(TrackerContext); //get current project id
   const { ticketId } = useParams(); //get the ticket id
-  const currentUser = useAuth();
 
-  const [singleTicket, setSingleTicket] = useState();
-
-  const { dbData: allTickets } = useGetDocsArrayQuery(
+  const { singleData: allTickets } = useGetDocsWithQuery(
     "tickets",
-    "userEmails",
-    currentUser?.email
+    "id",
+    ticketId
   );
-
-  //filter the ticket
-  useEffect(() => {
-    setCurrentTicketID(ticketId); // get current ticket id
-    allTickets?.map((item) => {
-      if (item.id === ticketId) {
-        setSingleTicket(item);
-      }
-    });
-  }, [ticketId, allTickets, setCurrentTicketID]);
 
   return (
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto mb-6">
@@ -59,8 +43,8 @@ const SingleTicket = () => {
           </div>
         </div>
         <div className="flex mx-auto gap-4 flex-col lg:flex-row my-12">
-          <TicketInformations singleTicket={singleTicket} />
-          <TicketComments singleTicket={singleTicket} ticketId={ticketId} />
+          <TicketInformations allTickets={allTickets} />
+          <TicketComments />
         </div>
       </div>
     </div>

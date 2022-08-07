@@ -3,7 +3,7 @@ import { addTicketComment, useAuth } from "../../firebase/firebaseConfig";
 import { useGetSingleDoc } from "../../customHooks/useGetSingleDoc";
 import TicketPagination from "./TicketPagination";
 
-const TicketComments = ({ ticketId }) => {
+const TicketComments = ({ ticketId, singleTicket }) => {
   //save comment input
   const [commentInput, setCommentInput] = useState("");
   const [isFormValidated, setIsFormValidated] = useState(false);
