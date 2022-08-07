@@ -1,7 +1,9 @@
+import { useGetSingleDoc } from "../../customHooks/useGetSingleDoc";
 import { useAuth } from "../../firebase/firebaseConfig";
 
 const UserProfileInformation = () => {
-  const currentUser = useAuth();
+  const currentUser = useAuth(); //get current user
+  const { dbData } = useGetSingleDoc("users", currentUser?.uid); // get current user's role
 
   return (
     <div className="text-center mx-auto w-full max-w-3xl">
@@ -38,7 +40,7 @@ const UserProfileInformation = () => {
           <td>
             <input
               className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 w-11/12 lg:w-6/12 p-2.5 lg:ml-4 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-              value="User"
+              value={dbData?.role}
               type="text"
               disabled
             />
