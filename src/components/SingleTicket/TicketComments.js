@@ -3,7 +3,7 @@ import { addTicketComment, useAuth } from "../../firebase/firebaseConfig";
 import { useGetSingleDoc } from "../../customHooks/useGetSingleDoc";
 import TicketPagination from "./TicketPagination";
 
-const TicketComments = ({ ticketId, singleTicket }) => {
+const TicketComments = ({ ticketId }) => {
   //save comment input
   const [commentInput, setCommentInput] = useState("");
   const [isFormValidated, setIsFormValidated] = useState(false);
@@ -11,10 +11,12 @@ const TicketComments = ({ ticketId, singleTicket }) => {
   //get current user
   const currentUser = useAuth();
 
+  console.log(ticketId);
+
   //add ticket to database on submit
   const submitHandler = (e) => {
     e.preventDefault();
-    addTicketComment("users", currentUser, "tickets", ticketId, commentInput);
+    addTicketComment(ticketId, commentInput, currentUser?.displayName);
     setCommentInput("");
   };
 

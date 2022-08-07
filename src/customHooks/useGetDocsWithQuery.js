@@ -30,7 +30,6 @@ export const useGetDocsWithQuery = (colName, qu, endPoint) => {
       const querySnapShot = await getDocs(q);
       //GET THE ID OF PARENT ELEMENTS
       querySnapShot.forEach((doc) => {
-        console.log(doc.data());
         setSingleData(doc.data());
         const documentRef = doc.ref;
         const parentCollectionRef = documentRef.parent;

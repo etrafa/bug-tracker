@@ -44,7 +44,7 @@ const SingleTicket = () => {
         </div>
         <div className="flex mx-auto gap-4 flex-col lg:flex-row my-12">
           <TicketInformations allTickets={allTickets} />
-          <TicketComments />
+          <TicketComments ticketId={ticketId} />
         </div>
       </div>
     </div>

@@ -12,6 +12,7 @@ import {
   getFirestore,
   query,
   setDoc,
+  serverTimestamp,
   updateDoc,
   where,
 } from "firebase/firestore";
@@ -273,28 +274,33 @@ export const updateTicket = async (
   });
 };
 
-//add comment to the specific ticket
-export const addTicketComment = async (
-  colName,
-  currentUser,
-  subCol,
-  ticketID,
-  comment
-) => {
-  const docRef = doc(db, colName, currentUser?.uid, subCol, ticketID);
-  //timestamp for ticket
-  const timeStamp = new Date();
-  const day = String(timeStamp.getDate()).padStart(2, "0");
-  const month = String(timeStamp.getMonth() + 1).padStart(2, "0");
-  const year = timeStamp.getFullYear();
+//add comment to the ticket
+export const addTicketComment = async (docID, comment, commentOwner) => {
+  // const colRef = collection(db, "projects", docID, "comments");
+  // await addDoc(colRef, { ...comment });
 
-  const SERVER_TIME = [month, day, year].join(".");
+  const colRef = collection(db, "projects");
+  const res = await getDocs(colRef);
+  res.docs.map(async (item) => {
+    const colRef = collection(db, "projects", item.ref.id, "tickets");
+    const q = query(colRef, where("id", "==", docID));
 
-  await updateDoc(docRef, {
-    comments: arrayUnion({
-      comment: comment,
-      commentOwner: currentUser?.displayName,
-      createdAt: SERVER_TIME,
-    }),
+    const result = await getDocs(q);
+
+    result.docs.map(async (item) => {
+      const childPath = item.ref;
+      const parentPath = childPath.parent;
+      const grandParentPath = parentPath.parent.path;
+
+      const collectionReference = collection(db, grandParentPath, "comments");
+
+      console.log(grandParentPath);
+
+      await addDoc(collectionReference, {
+        comment: comment,
+        commentOwner: commentOwner,
+        createdAt: serverTimestamp(),
+      });
+    });
   });
 };

@@ -6,7 +6,7 @@ import TicketToProject from "./TicketToProject";
 
 //firebase
 
-import { useAuth } from "../../../firebase/firebaseConfig";
+import { addTicketComment, useAuth } from "../../../firebase/firebaseConfig";
 import { useGetDocsArrayQuery } from "../../../customHooks/useGetDocsArrayQuery";
 
 const Tickets = () => {
@@ -18,6 +18,8 @@ const Tickets = () => {
     "userEmails",
     currentUser?.email
   );
+
+  addTicketComment();
 
   return (
     <div className="w-full lg:w-[calc(100%_-_16rem)] ml-auto">
