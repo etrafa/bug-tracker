@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { addTicketComment, useAuth } from "../../firebase/firebaseConfig";
 import { useGetSingleDoc } from "../../customHooks/useGetSingleDoc";
 import TicketPagination from "./TicketPagination";
+import { useGetDocsNested } from "../../customHooks/useGetDocsNested";
 
 const TicketComments = ({ ticketId }) => {
   //save comment input
@@ -11,8 +12,6 @@ const TicketComments = ({ ticketId }) => {
   //get current user
   const currentUser = useAuth();
 
-  console.log(ticketId);
-
   //add ticket to database on submit
   const submitHandler = (e) => {
     e.preventDefault();
@@ -20,11 +19,7 @@ const TicketComments = ({ ticketId }) => {
     setCommentInput("");
   };
 
-  //get comments from db
-  const { dbData } = useGetSingleDoc(
-    `users/${currentUser?.uid}/tickets`,
-    ticketId
-  );
+  const { dbData } = useGetDocsNested("projects", "comments");
 
   //check validation
   useEffect(() => {
@@ -36,10 +31,8 @@ const TicketComments = ({ ticketId }) => {
   return (
     <div className="w-full lg:w-6/12 max-w-2xl text-center overflow-auto mt-12 mx-auto lg:border-l-2">
       <h2 className="font-bold text-lg">Comments</h2>
-      {dbData?.comments === undefined ||
-        (dbData?.comments?.lenght === 0 ? null : (
-          <TicketPagination dbData={dbData} />
-        ))}
+      {dbData === undefined ||
+        (dbData?.lenght === 0 ? null : <TicketPagination dbData={dbData} />)}
       {/* //*CREATE A NEW COMMENT */}
       <textarea
         className="border w-11/12 h-12 pl-2 pt-2 text-sm mt-6"

@@ -18,7 +18,7 @@ export const useGetDocsNested = (colName, subCol) => {
       res.docs.map(async (item) => {
         const docRef = collection(db, `${colName}/${item.id}/${subCol}`);
         const result = await getDocs(docRef);
-        // result.docs.map((item) => FIREBASE_DATA.push(item.data()));
+
         result.docs.map((item) => {
           FIREBASE_DATA.push({ ...item.data(), id: item.id });
           setDbData([...FIREBASE_DATA]);

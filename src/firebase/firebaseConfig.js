@@ -276,9 +276,6 @@ export const updateTicket = async (
 
 //add comment to the ticket
 export const addTicketComment = async (docID, comment, commentOwner) => {
-  // const colRef = collection(db, "projects", docID, "comments");
-  // await addDoc(colRef, { ...comment });
-
   const colRef = collection(db, "projects");
   const res = await getDocs(colRef);
   res.docs.map(async (item) => {
