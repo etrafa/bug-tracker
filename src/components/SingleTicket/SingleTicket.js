@@ -35,7 +35,10 @@ const SingleTicket = () => {
               </p>
             </Link>
             <p
-              onClick={() => setEditTicketOpen(true)}
+              onClick={() => {
+                setEditTicketOpen(true);
+                setCurrentTicketID(ticketId);
+              }}
               className="text-base underline text-center py-4 cursor-pointer hover:text-gray-300"
             >
               Edit Ticket

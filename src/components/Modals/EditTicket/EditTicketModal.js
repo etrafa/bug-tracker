@@ -1,39 +1,21 @@
-import { doc, updateDoc } from "firebase/firestore";
-import { useEffect } from "react";
-import { useState } from "react";
-import { useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { TrackerContext } from "../../../context/TrackerContext";
-import { useGetDocsArrayQuery } from "../../../customHooks/useGetDocsArrayQuery";
-import { useGetSingleDoc } from "../../../customHooks/useGetSingleDoc";
-import { db, updateTicket, useAuth } from "../../../firebase/firebaseConfig";
+import { useGetDocsWithQuery } from "../../../customHooks/useGetDocsWithQuery";
+import { updateTicket } from "../../../firebase/firebaseConfig";
 
 const EditTicketModal = ({ setEditTicketOpen }) => {
-  const currentUser = useAuth();
-
   const { currentTicketID } = useContext(TrackerContext); // get current ticket id
 
   const [singleTicket, setSingleTicket] = useState();
+  const [successMessage, setSuccessMessage] = useState(false);
 
-  //get current ticket info
-  // const { dbData } = useGetSingleDoc(
-  //   `users/${currentUser?.uid}/tickets`,
-  //   currentTicketID
-  // );
-
-  console.log(currentTicketID);
-  const { dbData } = useGetDocsArrayQuery(
+  const { singleData: dbData } = useGetDocsWithQuery(
     "tickets",
-    "userEmails",
-    currentUser?.email
+    "id",
+    currentTicketID
   );
-  //filter the ticket
-  useEffect(() => {
-    dbData?.map((item) => {
-      if (item.id === currentTicketID) {
-        setSingleTicket(item);
-      }
-    });
-  }, [currentTicketID, dbData]);
+
+  console.log(dbData);
 
   const ticketPriority = ["Low", "Medium", "High"];
   const ticketStatus = ["Open", "In Progress", "Closed"];
@@ -57,14 +39,14 @@ const EditTicketModal = ({ setEditTicketOpen }) => {
 
     if (dbData) {
       setUpdatedTicket({
-        assignedUsers: singleTicket?.assignedUsers,
-        projectName: singleTicket?.projectName,
+        assignedUsers: dbData?.assignedUsers,
+        projectName: dbData?.projectName,
         submitTime: SERVER_TIME,
-        ticketDescription: singleTicket?.ticketDescription,
-        ticketOwner: singleTicket?.ticketOwner,
-        ticketPriority: singleTicket?.ticketPriority,
-        ticketStatus: singleTicket?.ticketStatus,
-        ticketType: singleTicket?.ticketType,
+        ticketDescription: dbData?.ticketDescription,
+        ticketOwner: dbData?.ticketOwner,
+        ticketPriority: dbData?.ticketPriority,
+        ticketStatus: dbData?.ticketStatus,
+        ticketType: dbData?.ticketType,
       });
     }
   }, [singleTicket]);
@@ -72,14 +54,12 @@ const EditTicketModal = ({ setEditTicketOpen }) => {
   const updateTicketHandler = async (e) => {
     e.preventDefault();
     //1.update ticket in the project section in the firebase firestore
-    updateTicket(singleTicket?.ticketDescription, updatedTicket);
-    // 2.update ticket in the userID + ticket section for each user in the firestore
-    // const userRef = `users/${currentUser?.uid}/tickets/${currentTicketID}`;
-    // await updateDoc(userRef, updateTicket);
-    // dbData?.assignedUsers?.forEach(async (item) => {
-    //   const userRef = doc(db, `users/${item?.id}/tickets`, currentTicketID);
-    //   await updateDoc(userRef, updatedTicket);
-    // });
+    updateTicket(
+      dbData?.ticketDescription,
+      updatedTicket,
+      setSuccessMessage,
+      setEditTicketOpen
+    );
   };
 
   return (
@@ -123,7 +103,7 @@ const EditTicketModal = ({ setEditTicketOpen }) => {
                 type="text"
                 name="ticketTitle"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                placeholder={singleTicket?.ticketDescription}
+                placeholder={dbData?.ticketDescription}
               />
             </div>
             <div className="bg-gray-50 flex flex-wrap gap-x-1 gap-y-8 justify-between border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
@@ -182,7 +162,20 @@ const EditTicketModal = ({ setEditTicketOpen }) => {
             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
               Assign team members (optional)
             </label>
-            <div className="bg-gray-50 flex flex-col h-44 overflow-auto border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"></div>
+            <div className="bg-gray-50 flex flex-col h-44 overflow-auto border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+              <select className="w-full max-w-[6rem]">
+                <option>A</option>
+                <option>A</option>
+                <option>A</option>
+                <option>A</option>
+                <option>A</option>
+              </select>
+            </div>
+            {successMessage && (
+              <p className="text-green-700 font-bold">
+                Changes has been saved successfully.
+              </p>
+            )}
             <button
               onClick={(e) => updateTicketHandler(e)}
               type="submit"

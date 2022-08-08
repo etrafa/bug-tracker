@@ -14,7 +14,11 @@ const ManageProjectUser = () => {
 
   const [currentProject, setCurrentProject] = useState("");
 
-  const { dbData: singleProject } = useGetSingleDoc("projects", currentProject);
+  // const { dbData: singleProject } = useGetSingleDoc("projects", currentProject);
+
+  const { dbData: singleProject } = useGetDocs(
+    `projects/${currentProject}/users`
+  );
 
   const { setIsAssignUserModalOpen } = useContext(TrackerContext);
 
@@ -28,7 +32,7 @@ const ManageProjectUser = () => {
   };
   const [searchTerm, setSearchTerm] = useState("");
 
-  const showUsers = singleProject?.assignedUsers
+  const showUsers = singleProject
     ?.filter((val) => {
       if (searchTerm === "") {
         return val;
@@ -40,6 +44,7 @@ const ManageProjectUser = () => {
     })
     .slice(pagesVisited, pagesVisited + USERS_PER_PAGE)
     .map((user) => {
+      console.log(user);
       return (
         <tbody key={user?.id}>
           <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -50,12 +55,14 @@ const ManageProjectUser = () => {
             <td>
               <svg
                 onClick={() => {
-                  removeUser(
-                    "projects",
-                    currentProject,
-                    user,
-                    singleProject?.projectName
-                  );
+                  // removeUser(
+                  //   "projects",
+                  //   currentProject,
+                  //   user,
+                  //   singleProject?.projectName
+                  // );
+                  removeUser("projects", currentProject, "users", user);
+                  console.log(user?.email);
                 }}
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6 hover:stroke-gray-400 cursor-pointer"

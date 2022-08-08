@@ -10,10 +10,11 @@ const AssignUserModal = ({ setIsAssignUserModalOpen }) => {
 
   //store selected users
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [successMessageVisible, setSuccessMessageVisible] = useState(false);
 
   //store selected project
   const [selectedProject, setSelectedProject] = useState("Please Select");
-
+  console.log(selectedProject?.id);
   //SUBMIT FORM VALIDATION
   const [isFormValidated, setIsFormValidated] = useState(false);
   useEffect(() => {
@@ -38,10 +39,10 @@ const AssignUserModal = ({ setIsAssignUserModalOpen }) => {
     addUser(
       "projects",
       selectedProject?.id,
+      "users",
       selectedUsers,
-      setIsAssignUserModalOpen,
-      selectedProject?.projectName,
-      selectedProject
+      setSuccessMessageVisible,
+      setIsAssignUserModalOpen
     );
   };
 
@@ -114,6 +115,11 @@ const AssignUserModal = ({ setIsAssignUserModalOpen }) => {
                   ))}
               </div>
             </div>
+            {successMessageVisible && (
+              <p className="text-green-700 font-bold">
+                User(s) have been added successfully.
+              </p>
+            )}
             <button
               type="submit"
               onClick={sendSelectedUsersToDB}

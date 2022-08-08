@@ -15,6 +15,7 @@ import {
   serverTimestamp,
   updateDoc,
   where,
+  deleteField,
 } from "firebase/firestore";
 import {
   getAuth,
@@ -137,113 +138,75 @@ export const updateUserRole = async (
 export const addUser = async (
   colName,
   docID,
-  user,
-  modal,
-  projectName,
-  projectItem
+  subCol,
+  newUser,
+  messageVisible,
+  isModalOpen
 ) => {
-  //this will add user to current project
-  const docRef = doc(db, colName, docID);
-  await updateDoc(docRef, {
-    assignedUsers: arrayUnion(...user),
-  })
-    //this will add current project to user's database.
-    .then(() => {
-      user
-        .forEach((item) => {
-          const userDocRef = doc(
-            db,
-            "users",
-            item?.id,
-            "my-projects",
-            projectName
-          );
-          setDoc(userDocRef, { ...projectItem });
-
-          modal(false);
-        })
-        .catch((err) => console.log(err));
-    });
+  const colRef = collection(db, colName, docID, subCol);
+  newUser.forEach(async (item) => {
+    await addDoc(colRef, { ...item });
+  });
+  await messageVisible(true);
+  setTimeout(() => {
+    isModalOpen(false);
+  }, 3000);
 };
 
 //remove assigned user from the db
-export const removeUser = async (colName, docID, user, projectName) => {
-  //this will remove user from "projects" collection
-  const docRef = doc(db, colName, docID);
-  await updateDoc(docRef, {
-    assignedUsers: arrayRemove({
-      email: user.email,
-      fullName: user.fullName,
-      id: user.id,
-      role: user.role,
-    }),
-  })
-    .then(() => {
-      //this will remove selected project from user's database.
-      const userDocRef = doc(db, "users", user?.id, "my-projects", projectName);
-      deleteDoc(userDocRef);
-    })
-    .then(async () => {
-      //this will remove selected tickets from user's database.
-      const colRef = query(collection(db, "users", user?.id, "tickets"));
-      const q = query(colRef, where("projectName", "==", projectName));
-      const querySnapShot = await getDocs(q);
-      querySnapShot.forEach(async (doc) => {
-        await deleteDoc(doc.ref);
+export const removeUser = async (colName, docID, subCol, user) => {
+  //* 1.remove user from selected project
+  const docRef = doc(db, colName, docID, subCol, user?.id);
+  await deleteDoc(docRef);
+
+  //* 2.remove user's ticket from selected project
+  const colRefQuery = collection(db, colName, docID, "tickets");
+  const q = query(
+    colRefQuery,
+    where("userEmails", "array-contains", user?.email)
+  );
+  const res = await getDocs(q);
+
+  res.docs.forEach(async (doc) => {
+    const docRef = doc.ref;
+    try {
+      await updateDoc(docRef, {
+        userEmails: arrayRemove(user?.email),
+        assignedUsers: arrayRemove({
+          email: user?.email,
+          fullName: user?.fullName,
+          id: user?.id,
+          role: user?.role,
+          tickets: [],
+        }),
       });
-    });
+    } catch (err) {
+      console.log(err);
+    }
+  });
 };
 
 //add ticket to the project and selected user's database
-export const createTicket = async (
-  docID,
-  ticket,
-  modal,
-  closeModal,
-  userIDArray,
-  currentUser
-) => {
+export const createTicket = async (docID, ticket, modal, closeModal) => {
   const colRef = collection(db, "projects", docID, "tickets");
   await addDoc(colRef, {
     ...ticket,
   }).then(async (refID) => {
     const docRef = doc(db, "projects", docID, "tickets", refID.id);
     await updateDoc(docRef, { id: refID.id });
+    modal(true);
+    setTimeout(() => {
+      closeModal(false);
+    }, 2000);
   });
-  // .then(() => {
-  //   const ticketOwnerRef = collection(
-  //     db,
-  //     "users",
-  //     currentUser?.uid,
-  //     "tickets"
-  //   );
-  //   addDoc(ticketOwnerRef, {
-  //     ...ticket,
-  //   });
-  // })
-  // .then(() => {
-  //   userIDArray.forEach((user) => {
-  //     const userRef = collection(db, "users", user, "tickets");
-  //     addDoc(userRef, {
-  //       ...ticket,
-  //     });
-  //   });
-  //   modal(true);
-  //   setTimeout(() => {
-  //     closeModal(false);
-  //   }, 2000);
-  // });
 };
 
 //update ticket
-/*
-
-
-*/
 export const updateTicket = async (
   ticketDescription,
   updatedTicket,
-  userID
+  successMessage,
+  isModalOpen
 ) => {
   //find current ticket in the project database
   const colRef = collection(db, "projects");
@@ -254,24 +217,15 @@ export const updateTicket = async (
       colRef,
       where("ticketDescription", "==", ticketDescription)
     );
-    //1.update ticket in the project section in the firebase firestore
-
     const res = await getDocs(q);
     res.docs.forEach(async (data) => {
       await updateDoc(data.ref, updatedTicket);
     });
-    // // 2.update ticket in the userID + ticket section for each user in the firestore
-    // const userRef = collection(db, "users");
-    // const userQuery = query(
-    //   userRef,
-    //   where("ticketDescription", "==", ticketDescription)
-    // );
-    // const result = await getDocs(userQuery);
-    // result.docs.forEach(async (data) => {
-    //   console.log(ticketDescription);
-    //   // await updateDoc(data.ref, updatedTicket);
-    // });
   });
+  await successMessage(true);
+  setTimeout(() => {
+    isModalOpen(false);
+  }, 3000);
 };
 
 //add comment to the ticket
